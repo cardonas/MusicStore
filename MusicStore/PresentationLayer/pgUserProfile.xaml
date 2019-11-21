@@ -1,0 +1,64 @@
+﻿<Page x:Class="PresentationLayer.pgUserProfile"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PresentationLayer"
+      mc:Ignorable="d" 
+      d:DesignHeight="573" d:DesignWidth="850"
+      Title="pgUserProfile">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="images\SideBarBackground.jpg"/>
+        </Grid.Background>
+        
+        <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblUserTypeID" Content="EmployeeID: "  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Label x:Name="lblUserID" Content="EmployeeID" FontWeight="DemiBold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="120"/>
+       
+        <TextBox x:Name="txtFirstName" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="First Name" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2 " VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125" HorizontalAlignment="Left"/>
+        
+        <TextBox x:Name="txtLastName" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="Last Name" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125"/>
+        
+        <TextBox x:Name="txtAddress" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="Address" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125"/>
+        
+        <TextBox x:Name="txtState" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="State" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125"/>
+        
+        <TextBox x:Name="txtZipcode" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="ZipCode" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125"/>
+        
+        <TextBox x:Name="txtPhoneNumber" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Label Content="Phone Number" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0" Margin="0,58,0,16" Width="125"/>
+        
+        <Label Content="Assigned Roles" Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="lbUnassignedRoles" Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="3"  BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        
+        <Button Content="Assign" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="30" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <Button Content="Unassign" Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Height="30" BorderBrush="Black" BorderThickness="2 2 2 2"/>
+        <ListBox x:Name="lbAssignedRoles" Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="2 2 2 2"  />
+        <Label Content="Unassigned Roles" Grid.Row="4" Grid.Column="6" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+    </Grid>
+</Page>
