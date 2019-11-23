@@ -238,10 +238,12 @@ namespace DataAccessLayer
 
             cmd.Parameters.AddWithValue("@EmployeeID", oldEmployee.EmployeeID);
 
+            cmd.Parameters.AddWithValue("@OldFirstName", oldEmployee.FirstName);
             cmd.Parameters.AddWithValue("@OldLastName", oldEmployee.LastName);
             cmd.Parameters.AddWithValue("@OldEmail", oldEmployee.Email);
             cmd.Parameters.AddWithValue("@OldPhoneNumber", oldEmployee.PhoneNumber);
 
+            cmd.Parameters.AddWithValue("@NewFirstName", updatedEmployee.FirstName);
             cmd.Parameters.AddWithValue("@NewLastName", updatedEmployee.LastName);
             cmd.Parameters.AddWithValue("@NewEmail", updatedEmployee.Email);
             cmd.Parameters.AddWithValue("@NewPhoneNumber", updatedEmployee.PhoneNumber);
@@ -277,6 +279,40 @@ namespace DataAccessLayer
 
             cmd.Parameters["@EmployeeID"].Value = employeeID;
             cmd.Parameters["@OldPasswordHash"].Value = oldPasswordHash;
+            cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
+
+            try
+            {
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+                updateSuccess = (rows == 1);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return updateSuccess;
+        }
+
+        public bool UpdatePasswordHash(string email, string newPasswordHash)
+        {
+            bool updateSuccess = false;
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand("sp_update_employee_password_by_email", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            //cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+            //cmd.Parameters.AddWithValue("@OldPasswordHash", oldPasswordHash);
+            //cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
+
+            cmd.Parameters.Add("@Email", SqlDbType.Int);
+            cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
+
+            cmd.Parameters["@Email"].Value = email;
             cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
 
             try

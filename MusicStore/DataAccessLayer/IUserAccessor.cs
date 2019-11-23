@@ -27,5 +27,7 @@ namespace DataAccessLayer
 
         bool DeleteEmployee(int employeeID, string firstName, string lastName);
 
+        bool UpdatePasswordHash(string email, string newPasswordHash);
+
     }
 }

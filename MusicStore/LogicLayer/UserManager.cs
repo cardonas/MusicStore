@@ -158,6 +158,23 @@ namespace LogicLayer
             return isUpdated;
         }
 
+        public bool UpdatePassword(string email, string newPassword)
+        {
+            bool isUpdated = false;
+
+            string newPasswordHash = hashPassword(newPassword);
+
+            try
+            {
+                isUpdated = _userAccessor.UpdatePasswordHash(email, newPasswordHash);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Updated Failed", ex);
+            }
+            return isUpdated;
+        }
+
         private string hashPassword(string source)
         {
             string result;

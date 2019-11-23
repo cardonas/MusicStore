@@ -48,6 +48,7 @@ namespace PresentationLayer
             try
             {
                 _user = _userManager.AuthenticateUser(email, password);
+
                 string roles = "";
                 for (int i = 0; i < _user.Roles.Count; i++)
                 {
@@ -58,29 +59,42 @@ namespace PresentationLayer
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                exceptionHandler(ex, "Login Failed");
+                MessageBox.Show("Bad username and password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                txtEmail.Text = "";
+                pwdPassword.Password = "";
+                txtEmail.Focus();
+                return;
             }
             if (_user != null)
             {
-                MainPage main = new MainPage(_user);
-                this.NavigationService.Navigate(main);
-               
                 if (password == "newuser")
                 {
                     var updatePassword = new frmFirstTimeUpdatePassword(_user, _userManager);
                     if (updatePassword.ShowDialog() == false)
                     {
-                        // ToDo : code to log the user back out and display an error message
+                        return;
                     }
                 }
+                MainPage main = new MainPage(_user);
+                this.NavigationService.Navigate(main);
             }
         }
 
-        private void exceptionHandler(Exception ex, string caption)
+        private void btnForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            if(txtEmail.Text != ""){
+                var updatePassword = new frmFirstTimeUpdatePassword(txtEmail.Text, _userManager, true);
+                if (updatePassword.ShowDialog() == false)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("You must enter you email before pressing \"Forgot Password\"", "ERROR", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
     }
 }

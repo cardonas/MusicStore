@@ -36,6 +36,7 @@ create table dbo.Employee
 	Active       bit           not null default 1,
 	constraint pk_EmployeeID
 		primary key (EmployeeID asc),
+	constraint ak_Email unique (Email asc),
 )
 go
 
@@ -66,7 +67,7 @@ create procedure sp_create_employee
 as
 begin
 	declare @Email nvarchar(50)
-	set @Email = Lower(@FirstName + "." + @LastName + "@music.com")
+	set @Email = Lower(@FirstName + '.' + @LastName + '@music.com')
 
 	insert into dbo.Employee
 		(
@@ -199,9 +200,11 @@ go
 create procedure sp_update_employee_profile
 	(
 	@EmployeeID int,
+	@OldFirstName nvarchar(50),
 	@OldLastName nvarchar(50),
 	@OldEmail nvarchar(50),
 	@OldPhoneNumber nvarchar(11),
+	@NewFirstName nvarchar(50),
 	@NewLastName nvarchar(50),
 	@NewEmail nvarchar(50),
 	@NewPhoneNumber nvarchar(11)
@@ -209,11 +212,13 @@ create procedure sp_update_employee_profile
 as
 begin
 	update dbo.Employee
-	set LastName = @NewLastName,
+	set FirstName = @NewFirstName,
+		LastName = @NewLastName,
 		Email = @NewEmail,
 		PhoneNumber = @NewPhoneNumber
 	where EmployeeID = @EmployeeID
 		and Email = @OldEmail
+		and FirstName = @OldFirstName
 		and LastName = @OldLastName
 		and PhoneNumber = @OldPhoneNumber
 		and Active = 1
@@ -241,6 +246,24 @@ begin
 end
 go
 
+print ''
+print '*** Creating sp_update_employee_password_by_email'
+go
+
+create procedure sp_update_employee_password_by_email
+	(
+	@Email nvarchar(50),
+	@NewPasswordHash nvarchar(100)
+)
+as
+begin
+	update dbo.Employee
+	set PasswordHash = @NewPasswordHash
+	where Email = @Email
+		and Active = 1
+	return @@RowCount
+end
+go
 
 print ''
 print '*** Creating sp_delete_employee'

@@ -13,6 +13,8 @@ namespace LogicLayer
 
         bool UpdatePassword(int employeeId, string oldPassowrd, string newPassword);
 
+        bool UpdatePassword(string email, string newPassword);
+
         List<Employee> GetEmployeesByActive(bool active = true);
 
         List<Customer> GetCustomersByActive(bool active = true);

@@ -55,11 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="EmployeeList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="frmFirstTimeUpdatePassword.xaml">
+    <Page Include="UpdatePassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,11 +87,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EmployeeList.xaml.cs">
-      <DependentUpon>EmployeeList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="frmFirstTimeUpdatePassword.xaml.cs">
-      <DependentUpon>frmFirstTimeUpdatePassword.xaml</DependentUpon>
+    <Compile Include="UpdatePassword.xaml.cs">
+      <DependentUpon>UpdatePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="InventoryList.xaml.cs">
       <DependentUpon>InventoryList.xaml</DependentUpon>
