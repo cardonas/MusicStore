@@ -36,11 +36,6 @@ namespace PresentationLayer
             _instrumentManager = new InstrumentManager();
             _inactiveInstrument = inactive;
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            btnInventoryList.Background = Brushes.Gray;
-            btnInventoryList.Foreground = Brushes.White;
-        }
 
         public Instrument SelectInstrumentFromList()
         {

@@ -23,104 +23,76 @@ namespace PresentationLayer
     /// </summary>
     public partial class pgAdministration : Page
     {
-        private bool _addMode = false;
         public bool _updateMode = false;
         public Employee _employee;
-        private EmployeeList _employeeList;
         private pgUserProfile _profile;
         private IUserManager _userManager;
+        private bool _inactiveUser = false;
 
         public pgAdministration()
         {
             InitializeComponent();
-            _profile = new pgUserProfile();
-            btnSave.Visibility = Visibility.Hidden;
             _userManager = new UserManager();
-            _employeeList = new EmployeeList(_userManager, this, false);
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void dgEmployeeList_Loaded(object sender, RoutedEventArgs e)
         {
-            frmAdmin.NavigationService.Navigate(_employeeList);
+            try
+            {
+                if (_inactiveUser == false)
+                {
+                    dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive();
+                    dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
+                    dgEmployeeList.Columns[0].Header = "Employee ID";
+                    dgEmployeeList.Columns[1].Header = "First Name";
+                    dgEmployeeList.Columns[2].Header = "Last Name";
+                    dgEmployeeList.Columns[3].Header = "Phone Number";
+                    dgEmployeeList.Columns[4].Header = "Email Address";
+                }
+                if (_inactiveUser == true)
+                {
+                    dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(false);
+                    dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
+                    dgEmployeeList.Columns[0].Header = "Employee ID";
+                    dgEmployeeList.Columns[1].Header = "First Name";
+                    dgEmployeeList.Columns[2].Header = "Last Name";
+                    dgEmployeeList.Columns[3].Header = "Phone Number";
+                    dgEmployeeList.Columns[4].Header = "Email Address";
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ApplicationException)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                }
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
-            _addMode = true;
-
-            toggleButtons();
-
-            _profile = new pgUserProfile();
-            frmAdmin.NavigationService.Navigate(_profile);
+            _profile = new pgUserProfile(_userManager, addMode: true);
+            this.NavigationService.Navigate(_profile);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            _employee= _employeeList.SelectUserFromList();
-            if (_employee != null)
+            _employee = SelectUserFromList();
+            if (null != _employee)
             {
-                _updateMode = true;
-                _profile = new pgUserProfile(_employee);
-                frmAdmin.NavigationService.Navigate(_profile);
-                toggleButtons();
-
+                _profile = new pgUserProfile(_userManager, _employee, editMode: true);
+                this.NavigationService.Navigate(_profile);
             }
             else
             {
-                MessageBox.Show("Please Select An Employee To Edit", "No Employee Selected!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            frmAdmin.NavigationService.Navigate(_employeeList);
-            toggleButtons(true);
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-            if (_updateMode == true)
-            {
-                _profile.SaveUpdatedEmployee(_employee);
-                toggleButtons(true);
-            }
-
-            if (_addMode == true)
-            {
-                _profile.SaveNewEmployee();
-                toggleButtons(true);
-            }
-        }
-
-        // if toggleOn == true : hides back and save buttons shows add edit and delete buttons
-        // if toggleOn == false : hides show, add, edit buttons and show back and save buttons
-        // parameter defaults to false
-        public void toggleButtons(bool toggleOn = false)
-        {
-            if (toggleOn == true)
-            {
-                btnBack.Visibility = Visibility.Hidden;
-                btnSave.Visibility = Visibility.Hidden;
-                btnAdd.Visibility = Visibility.Visible;
-                btnEdit.Visibility = Visibility.Visible;
-                btnDelete.Visibility = Visibility.Visible;
-            } else
-            {
-                btnSave.Visibility = Visibility.Visible;
-                btnBack.Visibility = Visibility.Visible;
-                btnAdd.Visibility = Visibility.Hidden;
-                btnEdit.Visibility = Visibility.Hidden;
-                btnDelete.Visibility = Visibility.Hidden;
+                MessageBox.Show("Please select an employee to edit", "Select An Employee", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            Employee employee = _employeeList.SelectUserFromList();
+            Employee employee = SelectUserFromList();
             if(employee != null)
             {
                 if (chkInActive.IsChecked == false)
@@ -133,8 +105,7 @@ namespace PresentationLayer
                             if (isDeactivated)
                             {
                                 MessageBox.Show("You Successfully De-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                                _employeeList = new EmployeeList(_userManager, this, false);
-                                frmAdmin.NavigationService.Navigate(_employeeList);
+                   
                             }
                         }
 
@@ -159,8 +130,6 @@ namespace PresentationLayer
                             if (isDeleted)
                             {
                                 MessageBox.Show("You Successfully Deleted " + employee.FirstName, "Success", MessageBoxButton.OK);
-                                _employeeList = new EmployeeList(_userManager, this, true);
-                                frmAdmin.NavigationService.Navigate(_employeeList);
                             }
                         }
                         catch (Exception ex)
@@ -178,7 +147,7 @@ namespace PresentationLayer
 
         private void btnReActivate_Click(object sender, RoutedEventArgs e)
         {
-            Employee employee = _employeeList.SelectUserFromList();
+            Employee employee = SelectUserFromList();
             if (employee != null)
             {
                 try
@@ -188,8 +157,6 @@ namespace PresentationLayer
                         if (isDeactivated)
                         {
                             MessageBox.Show("You Successfully Re-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                            _employeeList = new EmployeeList(_userManager, this, false);
-                            frmAdmin.NavigationService.Navigate(_employeeList);
                             chkInActive.IsChecked = false;
                         } 
 
@@ -207,18 +174,21 @@ namespace PresentationLayer
 
         private void chkInActive_Checked(object sender, RoutedEventArgs e)
         {
-            _employeeList = new EmployeeList(_userManager, this, true);
-            frmAdmin.NavigationService.Navigate(_employeeList);
             btnReActivate.Visibility = Visibility.Visible;
             btnDelete.Content = "Delete";
         }
 
         private void chkInActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            _employeeList = new EmployeeList();
-            frmAdmin.NavigationService.Navigate(_employeeList);
             btnReActivate.Visibility = Visibility.Hidden;
             btnDelete.Content = "De-activate";
+        }
+        private Employee SelectUserFromList() => (Employee)dgEmployeeList.SelectedItem;
+
+        private void dgEmployeeList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _profile = new pgUserProfile(_userManager, SelectUserFromList());
+            this.NavigationService.Navigate(_profile);
         }
     }
 }

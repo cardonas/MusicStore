@@ -7,22 +7,13 @@
       xmlns:DataObjects="clr-namespace:DataObjects;assembly=DataObjects" x:Class="PresentationLayer.EmployeeList"
       mc:Ignorable="d" 
       d:DesignHeight="546" d:DesignWidth="846"
-      Title="Datagrid" Loaded="Page_Loaded">
+      Title="Datagrid">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="422"></ColumnDefinition>
-                    <ColumnDefinition Width="422"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="btnEmployeeList" HorizontalAlignment="Left" Height="30" Width="150" FontSize="15" Background="LightGray">Employee List</Button>
-            </Grid>
-        </StackPanel>
-        <DataGrid x:Name="dgEmployeeList" Grid.Row="1"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgEmployeeList_Loaded"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal"/>
+        <DataGrid x:Name="dgEmployeeList"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgEmployeeList_Loaded" Grid.RowSpan="2" />
     </Grid>
 </Page>

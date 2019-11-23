@@ -25,40 +25,42 @@ namespace PresentationLayer
 
         private IUserManager _userManager;
         private Employee _employee;
+        private bool _editMode = false;
+        private bool _addMode = false;
 
-        public pgUserProfile()
+        public pgUserProfile(IUserManager userManager, bool addMode = false)
         {
             InitializeComponent();
-            _userManager = new UserManager();
-            lblUserTypeID.Content = "Add New Employee";
-            lblUserTypeID.HorizontalAlignment = HorizontalAlignment.Center;
-            lblUserTypeID.SetValue(Grid.ColumnSpanProperty, 3);
-            lblUserID.Visibility = Visibility.Hidden;
-            txtFirstName.Text = "";
-            txtLastName.Text = "";
-            txtAddress.Text = "";
-            txtState.Text = "";
-            txtZipcode.Text = "";
-            txtPhoneNumber.Text = "";
-            txtFirstName.Focus();
+            _userManager = userManager;
+            _addMode = addMode;
         }
 
-        public pgUserProfile(Employee employee)
+        public pgUserProfile(IUserManager userManager, Employee employee, bool editMode = false)
         {
             InitializeComponent();
-            _userManager = new UserManager();
+            _userManager = userManager;
             _employee = employee;
-            lblUserID.Content = _employee.EmployeeID;
-            txtFirstName.Text = _employee.FirstName;
-            txtLastName.Text = _employee.LastName;
-            txtAddress.Text = "";
-            txtState.Text = "";
-            txtZipcode.Text = "";
-            txtPhoneNumber.Text = _employee.PhoneNumber;
-
+            _editMode = editMode;
         }
 
-        public void SaveNewEmployee()
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_editMode)
+            {
+                setEditMode();
+                LoadEmployee();
+            }
+            if (!_editMode && null != _employee)
+            {
+                LoadEmployee();
+            }
+            if (_addMode)
+            {
+                addMode();
+            }
+        }
+
+        private void SaveNewEmployee()
         {
             try
             {
@@ -85,7 +87,7 @@ namespace PresentationLayer
                 }
                 else
                 {
-                    this.NavigationService.Navigate(new EmployeeList());
+                    this.NavigationService.Navigate(new pgAdministration());
                 }
 
             }
@@ -97,9 +99,9 @@ namespace PresentationLayer
 
         }
 
-        public void SaveUpdatedEmployee(Employee employee)
+        public void SaveUpdatedEmployee()
         {
-            Employee oldEmployee = employee;
+            Employee oldEmployee = _employee;
             //txtFirstName.Text = _employee.FirstName;
             //txtLastName.Text = _employee.LastName;
             //txtAddress.Text = "";
@@ -110,7 +112,7 @@ namespace PresentationLayer
 
             Employee updatedEmployee = new Employee
             {
-                FirstName = txtFirstName.Text.ToString(),
+                FirstName = txtFirstName.Text,
                 LastName = txtLastName.Text,
                 PhoneNumber = txtPhoneNumber.Text,
                 Email = oldEmployee.Email
@@ -122,19 +124,74 @@ namespace PresentationLayer
                 if (_userManager.UpdateEmployeeInfo(oldEmployee, updatedEmployee))
                 {
                     MessageBox.Show("Employee Profile Updated", "Success", MessageBoxButton.OK);
-                    if ((int)MessageBoxResult.OK == 1)
-                    {
-                        NavigationService.Navigate(new EmployeeList());
-                    }
+                    NavigationService.Navigate(new pgAdministration());
                 }
             }
             catch (Exception ex)
             {
-                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-                    this.NavigationService.Navigate(new EmployeeList());
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                this.NavigationService.Navigate(new pgAdministration());
             }
 
 
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            setEditMode();
+            _editMode = true;
+        }
+
+        private void setEditMode()
+        {
+            txtFirstName.IsEnabled = true;
+            txtLastName.IsEnabled = true;
+            txtAddress.IsEnabled = true;
+            txtState.IsEnabled = true;
+            txtZipcode.IsEnabled = true;
+            txtPhoneNumber.IsEnabled = true;
+            lstAssignedRoles.IsEnabled = true;
+            lstUnassignedRoles.IsEnabled = true;
+            btnAssign.IsEnabled = true;
+            btnUnassign.IsEnabled = true;
+            btnSave.Visibility = Visibility.Visible;
+            btnEdit.Visibility = Visibility.Hidden;
+        }
+
+        private void addMode()
+        {
+            lblUserTypeID.Content = "Add New Employee";
+            lblUserTypeID.HorizontalAlignment = HorizontalAlignment.Center;
+            lblUserTypeID.SetValue(Grid.ColumnSpanProperty, 3);
+            lblUserID.Visibility = Visibility.Hidden;
+            setEditMode();
+        }
+
+        private void LoadEmployee()
+        {
+            txtFirstName.Text = _employee.FirstName;
+            txtLastName.Text = _employee.LastName;
+            txtAddress.Text = "";
+            txtState.Text = "";
+            txtZipcode.Text = "";
+            txtPhoneNumber.Text = _employee.PhoneNumber;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new pgAdministration());
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (_addMode)
+            {
+                SaveNewEmployee();
+            }
+            if (_editMode)
+            {
+                SaveUpdatedEmployee();
+            }
         }
     }
 }

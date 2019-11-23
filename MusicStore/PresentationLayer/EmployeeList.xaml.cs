@@ -25,6 +25,7 @@ namespace PresentationLayer
         private IUserManager _userManager;
         private bool _inactiveUser;
         private pgAdministration _pgAdmin;
+        bool _updateMode = false;
 
         public EmployeeList()
         {
@@ -38,21 +39,6 @@ namespace PresentationLayer
             _userManager = userManager;
             _pgAdmin = administration; 
             _inactiveUser = inactive;
-        }
-
-        public EmployeeList(IUserManager userManager, bool inactive = false)
-        {
-            InitializeComponent();
-            _userManager = userManager;
-            _inactiveUser = inactive;
-        }
-
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-
-            btnEmployeeList.Background = Brushes.Gray;
-            btnEmployeeList.Foreground = Brushes.White;
         }
 
         public Employee SelectUserFromList()
@@ -69,7 +55,7 @@ namespace PresentationLayer
                 {
                     dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive();
                     dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
-                    dgEmployeeList.Columns[0].Header = "EmployeeID";
+                    dgEmployeeList.Columns[0].Header = "Employee ID";
                     dgEmployeeList.Columns[1].Header = "First Name";
                     dgEmployeeList.Columns[2].Header = "Last Name";
                     dgEmployeeList.Columns[3].Header = "Phone Number";
@@ -79,7 +65,7 @@ namespace PresentationLayer
                 {
                     dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(false);
                     dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
-                    dgEmployeeList.Columns[0].Header = "EmployeeID";
+                    dgEmployeeList.Columns[0].Header = "Employee ID";
                     dgEmployeeList.Columns[1].Header = "First Name";
                     dgEmployeeList.Columns[2].Header = "Last Name";
                     dgEmployeeList.Columns[3].Header = "Phone Number";

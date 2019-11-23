@@ -31,7 +31,6 @@ namespace PresentationLayer
         {
             InitializeComponent();
             _inventoryList = new InventoryList(false);
-            _profile = new pgUserProfile();
             btnSave.Visibility = Visibility.Hidden;
             _userManager = new UserManager();
         }

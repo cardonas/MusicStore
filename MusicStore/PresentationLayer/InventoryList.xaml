@@ -10,18 +10,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="422"></ColumnDefinition>
-                    <ColumnDefinition Width="422"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="btnInventoryList" HorizontalAlignment="Left" Height="30" Width="150" FontSize="15" Background="LightGray">InventoryList</Button>
-            </Grid>
-        </StackPanel>
         <DataGrid x:Name="dgInventoryList" Grid.Row="1"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgInventoryList_Loaded"/>
     </Grid>
 </Page>
