@@ -23,21 +23,54 @@ namespace PresentationLayer
     {
         //private bool _addMode = false;
         //private bool _updateMode = false;
-        private InventoryList _inventoryList;
-        private pgUserProfile _profile;
-        private IUserManager _userManager;
+        private IInstrumentManager _instrumentManager;
+        private bool _inactiveInstrument = false;
 
         public pgInventory()
         {
             InitializeComponent();
-            _inventoryList = new InventoryList(false);
-            btnSave.Visibility = Visibility.Hidden;
-            _userManager = new UserManager();
+            _instrumentManager = new InstrumentManager();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            frmAdmin.NavigationService.Navigate(_inventoryList);
+            btnSave.Visibility = Visibility.Hidden;
+        }
+
+        private void dgInventoryList_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_inactiveInstrument == false)
+                {
+                    dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
+                    dgInventoryList.Columns.RemoveAt(5);
+                    dgInventoryList.Columns[0].Header = "InstrumentID";
+                    dgInventoryList.Columns[1].Header = "Instrument Type";
+                    dgInventoryList.Columns[2].Header = "Instrument Group";
+                    dgInventoryList.Columns[3].Header = "Instrument Status";
+                    dgInventoryList.Columns[4].Header = "Brand";
+                    dgInventoryList.Columns[5].Header = "Price";
+                    dgInventoryList.Columns[6].Width = 150;
+                }
+                if (_inactiveInstrument == true)
+                {
+                    dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument(false);
+                    dgInventoryList.Columns.RemoveAt(4);
+                    dgInventoryList.Columns[0].Header = "InstrumentID";
+                    dgInventoryList.Columns[1].Header = "Instrument Type";
+                    dgInventoryList.Columns[2].Header = "Instrument Status";
+                    dgInventoryList.Columns[3].Header = "Brand";
+                    dgInventoryList.Columns[4].Header = "Price";
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is ApplicationException)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                }
+            }
         }
     }
 }

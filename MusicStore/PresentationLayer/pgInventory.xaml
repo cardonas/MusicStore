@@ -13,7 +13,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <Frame x:Name="frmAdmin" Grid.Row="0" Background="White"/>
+        <DataGrid x:Name="dgInventoryList" Grid.Row="0"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgInventoryList_Loaded"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Grid Width="830" Background="LightGray">
                 <Grid.ColumnDefinitions>

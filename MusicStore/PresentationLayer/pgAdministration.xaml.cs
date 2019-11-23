@@ -39,19 +39,9 @@ namespace PresentationLayer
         {
             try
             {
-                if (_inactiveUser == false)
+                if (dgEmployeeList.ItemsSource == null)
                 {
                     dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive();
-                    dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
-                    dgEmployeeList.Columns[0].Header = "Employee ID";
-                    dgEmployeeList.Columns[1].Header = "First Name";
-                    dgEmployeeList.Columns[2].Header = "Last Name";
-                    dgEmployeeList.Columns[3].Header = "Phone Number";
-                    dgEmployeeList.Columns[4].Header = "Email Address";
-                }
-                if (_inactiveUser == true)
-                {
-                    dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(false);
                     dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
                     dgEmployeeList.Columns[0].Header = "Employee ID";
                     dgEmployeeList.Columns[1].Header = "First Name";
@@ -105,7 +95,7 @@ namespace PresentationLayer
                             if (isDeactivated)
                             {
                                 MessageBox.Show("You Successfully De-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                   
+                                refreshEmployeeList(true);
                             }
                         }
 
@@ -130,6 +120,7 @@ namespace PresentationLayer
                             if (isDeleted)
                             {
                                 MessageBox.Show("You Successfully Deleted " + employee.FirstName, "Success", MessageBoxButton.OK);
+                                refreshEmployeeList(false);
                             }
                         }
                         catch (Exception ex)
@@ -157,8 +148,8 @@ namespace PresentationLayer
                         if (isDeactivated)
                         {
                             MessageBox.Show("You Successfully Re-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                            chkInActive.IsChecked = false;
-                        } 
+                            refreshEmployeeList(false);
+                         } 
 
                 }
                 catch (Exception ex)
@@ -174,12 +165,14 @@ namespace PresentationLayer
 
         private void chkInActive_Checked(object sender, RoutedEventArgs e)
         {
+            refreshEmployeeList(false);
             btnReActivate.Visibility = Visibility.Visible;
             btnDelete.Content = "Delete";
         }
 
         private void chkInActive_Unchecked(object sender, RoutedEventArgs e)
         {
+            refreshEmployeeList(true);
             btnReActivate.Visibility = Visibility.Hidden;
             btnDelete.Content = "De-activate";
         }
@@ -190,5 +183,12 @@ namespace PresentationLayer
             _profile = new pgUserProfile(_userManager, SelectUserFromList());
             this.NavigationService.Navigate(_profile);
         }
+
+        private void refreshEmployeeList(bool active = true)
+        {
+            dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(active);
+            dgEmployeeList.Columns.RemoveAt(5);
+        }
+
     }
 }

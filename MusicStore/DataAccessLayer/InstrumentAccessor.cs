@@ -30,9 +30,10 @@ namespace DataAccessLayer
                         Instrument newInsturment = new Instrument();
                         newInsturment.InstrumentID = reader.GetString(0);
                         newInsturment.InstrumentTypeID = reader.GetString(1);
-                        newInsturment.InstrumentStatusID = reader.GetString(2);
-                        newInsturment.Brand = reader.GetString(3);
-                        newInsturment.Price = reader.GetDecimal(4);
+                        newInsturment.InstrumentGroup = reader.GetString(2);
+                        newInsturment.InstrumentStatusID = reader.GetString(3);
+                        newInsturment.Brand = reader.GetString(4);
+                        newInsturment.Price = reader.GetDecimal(5);
                         instruments.Add(newInsturment);
                     }
                 }

@@ -814,6 +814,9 @@ insert into dbo.InstrumentStatus
 	(InstrumentStatusID)
 values
 	('Available'),
+	('For Sale'),
+	('For Rent'),
+	('For Rent to Own'),
 	('Rented'),
 	('Sold')
 go
