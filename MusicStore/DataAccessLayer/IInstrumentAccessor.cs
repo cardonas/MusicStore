@@ -9,6 +9,16 @@ namespace DataAccessLayer
 {
     public interface IInstrumentAccessor
     {
-        List<Instrument> GetAllInstruments(bool active = true);
+        List<InstrumentVM> GetAllInstruments(bool active = true);
+
+        List<string> SelectAllInstrumentType();
+
+        List<string> SelectAllInstrumentFamily();
+
+        List<string> SelectAllInstrumentBrands();
+
+        List<string> SelectAllInstrumentStatusIDs();
+
+        InstrumentTypeVM SelectInstrumentTypeByInstrumentTypeID(string instrumentTypeID);
     }
 }

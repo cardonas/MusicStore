@@ -1,4 +1,5 @@
-﻿using LogicLayer;
+﻿using DataObjects;
+using LogicLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,31 +38,32 @@ namespace PresentationLayer
             btnSave.Visibility = Visibility.Hidden;
         }
 
+        private InstrumentVM getSelectedInstrument()
+        {
+            return (InstrumentVM)dgInventoryList.SelectedItem;
+        }
+
+
         private void dgInventoryList_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (_inactiveInstrument == false)
+                if (dgInventoryList.ItemsSource == null)
                 {
                     dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
-                    dgInventoryList.Columns.RemoveAt(5);
-                    dgInventoryList.Columns[0].Header = "InstrumentID";
-                    dgInventoryList.Columns[1].Header = "Instrument Type";
-                    dgInventoryList.Columns[2].Header = "Instrument Group";
-                    dgInventoryList.Columns[3].Header = "Instrument Status";
-                    dgInventoryList.Columns[4].Header = "Brand";
-                    dgInventoryList.Columns[5].Header = "Price";
-                    dgInventoryList.Columns[6].Width = 150;
-                }
-                if (_inactiveInstrument == true)
-                {
-                    dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument(false);
-                    dgInventoryList.Columns.RemoveAt(4);
-                    dgInventoryList.Columns[0].Header = "InstrumentID";
-                    dgInventoryList.Columns[1].Header = "Instrument Type";
-                    dgInventoryList.Columns[2].Header = "Instrument Status";
-                    dgInventoryList.Columns[3].Header = "Brand";
-                    dgInventoryList.Columns[4].Header = "Price";
+                    dgInventoryList.Columns.RemoveAt(9);
+                    dgInventoryList.Columns.RemoveAt(1);
+                    dgInventoryList.Columns[0].Header = "Rental Term";
+                    dgInventoryList.Columns[1].Header = "Rental Fee";
+                    dgInventoryList.Columns[2].Header = "Prep LIst";
+                    dgInventoryList.Columns[3].Header = "InstrumentID";
+                    dgInventoryList.Columns[4].Header = "Type";
+                    dgInventoryList.Columns[5].Header = "Section";
+                    dgInventoryList.Columns[6].Header = "Status";
+                    dgInventoryList.Columns[7].Header = "Brand";
+                    dgInventoryList.Columns[8].Header = "Price";
+                    dgInventoryList.Columns[2].Width = 175;
+                    dgInventoryList.Columns[9].Width = 100;
                 }
             }
             catch (Exception ex)
@@ -72,5 +74,40 @@ namespace PresentationLayer
                 }
             }
         }
+
+        private void dgInventoryList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            pgInstrumentDetail details = new pgInstrumentDetail(getSelectedInstrument(), _instrumentManager);
+            this.NavigationService.Navigate(details);
+        }
+
+        private void refreshInstrumentList(bool active = true)
+        {
+            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument(active);
+            dgInventoryList.Columns.RemoveAt(9);
+            dgInventoryList.Columns.RemoveAt(1);
+            dgInventoryList.Columns[2].Width = 175;
+            dgInventoryList.Columns[9].Width = 100;
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (getSelectedInstrument() != null)
+            {
+                pgInstrumentDetail details = new pgInstrumentDetail(getSelectedInstrument(), _instrumentManager, editMode: true);
+                this.NavigationService.Navigate(details);
+            }
+            else
+            {
+                MessageBox.Show("Please select an Instrument to edit", "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            pgInstrumentDetail details = new pgInstrumentDetail(_instrumentManager, addMode: true);
+            this.NavigationService.Navigate(details);
+        }
+
     }
 }

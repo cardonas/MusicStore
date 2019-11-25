@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PresentationLayer"
       mc:Ignorable="d" 
-      d:DesignHeight="573" d:DesignWidth="850"
-      Title="pgUserProfile">
+      d:DesignHeight="576" d:DesignWidth="830"
+      Title="pgUserProfile" Loaded="Page_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -27,22 +27,54 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
+
         <Grid.Background>
             <ImageBrush ImageSource="images\SideBarBackground.jpg"/>
         </Grid.Background>
+
         <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblInstrument" Content="Instrument:"  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <Label x:Name="lblUserID" Content="InstrumentID" FontWeight="DemiBold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="130" Margin="0,39"/>
-        <TextBox x:Name="txtType" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2" Margin="0,45" IsEnabled="False"/>
-        <Label Content="Type" FontWeight="DemiBold" FontSize="16" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2 " VerticalAlignment="Top" Padding="0 0 0 0" Margin="0,25,0,16" Width="125" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txtBrand" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2" Margin="0,45" IsEnabled="False"/>
-        <Label Content="Brand" FontWeight="DemiBold" FontSize="16" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" Margin="0,25,0,16" Width="125"/>
-        <Label Content="Status:" FontWeight="DemiBold" FontSize="16" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0 0 0 0"  Width="125"/>
-        <Label Grid.Column="0" Grid.ColumnSpan="6" x:Name="lblPrice" Content="Price:"  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <Label x:Name="lblPriceAmount" Content="PriceAmount" FontWeight="DemiBold" Grid.Column="6" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="130" Margin="0,39"/>
-        <ComboBox x:Name="cmbType" Visibility="Visible" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Padding="0 0 0 0" Margin="0,45" IsEnabled="True"/>
-        <ComboBox x:Name="cmbBrand" Visibility="Visible" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" Padding="0 0 0 0" Margin="0,45" IsEnabled="True"/>
-        <Label x:Name="lblStatus" FontSize="16"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Right" Content="CurrentStatus"/>
-        <Image Grid.ColumnSpan="4" Grid.Column="5" HorizontalAlignment="Left" Height="345" Grid.Row="1" VerticalAlignment="Top" Width="340" Grid.RowSpan="3"/>
+        <Label x:Name="lblInstrumentID" Content="InstrumentID" FontWeight="DemiBold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="130"/>
+        <TextBox x:Name="txtInstrumentID" IsEnabled="false" Visibility="Hidden" Height="27" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
+
+
+        <Label Content="Type" FontWeight="DemiBold" FontSize="16" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2 " VerticalAlignment="Top" Padding="0 0 0 0" Margin="0,20,0,16" Width="125" HorizontalAlignment="Left"/>
+        <ComboBox x:Name="cmbType" FontSize="16"  Visibility="Visible" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="162.5" Padding="5,0,0,0" Margin="0,45" IsEnabled="False" SelectionChanged="cmbType_SelectionChanged"/>
+
+        <Label Content="Brand" FontWeight="DemiBold" FontSize="16" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" Margin="0,20,0,16" Width="125"/>
+        <ComboBox x:Name="cmbBrand" FontSize="16" Visibility="Visible" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="162.5" Padding="5,0,0,0" Margin="0,45" IsEnabled="False"/>
+
+        <Label Content="Status" FontWeight="DemiBold" FontSize="16" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="top" Margin="0,20,0,16" Padding="0 0 0 0"  Width="125"/>
+        <ComboBox x:Name="cmbStatus" FontSize="16" Visibility="Visible" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center" Width="162.5" Padding="5,0,0,0" Margin="0,45" IsEnabled="False"/>
+
+        <Label Grid.Column="6" x:Name="lblPrice" Content="Price:"  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Label x:Name="lblPriceAmount" Visibility="Visible"  Content="PriceAmount" FontWeight="DemiBold" Grid.Column="7" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="130"/>
+        <TextBox x:Name="txtPriceAmount" IsEnabled="false" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Hidden" Height="27" FontSize="16"  Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
+
+        <Label Content="Rental Term" FontWeight="DemiBold" FontSize="16" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="top" Margin="0,20,0,16" Padding="0 0 0 0"  Width="125"/>
+        <TextBox x:Name="txtRentalTerm" IsEnabled="False" Height="27" FontSize="16"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
+
+        <Label Content="Rental Fee" FontWeight="DemiBold" FontSize="16" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="top" Margin="0,20,0,16" Padding="0 0 0 0"  Width="125"/>
+        <TextBox x:Name="txtRentalFee" IsEnabled="False" Height="27" FontSize="16"  Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
+
+        <Label Content="Family" FontWeight="DemiBold" FontSize="16" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="top" Margin="0,20,0,16" Padding="0 0 0 0"  Width="125"/>
+        <TextBox x:Name="txtFamily" IsEnabled="False" Height="27" FontSize="16"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
+
+        <Image Grid.ColumnSpan="3" Grid.Column="6" HorizontalAlignment="Left" Height="327" Grid.Row="1" VerticalAlignment="Top" Width="249" Grid.RowSpan="3"/>
+
+        <StackPanel Grid.Row="5" Grid.ColumnSpan="10" Orientation="Horizontal">
+            <Grid Width="830" Background="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="90"></ColumnDefinition>
+                    <ColumnDefinition Width="90"></ColumnDefinition>
+                    <ColumnDefinition Width="540"></ColumnDefinition>
+                    <ColumnDefinition Width="90"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnBack" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnBack_Click">Back</Button>
+                <Button x:Name="btnEdit" Width="90" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click" >Edit</Button>
+                <Button x:Name="btnSave" HorizontalAlignment="Left" Height="30" Width="105" FontSize="15" Grid.Column="5" Padding="1,1,1,1" Content="Save" BorderThickness="0" Background="LightGray" Visibility="Hidden" Margin="1,0,-25,0" />
+            </Grid>
+        </StackPanel>
     </Grid>
 </Page>

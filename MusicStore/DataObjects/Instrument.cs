@@ -10,9 +10,8 @@ namespace DataObjects
     {
         public string InstrumentID { get; set; }
         public string InstrumentTypeID { get; set; }
-        public string InstrumentGroup { get; set; }
         public string InstrumentStatusID { get; set; }
-        public string Brand { get; set; }
+        public string InstrumentBrandID { get; set; }
         public decimal Price { get; set; }
         public string PriceString
         {

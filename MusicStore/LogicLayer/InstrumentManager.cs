@@ -21,7 +21,7 @@ namespace LogicLayer
             _instrumentAccessor = instrumentAccessor;
         }
 
-        public List<Instrument> GetAllInstrument(bool active = true)
+        public List<InstrumentVM> GetAllInstrument(bool active = true)
         {
             try
             {
@@ -30,6 +30,70 @@ namespace LogicLayer
             catch (Exception ex)
             {
                 throw new ApplicationException("Data not found", ex);
+            }
+        }
+
+        public List<string> GetAllInstrumentBrands()
+        {
+            try
+            {
+                return _instrumentAccessor.SelectAllInstrumentBrands();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("No Instrument Brands Found", ex);
+            }
+        }
+
+        public List<string> GetAllInstrumentFamilies()
+        {
+            try
+            {
+                return _instrumentAccessor.SelectAllInstrumentFamily();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("No Instrument Families Found", ex);
+            }
+        }
+
+        public List<string> GetAllInstrumentStatusIDs()
+        {
+            try
+            {
+                return _instrumentAccessor.SelectAllInstrumentStatusIDs();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("No Instrument Statuses Found", ex);
+            }
+        }
+
+        public List<string> GetAllInstrumentTypes()
+        {
+            try
+            {
+                return _instrumentAccessor.SelectAllInstrumentType();
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("No Instrument Types Found", ex);
+            }
+        }
+
+        public InstrumentTypeVM GetInstrumentTypeByInstrumentTypeID(string instrumentTypeID)
+        {
+            try
+            {
+                return _instrumentAccessor.SelectInstrumentTypeByInstrumentTypeID(instrumentTypeID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("No Instrument types with " + instrumentTypeID, ex);
             }
         }
     }

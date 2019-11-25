@@ -13,7 +13,7 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid x:Name="dgInventoryList" Grid.Row="0"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgInventoryList_Loaded"/>
+        <DataGrid x:Name="dgInventoryList" Grid.Row="0"  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True" Loaded="dgInventoryList_Loaded" MouseDoubleClick="dgInventoryList_MouseDoubleClick"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Grid Width="830" Background="LightGray">
                 <Grid.ColumnDefinitions>
@@ -25,8 +25,8 @@
                     <ColumnDefinition Width="90"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="btnBack" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Visibility="Hidden" >Back</Button>
-                <Button x:Name="btnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray">Add</Button>
-                <Button x:Name="btnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray">Edit</Button>
+                <Button x:Name="btnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnAdd_Click">Add</Button>
+                <Button x:Name="btnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click">Edit</Button>
                 <Button x:Name="btnDelete" Height="30" Width="90" FontSize="15" Grid.Column="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left">De-Activate</Button>
                 <Button x:Name="btnReActivate" Height="30" Width="90" FontSize="15" Grid.Column="3" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left" Visibility="Hidden">Re-Activate</Button>
                 <CheckBox x:Name="chkInActive" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,-5,8" Content="Show Inactive" Width="95"/>
