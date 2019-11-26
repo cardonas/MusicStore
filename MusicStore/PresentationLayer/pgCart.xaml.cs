@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,14 @@ namespace PresentationLayer
         public pgCart()
         {
             InitializeComponent();
+        }
+
+        private void dgCart_Loaded(object sender, RoutedEventArgs e)
+        {
+            Invoice cart = new Invoice();
+            pgInventory inventory = new pgInventory();
+            cart = inventory.GetInvoice();
+            dgCart.ItemsSource = cart.Instruments;
         }
     }
 }

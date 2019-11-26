@@ -26,7 +26,7 @@
                 </Grid.ColumnDefinitions>
                 <Button x:Name="btnBack" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Visibility="Hidden" >Back</Button>
                 <Button x:Name="btnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnAdd_Click">Add</Button>
-                <Button x:Name="btnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click">Edit</Button>
+                <Button x:Name="btnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click" Height="30" VerticalAlignment="Top">Edit</Button>
                 <Button x:Name="btnAddToCart" Height="30" Width="90" FontSize="15" Grid.Column="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left" Click="btnAddToCart_Click">Add To Cart</Button>
                 <Label Content="Filter by Status: " Grid.Column="4" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                 <ComboBox x:Name="cmbStatus" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="121" SelectionChanged="cmbStatus_SelectionChanged" Margin="0,4"/>

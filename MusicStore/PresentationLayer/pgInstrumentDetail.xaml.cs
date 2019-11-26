@@ -62,23 +62,12 @@ namespace PresentationLayer
             {
                 cmbType.ItemsSource = _instrumentManager.GetAllInstrumentTypes();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        //private void getAllInstrumentFamilies()
-        //{
-        //    try
-        //    {
-        //        cmbBrand.ItemsSource = _instrumentManager.GetAllInstrumentFamilies();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
 
         private void getAllInstrumentBrands()
         {
@@ -88,7 +77,7 @@ namespace PresentationLayer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n"  + ex.InnerException.Message);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
         }
 
@@ -110,12 +99,13 @@ namespace PresentationLayer
         {
             try
             {
-                Instrument instrument = new Instrument();
-
-                instrument.InstrumentID = txtInstrumentID.Text;
-                instrument.InstrumentTypeID = cmbType.SelectedItem.ToString();
-                instrument.InstrumentBrandID = cmbBrand.SelectedItem.ToString();
-                instrument.Price = decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency);
+                Instrument instrument = new Instrument
+                {
+                    InstrumentID = txtInstrumentID.Text,
+                    InstrumentTypeID = cmbType.SelectedItem.ToString(),
+                    InstrumentBrandID = cmbBrand.SelectedItem.ToString(),
+                    Price = decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency)
+                };
 
                 if (_instrumentManager.AddInstrument(instrument))
                 {
@@ -153,12 +143,14 @@ namespace PresentationLayer
         {
             Instrument oldinstrument = _instrument;
 
-            Instrument updatedInstrument = new Instrument();
-            updatedInstrument.InstrumentID = lblInstrumentID.Content.ToString();
-            updatedInstrument.InstrumentBrandID = cmbBrand.SelectedItem.ToString();
-            updatedInstrument.InstrumentStatusID = cmbStatus.SelectedItem.ToString();
-            updatedInstrument.InstrumentTypeID = cmbType.SelectedItem.ToString();
-            updatedInstrument.Price = Decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency);
+            Instrument updatedInstrument = new Instrument
+            {
+                InstrumentID = lblInstrumentID.Content.ToString(),
+                InstrumentBrandID = cmbBrand.SelectedItem.ToString(),
+                InstrumentStatusID = cmbStatus.SelectedItem.ToString(),
+                InstrumentTypeID = cmbType.SelectedItem.ToString(),
+                Price = Decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency)
+            };
 
 
             try
@@ -201,7 +193,7 @@ namespace PresentationLayer
             }
             if (_instrument != null)
             {
-                loadInstrument(); 
+                loadInstrument();
             }
             if (_addMode)
             {
@@ -220,7 +212,7 @@ namespace PresentationLayer
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
-        {           
+        {
             _editMode = true;
             setEditMode();
             if (_instrument != null)
@@ -250,7 +242,7 @@ namespace PresentationLayer
             {
                 instrumentTypeVM = _instrumentManager.GetInstrumentTypeByInstrumentTypeID(instrumentType);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
