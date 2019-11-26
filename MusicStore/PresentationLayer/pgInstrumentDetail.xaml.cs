@@ -2,6 +2,7 @@
 using LogicLayer;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,85 +104,82 @@ namespace PresentationLayer
             }
         }
 
-        //public void SaveNewEmployee()
-        //{
-        //    try
-        //    {
-        //        Employee employee = new Employee();
+        public void SaveNewInstrument()
+        {
+            try
+            {
+                Instrument instrument = new Instrument();
 
-        //        employee.FirstName = txtFirstName.Text;
-        //        employee.LastName = txtLastName.Text;
-        //        employee.PhoneNumber = txtPhoneNumber.Text;
+                instrument.InstrumentID = txtInstrumentID.Text;
+                instrument.InstrumentTypeID = cmbType.SelectedItem.ToString();
+                instrument.InstrumentBrandID = cmbBrand.SelectedItem.ToString();
+                instrument.Price = decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency);
 
-        //        if (_userManager.AddNewEmployee(employee))
-        //        {
-        //            MessageBox.Show("Employee Added", "Success", MessageBoxButton.OK);
-        //        }
+                if (_instrumentManager.AddInstrument(instrument))
+                {
+                    MessageBox.Show("Employee Added", "Success", MessageBoxButton.OK);
+                }
 
-        //        if (MessageBox.Show("Would you like add another employee?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-        //        {
-        //            txtFirstName.Text = "";
-        //            txtLastName.Text = "";
-        //            txtAddress.Text = "";
-        //            txtState.Text = "";
-        //            txtZipcode.Text = "";
-        //            txtPhoneNumber.Text = "";
-        //            txtFirstName.Focus();
-        //        }
-        //        else
-        //        {
-        //            this.NavigationService.Navigate(new EmployeeList());
-        //        }
+                if (MessageBox.Show("Would you like add another instrument?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    instrument = new Instrument();
+                    txtFamily.Text = "";
+                    txtRentalTerm.Text = "";
+                    txtRentalFee.Text = "";
+                    txtPriceAmount.Text = "";
+                    txtInstrumentID.Text = "";
+                    cmbType.SelectedItem = "";
+                    cmbBrand.Text = "";
+                    cmbStatus.Text = "Available";
+                    txtInstrumentID.Focus();
+                }
+                else
+                {
+                    this.NavigationService.Navigate(new pgInventory());
+                }
 
-        //    }
+            }
 
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-        //    }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
 
-        //}
+        }
 
-        //public void SaveUpdatedEmployee()
-        //{
-        //    Employee oldEmployee = _employee;
-        //    //txtFirstName.Text = _employee.FirstName;
-        //    //txtLastName.Text = _employee.LastName;
-        //    //txtAddress.Text = "";
-        //    //txtState.Text = "";
-        //    //txtZipcode.Text = "";
-        //    //txtPhoneNumber.Text = _employee.PhoneNumber;
+        public void SaveUpdatedInstrument()
+        {
+            Instrument oldinstrument = _instrument;
 
-
-        //    Employee updatedEmployee = new Employee();
-        //    updatedEmployee.FirstName = txtFirstName.Text;
-        //    updatedEmployee.LastName = txtLastName.Text;
-        //    updatedEmployee.PhoneNumber = txtPhoneNumber.Text;
-        //    updatedEmployee.Email = oldEmployee.Email;
+            Instrument updatedInstrument = new Instrument();
+            updatedInstrument.InstrumentID = lblInstrumentID.Content.ToString();
+            updatedInstrument.InstrumentBrandID = cmbBrand.SelectedItem.ToString();
+            updatedInstrument.InstrumentStatusID = cmbStatus.SelectedItem.ToString();
+            updatedInstrument.InstrumentTypeID = cmbType.SelectedItem.ToString();
+            updatedInstrument.Price = Decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency);
 
 
-        //    try
-        //    {
-        //        if (_userManager.UpdateEmployeeInfo(oldEmployee, updatedEmployee))
-        //        {
-        //            MessageBox.Show("Employee Profile Updated", "Success", MessageBoxButton.OK);
-        //            if ((int)MessageBoxResult.OK == 1)
-        //            {
-        //                this.NavigationService.Navigate(new EmployeeList());
+            try
+            {
+                if (_instrumentManager.UpdateInstrumentStatus(oldinstrument, updatedInstrument))
+                {
+                    MessageBox.Show("Instrument Status Updated", "Success", MessageBoxButton.OK);
+                    if ((int)MessageBoxResult.OK == 1)
+                    {
+                        this.NavigationService.Navigate(new pgInventory());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
 
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                this.NavigationService.Navigate(new pgInventory());
 
-        //            MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-        //            this.NavigationService.Navigate(new EmployeeList());
-
-        //    }
+            }
 
 
-        //}
+        }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
@@ -211,8 +209,6 @@ namespace PresentationLayer
 
         private void setEditMode()
         {
-            cmbType.IsEnabled = true;
-            cmbBrand.IsEnabled = true;
             cmbStatus.IsEnabled = true;
             lblPriceAmount.Visibility = Visibility.Hidden;
             txtPriceAmount.Visibility = Visibility.Visible;
@@ -233,16 +229,15 @@ namespace PresentationLayer
 
         private void addMode()
         {
-            lblInstrument.Content = "Add New Employee";
-            lblInstrument.HorizontalAlignment = HorizontalAlignment.Center;
-            lblInstrument.SetValue(Grid.ColumnSpanProperty, 3);
-            lblInstrumentID.Visibility = Visibility.Hidden;
             cmbStatus.Text = "Available";
             lblInstrumentID.Visibility = Visibility.Hidden;
             txtInstrumentID.Visibility = Visibility.Visible;
             txtInstrumentID.IsEnabled = true;
+            cmbType.IsEnabled = true;
+            cmbBrand.IsEnabled = true;
             btnSave.Visibility = Visibility.Visible;
             setEditMode();
+            cmbStatus.IsEnabled = false;
         }
 
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -260,6 +255,18 @@ namespace PresentationLayer
             txtFamily.Text = instrumentTypeVM.InstrumentFamilyID;
             txtRentalTerm.Text = instrumentTypeVM.RentalTermID;
             txtRentalFee.Text = instrumentTypeVM.RentalFee.ToString("c");
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (_editMode)
+            {
+                SaveUpdatedInstrument();
+            }
+            if (_addMode)
+            {
+                SaveNewInstrument();
+            }
         }
     }
 }

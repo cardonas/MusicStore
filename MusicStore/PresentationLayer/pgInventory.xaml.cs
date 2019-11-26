@@ -25,7 +25,7 @@ namespace PresentationLayer
         //private bool _addMode = false;
         //private bool _updateMode = false;
         private IInstrumentManager _instrumentManager;
-        private bool _inactiveInstrument = false;
+        private List<Instrument> _cart = new List<Instrument>();
 
         public pgInventory()
         {
@@ -81,9 +81,9 @@ namespace PresentationLayer
             this.NavigationService.Navigate(details);
         }
 
-        private void refreshInstrumentList(bool active = true)
+        private void refreshInstrumentList()
         {
-            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument(active);
+            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
             dgInventoryList.Columns.RemoveAt(9);
             dgInventoryList.Columns.RemoveAt(1);
             dgInventoryList.Columns[2].Width = 175;
@@ -109,5 +109,39 @@ namespace PresentationLayer
             this.NavigationService.Navigate(details);
         }
 
+        private void btnAddToCart_Click(object sender, RoutedEventArgs e)
+        {
+            Instrument instrument = (Instrument)dgInventoryList.SelectedItem;
+
+            //switch (instrument.InstrumentStatusID)
+            //{
+            //    case "For Sale":
+            //        instrument.InstrumentStatusID = "Sold";
+            //        break;
+            //    case "For Rent":
+            //        instrument.InstrumentStatusID = "Rented";
+            //        break;
+            //    case "For Rent to Own":
+            //        instrument.InstrumentStatusID = "RentToOwn";
+            //        break;
+            //    case "Available":
+            //        instrument.InstrumentStatusID = "Sold";
+            //        break;
+            //}
+
+            _cart.Add(instrument);
+
+            //try
+            //{
+            //    _instrumentManager.AddInstrumentToCart(instrument);
+            //    refreshInstrumentList();
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            //}
+
+
+        }
     }
 }

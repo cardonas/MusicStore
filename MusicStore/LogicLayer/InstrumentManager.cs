@@ -21,11 +21,26 @@ namespace LogicLayer
             _instrumentAccessor = instrumentAccessor;
         }
 
-        public List<InstrumentVM> GetAllInstrument(bool active = true)
+        public bool AddInstrument(Instrument instrument)
+        {
+            bool isAdded;
+            try
+            {
+                isAdded = _instrumentAccessor.InsertInstrumnet(instrument);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Instrument Not Added");
+            }
+            return isAdded;
+        }
+
+
+        public List<InstrumentVM> GetAllInstrument()
         {
             try
             {
-                return _instrumentAccessor.GetAllInstruments(active);
+                return _instrumentAccessor.GetAllInstruments();
             }
             catch (Exception ex)
             {
@@ -95,6 +110,22 @@ namespace LogicLayer
             {
                 throw new ApplicationException("No Instrument types with " + instrumentTypeID, ex);
             }
+        }
+
+        public bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument)
+        {
+            bool isUpdated;
+            try
+            {
+                isUpdated = _instrumentAccessor.UpdateInstrumentStatus(oldInstrument, newInstrument);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to update Instrument Status" , ex);
+            }
+
+            return isUpdated;
+
         }
     }
 }

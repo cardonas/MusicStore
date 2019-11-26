@@ -40,6 +40,11 @@ namespace PresentationLayer
         {
             tabFrame.Content = new pgInventory();
         }
+
+        private void Cart_Click(object sender, RoutedEventArgs e)
+        {
+            tabFrame.Content = new pgCart();
+        }
     }
 }
 

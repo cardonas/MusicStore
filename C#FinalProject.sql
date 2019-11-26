@@ -840,10 +840,8 @@ go
 
 create table dbo.InstrumentStatus
 (
-	InstrumentStatusID nvarchar(50) not null,
-	Description nvarchar(250) null,
-	constraint pk_InstrumentStatusID
-		primary key (InstrumentStatusID asc)
+	InstrumentStatusID nvarchar(50) not null, Description nvarchar(250) null, constraint pk_InstrumentStatusID
+	primary key (InstrumentStatusID asc)
 )
 go
 
@@ -860,6 +858,7 @@ values
 	( 'For Rent', 'For Rent ONLY' ),
 	( 'For Rent to Own', 'For Rent to Own ONLY' ),
 	( 'Rented', 'Is currently rented' ),
+	( 'RentToOwn', 'Has been purchased via rent to own' ),
 	( 'Sold', 'Instrument has been sold' )
 go
 
@@ -891,14 +890,12 @@ create procedure sp_select_all_instrument_Status_IDs
 as
 begin
 	select
-        InstrumentStatusID
-    from
-        InstrumentStatus
+		InstrumentStatusID
+	from
+		InstrumentStatus
 end
-
-
-print ''
-print '*** Creating sp_delete_InstrumentStatusID'
+	print ''
+	print '*** Creating sp_delete_InstrumentStatusID'
 go
 
 create procedure sp_delete_InstrumentStatusID
@@ -1017,7 +1014,9 @@ values
 	( 'Check Tuning' ),
 	( 'Check for dents' ),
 	( 'Check slides' ),
-	( 'Check corks, springs, and pads' )
+	( 'Check corks, springs, and pads' ),
+	( 'check, string, tuning pegs, bridge, and neck' ),
+	( 'Check head tightness, tuning, overall condition' )
 go
 
 print ''
@@ -1172,7 +1171,20 @@ values
 	( 'Tenor Saxophone', '12 Months', 100003, 'Woodwind' ),
 	( 'Alto Saxophone', '12 Months', 100003, 'Woodwind' ),
 	( 'Clarinet', '90 Day', 100003, 'Woodwind' ),
-	( 'Trumpet', '24 Months', 100002, 'Brass' )
+	( 'Cello', '24 Months', 100004, 'String' ),
+	( 'Bongo', '12 Months', 100005, 'Percussion' ),
+	( 'Cornet', '24 Months', 100002, 'Brass' ),
+	( 'Trumpet', '24 Months', 100002, 'Brass' ),
+	( 'Cymbal', '90 Day', 100005, 'Percussion' ),
+	( 'Double Bass', '24 Months', 100004, 'String' ),
+	( 'Flute', '24 Months', 100003, 'Woodwind' ),
+	( 'French Horn', '24 Months', 100002, 'Brass' ),
+	( 'Oboe', '24 Months', 100003, 'Woodwind' ),
+	( 'Tuba', '24 Months', 100002, 'Brass' ),
+	( 'Violin', '12 Months', 100004, 'String' ),
+	( 'Piano', '24 Months', 100004, 'String' ),
+	( 'Marimba', '12 Months', 100005, 'Percussion' ),
+	( 'Bassoon', '12 Months', 100003, 'Woodwind' )
 go
 
 print ''
@@ -1195,17 +1207,18 @@ go
 
 create procedure sp_select_instrument_type_by_InstrumentTypeID
 (
-    @InstrumentTypeID nvarchar(50)
+	@InstrumentTypeID nvarchar(50)
 )
 as
 begin
 	select
-        InstrumentType.RentalTermID,
-	    RentalTerm.RentalCost,
-	    InstrumentFamilyID
-    from InstrumentType
-    join RentalTerm on InstrumentType.RentalTermID = RentalTerm.RentalTermID
-    where InstrumentTypeID = @InstrumentTypeID
+		InstrumentType.RentalTermID,
+		RentalTerm.RentalCost,
+		InstrumentFamilyID
+	from
+		InstrumentType
+			join RentalTerm on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+	where InstrumentTypeID = @InstrumentTypeID
 end
 go
 
@@ -1269,7 +1282,6 @@ create table Instrument
 	InstrumentStatusID nvarchar(50) not null default 'Available',
 	InstrumentBrandID  nvarchar(50) not null,
 	Price              money        not null,
-	Active             bit          not null default 1,
 	constraint pk_InstrumentID
 		primary key (InstrumentID asc),
 	constraint fk_Instrument_InstrumentTypeID
@@ -1303,9 +1315,6 @@ print '*** Creating sp_get_all_Instruments'
 go
 
 create procedure sp_get_all_Instruments
-(
-	@Active bit
-)
 as
 begin
 	select
@@ -1328,6 +1337,56 @@ begin
 			     on InstrumentType.PrepListID = PrepList.PrepListID
 			join InstrumentFamily
 			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
-	where Active = @Active
+	where
+		 InstrumentStatusID != 'Sold'
+	  or InstrumentStatusID != 'Sold'
+	  or InstrumentStatusID != 'Sold'
+end
+go
+
+print ''
+print '*** Creating sp_update_instrument_status'
+go
+
+create procedure sp_update_instrumentStatus
+(
+	@InstrumentID nvarchar(50),
+	@OldStatus    nvarchar(50),
+	@OldPrice     money,
+	@NewStatus    nvarchar(50),
+	@NewPrice     money
+)
+as
+begin
+	update dbo.Instrument
+	set
+		InstrumentStatusID = @NewStatus,
+		Price              = @NewPrice
+	where
+		  InstrumentID = @InstrumentID
+	  and InstrumentStatusID = @OldStatus
+	  and Price = @OldPrice
+end
+go
+
+print ''
+print '*** Creating sp_insert_instrument'
+go
+
+create procedure sp_insert_instrument
+(
+	@InstrumentID      nvarchar(50),
+	@InstrumentTypeID  nvarchar(50),
+	@InstrumentBrandID nvarchar(50),
+	@Price             money
+)
+as
+begin
+	insert
+	into
+		dbo.Instrument
+		( InstrumentID, InstrumentTypeID, InstrumentBrandID, Price )
+	values
+		( @InstrumentID, @InstrumentTypeID, @InstrumentBrandID, @Price )
 end
 go

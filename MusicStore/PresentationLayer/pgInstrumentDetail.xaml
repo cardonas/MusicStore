@@ -34,7 +34,7 @@
             <ImageBrush ImageSource="images\SideBarBackground.jpg"/>
         </Grid.Background>
 
-        <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblInstrument" Content="Instrument:"  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblInstrument" Content="InstrumentID:"  FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         <Label x:Name="lblInstrumentID" Content="InstrumentID" FontWeight="DemiBold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Width="130"/>
         <TextBox x:Name="txtInstrumentID" IsEnabled="false" Visibility="Hidden" Height="27" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="left" Width="162.5"/>
 
@@ -73,7 +73,7 @@
                 </Grid.ColumnDefinitions>
                 <Button x:Name="btnBack" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnBack_Click">Back</Button>
                 <Button x:Name="btnEdit" Width="90" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click" >Edit</Button>
-                <Button x:Name="btnSave" HorizontalAlignment="Left" Height="30" Width="105" FontSize="15" Grid.Column="5" Padding="1,1,1,1" Content="Save" BorderThickness="0" Background="LightGray" Visibility="Hidden" Margin="1,0,-25,0" />
+                <Button x:Name="btnSave" HorizontalAlignment="Left" Height="30" Width="105" FontSize="15" Grid.Column="5" Padding="1,1,1,1" Content="Save" BorderThickness="0" Background="LightGray" Visibility="Hidden" Margin="1,0,-25,0" Click="btnSave_Click" />
             </Grid>
         </StackPanel>
     </Grid>

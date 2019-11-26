@@ -9,7 +9,7 @@ namespace LogicLayer
 {
     public interface IInstrumentManager
     {
-        List<InstrumentVM> GetAllInstrument(bool active = true);
+        List<InstrumentVM> GetAllInstrument();
 
         List<string> GetAllInstrumentTypes();
 
@@ -20,5 +20,9 @@ namespace LogicLayer
         List<string> GetAllInstrumentStatusIDs();
 
         InstrumentTypeVM GetInstrumentTypeByInstrumentTypeID(string instrumentTypeID);
+
+        bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument);
+
+        bool AddInstrument(Instrument instrument);
     }
 }

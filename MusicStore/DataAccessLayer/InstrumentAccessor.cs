@@ -11,7 +11,7 @@ namespace DataAccessLayer
 {
     public class InstrumentAccessor : IInstrumentAccessor
     {
-        public List<InstrumentVM> GetAllInstruments(bool active = true)
+        public List<InstrumentVM> GetAllInstruments()
         {
             List<InstrumentVM> instruments = new List<InstrumentVM>();
             var conn = DBConnection.GetConnection();
@@ -19,7 +19,6 @@ namespace DataAccessLayer
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@Active", active);
 
             try
             {
@@ -52,6 +51,36 @@ namespace DataAccessLayer
 
             return instruments;
         }
+
+        public bool InsertInstrumnet(Instrument instrument)
+        {
+            bool isAdded;
+
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand("sp_insert_instrument", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@InstrumentID", instrument.InstrumentID);
+            cmd.Parameters.AddWithValue("@InstrumentTypeID", instrument.InstrumentTypeID);
+            cmd.Parameters.AddWithValue("@instrumentBrandID", instrument.InstrumentBrandID);
+            cmd.Parameters.AddWithValue("@Price", instrument.Price);
+
+            try
+            {
+                conn.Open();
+
+                isAdded = 1 == cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isAdded;
+        }
+
 
         public List<string> SelectAllInstrumentBrands()
         {
@@ -196,6 +225,36 @@ namespace DataAccessLayer
                 throw ex;
             }
             return instrumentType;
+        }
+
+        public bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument)
+        {
+            bool isUpdate;
+
+            var conn = DBConnection.GetConnection();
+            SqlCommand cmd = new SqlCommand("sp_update_instrumentStatus", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@InstrumentID", oldInstrument.InstrumentID);
+            cmd.Parameters.AddWithValue("@OldStatus", oldInstrument.InstrumentStatusID);
+            cmd.Parameters.AddWithValue("@OldPrice", oldInstrument.Price);
+            cmd.Parameters.AddWithValue("@NewStatus", newInstrument.InstrumentStatusID);
+            cmd.Parameters.AddWithValue("@NewPrice", newInstrument.Price);
+
+            
+            try
+            {
+                conn.Open();
+                isUpdate = 1 == cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isUpdate;
         }
     }
 }

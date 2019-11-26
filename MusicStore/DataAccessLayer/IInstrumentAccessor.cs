@@ -9,7 +9,7 @@ namespace DataAccessLayer
 {
     public interface IInstrumentAccessor
     {
-        List<InstrumentVM> GetAllInstruments(bool active = true);
+        List<InstrumentVM> GetAllInstruments();
 
         List<string> SelectAllInstrumentType();
 
@@ -20,5 +20,11 @@ namespace DataAccessLayer
         List<string> SelectAllInstrumentStatusIDs();
 
         InstrumentTypeVM SelectInstrumentTypeByInstrumentTypeID(string instrumentTypeID);
+
+        bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument);
+
+        bool InsertInstrumnet(Instrument instrument);
+
+
     }
 }
