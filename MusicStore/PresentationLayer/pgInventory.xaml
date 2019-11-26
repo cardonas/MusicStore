@@ -21,15 +21,15 @@
                     <ColumnDefinition Width="60"></ColumnDefinition>
                     <ColumnDefinition Width="90"></ColumnDefinition>
                     <ColumnDefinition Width="90"></ColumnDefinition>
-                    <ColumnDefinition Width="390"></ColumnDefinition>
-                    <ColumnDefinition Width="90"></ColumnDefinition>
+                    <ColumnDefinition Width="360"></ColumnDefinition>
+                    <ColumnDefinition Width="120"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button x:Name="btnBack" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Visibility="Hidden" >Back</Button>
                 <Button x:Name="btnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnAdd_Click">Add</Button>
                 <Button x:Name="btnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="btnEdit_Click">Edit</Button>
                 <Button x:Name="btnAddToCart" Height="30" Width="90" FontSize="15" Grid.Column="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left" Click="btnAddToCart_Click">Add To Cart</Button>
-                <CheckBox x:Name="chkInActive" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,8,-5,8" Content="Show Inactive" Width="95"/>
-                <Button x:Name="btnSave" HorizontalAlignment="Left" Height="30" Width="105" FontSize="15" Grid.Column="5" Padding="1,1,1,1" Content="Save" BorderThickness="0" Background="LightGray" Visibility="Visible" Margin="1,0,-25,0" />
+                <Label Content="Filter by Status: " Grid.Column="4" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                <ComboBox x:Name="cmbStatus" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="121" SelectionChanged="cmbStatus_SelectionChanged" Margin="0,4"/>
             </Grid>
         </StackPanel>
     </Grid>

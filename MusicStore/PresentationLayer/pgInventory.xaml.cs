@@ -35,7 +35,7 @@ namespace PresentationLayer
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            btnSave.Visibility = Visibility.Hidden;
+           cmbStatus.ItemsSource = getGetAllInsrumentStatuses();
         }
 
         private InstrumentVM getSelectedInstrument()
@@ -81,13 +81,22 @@ namespace PresentationLayer
             this.NavigationService.Navigate(details);
         }
 
-        private void refreshInstrumentList()
+        private void refreshListByStatus(string status)
         {
-            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
+            dgInventoryList.ItemsSource = _instrumentManager.GetInstrumentsByStatus(status);
             dgInventoryList.Columns.RemoveAt(9);
             dgInventoryList.Columns.RemoveAt(1);
-            dgInventoryList.Columns[2].Width = 175;
-            dgInventoryList.Columns[9].Width = 100;
+            dgInventoryList.Columns[0].Header = "Rental Term";
+            dgInventoryList.Columns[1].Header = "Rental Fee";
+            dgInventoryList.Columns[2].Header = "Prep LIst";
+            dgInventoryList.Columns[3].Header = "InstrumentID";
+            dgInventoryList.Columns[4].Header = "Type";
+            dgInventoryList.Columns[5].Header = "Section";
+            dgInventoryList.Columns[6].Header = "Status";
+            dgInventoryList.Columns[7].Header = "Brand";
+            dgInventoryList.Columns[8].Header = "Price";
+            dgInventoryList.Columns[1].Width = 100;
+            dgInventoryList.Columns[8].Width = 100;
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -141,7 +150,50 @@ namespace PresentationLayer
             //    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             //}
 
+        }
 
+        private List<string> getGetAllInsrumentStatuses()
+        {
+            List<string> statuses = new List<string>();
+            try
+            {
+                statuses = _instrumentManager.GetAllInstrumentStatusIDs();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+            }
+            return statuses;
+        }
+
+        private void refreshList()
+        {
+            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
+            dgInventoryList.Columns.RemoveAt(9);
+            dgInventoryList.Columns.RemoveAt(1);
+            dgInventoryList.Columns[0].Header = "Rental Term";
+            dgInventoryList.Columns[1].Header = "Rental Fee";
+            dgInventoryList.Columns[2].Header = "Prep LIst";
+            dgInventoryList.Columns[3].Header = "InstrumentID";
+            dgInventoryList.Columns[4].Header = "Type";
+            dgInventoryList.Columns[5].Header = "Section";
+            dgInventoryList.Columns[6].Header = "Status";
+            dgInventoryList.Columns[7].Header = "Brand";
+            dgInventoryList.Columns[8].Header = "Price";
+            dgInventoryList.Columns[1].Width = 100;
+            dgInventoryList.Columns[8].Width = 100;
+        }
+
+        private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbStatus.SelectedItem.ToString() != "All") {
+                refreshListByStatus(cmbStatus.SelectedItem.ToString());
+            }
+            if(cmbStatus.SelectedItem.ToString() == "All")
+            {
+                refreshList();
+            }
         }
     }
 }

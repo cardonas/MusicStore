@@ -140,6 +140,7 @@ namespace DataAccessLayer
             return InstrumentFamilies;
         }
 
+
         public List<string> SelectAllInstrumentStatusIDs()
         {
             List<string> InstrumentStatuses = new List<string>();
@@ -172,7 +173,7 @@ namespace DataAccessLayer
         public List<string> SelectAllInstrumentType()
         {
             List<string> instrumentTypes = new List<string>();
-            
+
             var conn = DBConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_InstrumentType", conn)
             {
@@ -197,6 +198,50 @@ namespace DataAccessLayer
 
             return instrumentTypes;
         }
+
+        public List<InstrumentVM> SelectInstrumentsByStatus(string status)
+        {
+            List<InstrumentVM> instruments = new List<InstrumentVM>();
+            var conn = DBConnection.GetConnection();
+            var cmd = new SqlCommand("sp_get_instruments_by_status", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Status", status);
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        InstrumentVM newInstrument = new InstrumentVM
+                        {
+                            InstrumentID = reader.GetString(0),
+                            InstrumentTypeID = reader.GetString(1),
+                            InstrumentFamily = reader.GetString(2),
+                            InstrumentStatusID = reader.GetString(3),
+                            InstrumentBrandID = reader.GetString(4),
+                            Price = reader.GetDecimal(5),
+                            RentalTermID = reader.GetString(6),
+                            RentalFee = reader.GetDecimal(7),
+                            PrepListDescription = reader.GetString(8)
+                        };
+                        instruments.Add(newInstrument);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return instruments;
+        }
+
 
         public InstrumentTypeVM SelectInstrumentTypeByInstrumentTypeID(string instrumentTypeID)
         {
@@ -243,7 +288,7 @@ namespace DataAccessLayer
             cmd.Parameters.AddWithValue("@NewStatus", newInstrument.InstrumentStatusID);
             cmd.Parameters.AddWithValue("@NewPrice", newInstrument.Price);
 
-            
+
             try
             {
                 conn.Open();

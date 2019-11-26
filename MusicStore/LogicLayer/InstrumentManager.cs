@@ -74,6 +74,7 @@ namespace LogicLayer
             }
         }
 
+
         public List<string> GetAllInstrumentStatusIDs()
         {
             try
@@ -97,6 +98,18 @@ namespace LogicLayer
             {
 
                 throw new ApplicationException("No Instrument Types Found", ex);
+            }
+        }
+
+        public List<InstrumentVM> GetInstrumentsByStatus(string status)
+        {
+            try
+            {
+                return _instrumentAccessor.SelectInstrumentsByStatus(status);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Data not found", ex);
             }
         }
 

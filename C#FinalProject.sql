@@ -853,14 +853,29 @@ into
 	dbo.InstrumentStatus
 	( InstrumentStatusID, Description )
 values
+	('All', 'Used for only viewing all Instruments'),
 	( 'Available', 'Available for any time of transaction' ),
 	( 'For Sale', 'For Sale ONLY' ),
 	( 'For Rent', 'For Rent ONLY' ),
 	( 'For Rent to Own', 'For Rent to Own ONLY' ),
 	( 'Rented', 'Is currently rented' ),
-	( 'RentToOwn', 'Has been purchased via rent to own' ),
 	( 'Sold', 'Instrument has been sold' )
 go
+
+print ''
+print '*** Creating sp_select_all_statuses'
+go
+
+create procedure sp_select_all_statuses
+as
+begin
+	select
+		InstrumentStatusID
+	from
+		InstrumentStatus
+end
+go
+
 
 print ''
 print '*** Creating sp_create_InstrumentStatusID'
@@ -1338,9 +1353,10 @@ begin
 			join InstrumentFamily
 			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
 	where
-		 InstrumentStatusID != 'Sold'
-	  or InstrumentStatusID != 'Sold'
-	  or InstrumentStatusID != 'Sold'
+		 InstrumentStatusID = 'Available'
+	  or InstrumentStatusID = 'For Sale'
+	  or InstrumentStatusID = 'For Rent'
+	  or InstrumentStatusID = 'For Rent to Own'
 end
 go
 
@@ -1388,5 +1404,39 @@ begin
 		( InstrumentID, InstrumentTypeID, InstrumentBrandID, Price )
 	values
 		( @InstrumentID, @InstrumentTypeID, @InstrumentBrandID, @Price )
+end
+go
+
+print ''
+print '*** Creating sp_get_instruments_by_status'
+go
+
+create procedure sp_get_instruments_by_status
+(
+	@Status nvarchar(50)
+)
+as
+begin
+	Select
+		InstrumentID,
+		instrument.InstrumentTypeID,
+		InstrumentFamily.InstrumentFamilyID,
+		InstrumentStatusID,
+		InstrumentBrandID,
+		Price,
+		RentalTerm.RentalTermID,
+		RentalTerm.RentalCost,
+		PrepList.Description
+	from
+		dbo.Instrument
+			join InstrumentType
+			     on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
+			join RentalTerm
+			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+			join PrepList
+			     on InstrumentType.PrepListID = PrepList.PrepListID
+			join InstrumentFamily
+			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
+	where InstrumentStatusID = @Status
 end
 go

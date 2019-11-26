@@ -96,7 +96,9 @@ namespace PresentationLayer
         {
             try
             {
-                cmbStatus.ItemsSource = _instrumentManager.GetAllInstrumentStatusIDs();
+                List<string> status = _instrumentManager.GetAllInstrumentStatusIDs();
+                status.RemoveAt(0);
+                cmbStatus.ItemsSource = status;
             }
             catch (Exception ex)
             {

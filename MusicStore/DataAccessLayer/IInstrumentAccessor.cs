@@ -25,6 +25,7 @@ namespace DataAccessLayer
 
         bool InsertInstrumnet(Instrument instrument);
 
+        List<InstrumentVM> SelectInstrumentsByStatus(string status);
 
     }
 }

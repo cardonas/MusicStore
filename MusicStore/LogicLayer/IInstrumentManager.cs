@@ -11,6 +11,8 @@ namespace LogicLayer
     {
         List<InstrumentVM> GetAllInstrument();
 
+        List<InstrumentVM> GetInstrumentsByStatus(string status);
+
         List<string> GetAllInstrumentTypes();
 
         List<string> GetAllInstrumentFamilies();
