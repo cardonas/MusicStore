@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataObjects;
 using DataAccessLayer;
 
@@ -10,7 +7,7 @@ namespace LogicLayer
 {
     public class InstrumentManager : IInstrumentManager
     {
-        private IInstrumentAccessor _instrumentAccessor;
+        private readonly IInstrumentAccessor _instrumentAccessor;
         public InstrumentManager()
         {
             _instrumentAccessor = new InstrumentAccessor();
@@ -26,7 +23,7 @@ namespace LogicLayer
             bool isAdded;
             try
             {
-                isAdded = _instrumentAccessor.InsertInstrumnet(instrument);
+                isAdded = _instrumentAccessor.InsertInstrument(instrument);
             }
             catch (Exception ex)
             {
@@ -36,7 +33,7 @@ namespace LogicLayer
         }
 
 
-        public List<InstrumentVM> GetAllInstrument()
+        public List<InstrumentVm> GetAllInstrument()
         {
             try
             {
@@ -101,7 +98,7 @@ namespace LogicLayer
             }
         }
 
-        public List<InstrumentVM> GetInstrumentsByStatus(string status)
+        public List<InstrumentVm> GetInstrumentsByStatus(string status)
         {
             try
             {
@@ -113,15 +110,15 @@ namespace LogicLayer
             }
         }
 
-        public InstrumentTypeVM GetInstrumentTypeByInstrumentTypeID(string instrumentTypeID)
+        public InstrumentTypeVm GetInstrumentTypeByInstrumentTypeId(string instrumentTypeId)
         {
             try
             {
-                return _instrumentAccessor.SelectInstrumentTypeByInstrumentTypeID(instrumentTypeID);
+                return _instrumentAccessor.SelectInstrumentTypeByInstrumentTypeId(instrumentTypeId);
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("No Instrument types with " + instrumentTypeID, ex);
+                throw new ApplicationException("No Instrument types with " + instrumentTypeId, ex);
             }
         }
 

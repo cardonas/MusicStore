@@ -2,32 +2,22 @@
 using DataObjects;
 using LogicLayer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for pgAdministration.xaml
     /// </summary>
-    public partial class pgAdministration : Page
+    public partial class PgAdministration : Page
     {
-        public Employee _employee;
-        private pgUserProfile _profile;
+        public Employee Employee;
+        private PgUserProfile _profile;
         private IUserManager _userManager;
 
-        public pgAdministration()
+        public PgAdministration()
         {
             InitializeComponent();
             _userManager = new UserManager();
@@ -37,15 +27,15 @@ namespace PresentationLayer
         {
             try
             {
-                if (dgEmployeeList.ItemsSource == null)
+                if (DgEmployeeList.ItemsSource == null)
                 {
-                    dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive();
-                    dgEmployeeList.Columns.Remove(dgEmployeeList.Columns[5]);
-                    dgEmployeeList.Columns[0].Header = "Employee ID";
-                    dgEmployeeList.Columns[1].Header = "First Name";
-                    dgEmployeeList.Columns[2].Header = "Last Name";
-                    dgEmployeeList.Columns[3].Header = "Phone Number";
-                    dgEmployeeList.Columns[4].Header = "Email Address";
+                    DgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive();
+                    DgEmployeeList.Columns.Remove(DgEmployeeList.Columns[5]);
+                    DgEmployeeList.Columns[0].Header = "Employee ID";
+                    DgEmployeeList.Columns[1].Header = "First Name";
+                    DgEmployeeList.Columns[2].Header = "Last Name";
+                    DgEmployeeList.Columns[3].Header = "Phone Number";
+                    DgEmployeeList.Columns[4].Header = "Email Address";
                 }
             }
             catch (Exception ex)
@@ -59,16 +49,16 @@ namespace PresentationLayer
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            _profile = new pgUserProfile(_userManager, addMode: true);
+            _profile = new PgUserProfile(_userManager, addMode: true);
             this.NavigationService.Navigate(_profile);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            _employee = SelectUserFromList();
-            if (null != _employee)
+            Employee = SelectUserFromList();
+            if (null != Employee)
             {
-                _profile = new pgUserProfile(_userManager, _employee, editMode: true);
+                _profile = new PgUserProfile(_userManager, Employee, editMode: true);
                 this.NavigationService.Navigate(_profile);
             }
             else
@@ -83,7 +73,7 @@ namespace PresentationLayer
             Employee employee = SelectUserFromList();
             if(employee != null)
             {
-                if (chkInActive.IsChecked == false)
+                if (ChkInActive.IsChecked == false)
                 {
                     if (employee.LastName != "System")
                     {
@@ -93,7 +83,7 @@ namespace PresentationLayer
                             if (isDeactivated)
                             {
                                 MessageBox.Show("You Successfully De-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                                refreshEmployeeList(true);
+                                RefreshEmployeeList(true);
                             }
                         }
 
@@ -107,7 +97,7 @@ namespace PresentationLayer
                         MessageBox.Show("The System Admin is not allowed to be deactivated.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                if(chkInActive.IsChecked == true)
+                if(ChkInActive.IsChecked == true)
                 {
                    var result = MessageBox.Show("This action will permanently delete the user! \n\n Do you wish to continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     if (result == MessageBoxResult.Yes)
@@ -118,7 +108,7 @@ namespace PresentationLayer
                             if (isDeleted)
                             {
                                 MessageBox.Show("You Successfully Deleted " + employee.FirstName, "Success", MessageBoxButton.OK);
-                                refreshEmployeeList(false);
+                                RefreshEmployeeList(false);
                             }
                         }
                         catch (Exception ex)
@@ -146,7 +136,7 @@ namespace PresentationLayer
                         if (isDeactivated)
                         {
                             MessageBox.Show("You Successfully Re-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
-                            refreshEmployeeList(false);
+                            RefreshEmployeeList(false);
                         } 
 
                 }
@@ -163,29 +153,29 @@ namespace PresentationLayer
 
         private void chkInActive_Checked(object sender, RoutedEventArgs e)
         {
-            refreshEmployeeList(false);
-            btnReActivate.Visibility = Visibility.Visible;
-            btnDelete.Content = "Delete";
+            RefreshEmployeeList(false);
+            BtnReActivate.Visibility = Visibility.Visible;
+            BtnDelete.Content = "Delete";
         }
 
         private void chkInActive_Unchecked(object sender, RoutedEventArgs e)
         {
-            refreshEmployeeList(true);
-            btnReActivate.Visibility = Visibility.Hidden;
-            btnDelete.Content = "De-activate";
+            RefreshEmployeeList(true);
+            BtnReActivate.Visibility = Visibility.Hidden;
+            BtnDelete.Content = "De-activate";
         }
-        private Employee SelectUserFromList() => (Employee)dgEmployeeList.SelectedItem;
+        private Employee SelectUserFromList() => (Employee)DgEmployeeList.SelectedItem;
 
         private void dgEmployeeList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _profile = new pgUserProfile(_userManager, SelectUserFromList());
+            _profile = new PgUserProfile(_userManager, SelectUserFromList());
             this.NavigationService.Navigate(_profile);
         }
 
-        private void refreshEmployeeList(bool active = true)
+        private void RefreshEmployeeList(bool active = true)
         {
-            dgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(active);
-            dgEmployeeList.Columns.RemoveAt(5);
+            DgEmployeeList.ItemsSource = _userManager.GetEmployeesByActive(active);
+            DgEmployeeList.Columns.RemoveAt(5);
         }
 
     }

@@ -1,22 +1,15 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Data;
+﻿using System.Data.SqlClient;
 
 namespace DataAccessLayer
 {
-    internal class DBConnection
+    internal class DbConnection
     {
-        private static string connectionString =
+        private static string _connectionString =
             @"Data Source=localhost\sqlexpress;Initial Catalog=Music_Store;Integrated Security=True";
 
         public static SqlConnection GetConnection()
         {
-            var conn = new SqlConnection(connectionString);
+            var conn = new SqlConnection(_connectionString);
             return conn;
         }
     }

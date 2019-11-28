@@ -1,15 +1,11 @@
 ﻿using DataObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
     public interface IInstrumentAccessor
     {
-        List<InstrumentVM> GetAllInstruments();
+        List<InstrumentVm> GetAllInstruments();
 
         List<string> SelectAllInstrumentType();
 
@@ -19,13 +15,13 @@ namespace DataAccessLayer
 
         List<string> SelectAllInstrumentStatusIDs();
 
-        InstrumentTypeVM SelectInstrumentTypeByInstrumentTypeID(string instrumentTypeID);
+        InstrumentTypeVm SelectInstrumentTypeByInstrumentTypeId(string instrumentTypeId);
 
         bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument);
 
-        bool InsertInstrumnet(Instrument instrument);
+        bool InsertInstrument(Instrument instrument);
 
-        List<InstrumentVM> SelectInstrumentsByStatus(string status);
+        List<InstrumentVm> SelectInstrumentsByStatus(string status);
 
     }
 }

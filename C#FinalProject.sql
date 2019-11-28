@@ -853,7 +853,7 @@ into
 	dbo.InstrumentStatus
 	( InstrumentStatusID, Description )
 values
-	('All', 'Used for only viewing all Instruments'),
+	( 'All', 'Used for only viewing all Instruments' ),
 	( 'Available', 'Available for any time of transaction' ),
 	( 'For Sale', 'For Sale ONLY' ),
 	( 'For Rent', 'For Rent ONLY' ),
@@ -1417,7 +1417,7 @@ create procedure sp_get_instruments_by_status
 )
 as
 begin
-	Select
+	select
 		InstrumentID,
 		instrument.InstrumentTypeID,
 		InstrumentFamily.InstrumentFamilyID,
@@ -1440,3 +1440,103 @@ begin
 	where InstrumentStatusID = @Status
 end
 go
+
+print ''
+print '*** Creating Cart table'
+go
+
+create table Cart
+(
+	InstrumentID       nvarchar(50) not null,
+	InstrumentTypeID   nvarchar(50) not null,
+	InstrumentStatusID nvarchar(50) not null,
+	InstrumentBrandID  nvarchar(50) not null,
+	Price              money        not null,
+	constraint pk_Cart_InstrumentID
+		primary key (InstrumentID asc),
+	constraint fk_Cart_InstrumentTypeID
+		foreign key (InstrumentTypeID)
+			references InstrumentType (InstrumentTypeID),
+	constraint fk_Cart_InstrumentStatusID
+		foreign key (InstrumentStatusID)
+			references InstrumentStatus (InstrumentStatusID),
+	constraint fk_Cart_InstrumentBrandID
+		foreign key (InstrumentBrandID)
+			references InstrumentBrand (InstrumentBrandID)
+)
+go
+
+print ''
+print '*** Creating sp_select_all_in_cart'
+go
+
+create procedure sp_select_all_in_cart
+as
+begin
+	select
+		InstrumentID,
+		instrument.InstrumentTypeID,
+		InstrumentFamily.InstrumentFamilyID,
+		InstrumentStatusID,
+		InstrumentBrandID,
+		Price,
+		RentalTerm.RentalTermID,
+		RentalTerm.RentalCost,
+		PrepList.Description
+	from
+		dbo.Instrument
+			join InstrumentType
+			     on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
+			join RentalTerm
+			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+			join PrepList
+			     on InstrumentType.PrepListID = PrepList.PrepListID
+			join InstrumentFamily
+			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
+end
+go
+
+
+print ''
+print '*** creating sp_insert_cart_item'
+go
+
+create procedure sp_insert_cart_item
+(
+	@InstrumentID       nvarchar(50),
+	@InstrumentTypeID   nvarchar(50),
+	@InstrumentStatusID nvarchar(50),
+	@InstrumentBrandID  nvarchar(50),
+	@Price              money
+)
+as
+begin
+	declare @newStatus nvarchar(50)
+	declare @newPrice money
+	set @newPrice = @Price
+	
+	insert
+	into
+		Cart
+	( InstrumentID, InstrumentTypeID, InstrumentStatusID, InstrumentBrandID, Price )
+	values
+	( @InstrumentID, @InstrumentTypeID, @InstrumentStatusID, @InstrumentBrandID, @Price )
+	
+	if @InstrumentStatusID = 'For Rent'
+			set @newStatus = 'Rented'
+	if @InstrumentStatusID = 'For Rent To Own'
+			set @newStatus = 'RentToOwn'
+	if @InstrumentStatusID = 'For Sale' or @InstrumentStatusID = 'Available'
+			set @newStatus = 'Sold'
+	
+	execute sp_update_instrumentStatus @InstrumentID,
+	        @InstrumentStatusID,
+	        @Price,
+	        @newStatus,
+	        @newPrice
+
+end
+go
+
+
+

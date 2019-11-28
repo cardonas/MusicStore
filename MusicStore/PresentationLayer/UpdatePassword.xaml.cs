@@ -1,39 +1,28 @@
 ﻿using DataObjects;
 using LogicLayer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for frmFirstTimeUpdatePassword.xaml
     /// </summary>
-    public partial class frmFirstTimeUpdatePassword : Window
+    public partial class FrmFirstTimeUpdatePassword : Window
     {
         private Employee _user = null;
         private IUserManager _userManager = null;
         private bool _forgotPassword = false;
         private string _email = null;
 
-        public frmFirstTimeUpdatePassword(Employee user, IUserManager userManager)
+        public FrmFirstTimeUpdatePassword(Employee user, IUserManager userManager)
         {
             InitializeComponent();
             _user = user;
             _userManager = userManager;
         }
 
-        public frmFirstTimeUpdatePassword(string email, IUserManager userManager, bool forgotPassword)
+        public FrmFirstTimeUpdatePassword(string email, IUserManager userManager, bool forgotPassword)
         {
             InitializeComponent();
             _email = email;
@@ -45,32 +34,32 @@ namespace PresentationLayer
         {
             if (!_forgotPassword)
             {
-                if (pwdCurrentPassword.Password.Length < 7 || pwdCurrentPassword.Password != "newuser")
+                if (PwdCurrentPassword.Password.Length < 7 || PwdCurrentPassword.Password != "newuser")
                 {
                     MessageBox.Show("Current Password is incorrect, try again");
-                    pwdCurrentPassword.Password = "";
-                    pwdCurrentPassword.Focus();
+                    PwdCurrentPassword.Password = "";
+                    PwdCurrentPassword.Focus();
                     return;
                 }
-                if (pwdNewPassword.Password.Length < 7 || pwdNewPassword.Password == pwdCurrentPassword.Password)
+                if (PwdNewPassword.Password.Length < 7 || PwdNewPassword.Password == PwdCurrentPassword.Password)
                 {
                     MessageBox.Show("New password is incorrect, try again");
-                    pwdNewPassword.Password = "";
-                    pwdNewPassword.Focus();
+                    PwdNewPassword.Password = "";
+                    PwdNewPassword.Focus();
                     return;
                 }
-                if (pwdRetypePassword.Password != pwdNewPassword.Password)
+                if (PwdRetypePassword.Password != PwdNewPassword.Password)
                 {
                     MessageBox.Show("New password and Retype must match, try agin");
-                    pwdNewPassword.Password = "";
-                    pwdRetypePassword.Password = "";
-                    pwdNewPassword.Focus();
+                    PwdNewPassword.Password = "";
+                    PwdRetypePassword.Password = "";
+                    PwdNewPassword.Focus();
                     return;
                 }
 
                 try
                 {
-                    bool updated = _userManager.UpdatePassword(_user.EmployeeID, pwdCurrentPassword.Password.ToString(), pwdNewPassword.Password.ToString());
+                    bool updated = _userManager.UpdatePassword(_user.EmployeeId, PwdCurrentPassword.Password.ToString(), PwdNewPassword.Password.ToString());
                     if (updated)
                     {
                         MessageBox.Show("Password Updated");
@@ -86,25 +75,25 @@ namespace PresentationLayer
             }
             else
             {
-                if (pwdNewPassword.Password.Length < 7 || pwdNewPassword.Password == pwdCurrentPassword.Password)
+                if (PwdNewPassword.Password.Length < 7 || PwdNewPassword.Password == PwdCurrentPassword.Password)
                 {
                     MessageBox.Show("New password is incorrect, try again");
-                    pwdNewPassword.Password = "";
-                    pwdNewPassword.Focus();
+                    PwdNewPassword.Password = "";
+                    PwdNewPassword.Focus();
                     return;
                 }
-                if (pwdRetypePassword.Password != pwdNewPassword.Password)
+                if (PwdRetypePassword.Password != PwdNewPassword.Password)
                 {
                     MessageBox.Show("New password and Retype must match, try agin");
-                    pwdNewPassword.Password = "";
-                    pwdRetypePassword.Password = "";
-                    pwdNewPassword.Focus();
+                    PwdNewPassword.Password = "";
+                    PwdRetypePassword.Password = "";
+                    PwdNewPassword.Focus();
                     return;
                 }
 
                 try
                 {
-                    bool updated = _userManager.UpdatePassword(_email,  pwdNewPassword.Password.ToString());
+                    bool updated = _userManager.UpdatePassword(_email,  PwdNewPassword.Password.ToString());
                     if (updated)
                     {
                         MessageBox.Show("Password Updated");
@@ -125,7 +114,7 @@ namespace PresentationLayer
             if (_forgotPassword)
             {
                 CurrentPassword.Visibility = Visibility.Hidden;
-                pwdCurrentPassword.Visibility = Visibility.Hidden;
+                PwdCurrentPassword.Visibility = Visibility.Hidden;
             }
         }
     }

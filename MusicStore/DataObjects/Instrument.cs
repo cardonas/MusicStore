@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataObjects
+﻿namespace DataObjects
 {
     public class Instrument
     {
-        public string InstrumentID { get; set; }
-        public string InstrumentTypeID { get; set; }
-        public string InstrumentStatusID { get; set; }
-        public string InstrumentBrandID { get; set; }
+        public string InstrumentId { get; set; }
+        public string InstrumentTypeId { get; set; }
+        public string InstrumentStatusId { get; set; }
+        public string InstrumentBrandId { get; set; }
         public decimal Price { get; set; }
-        public string PriceString
-        {
-            get
-            {
-                return this.Price.ToString("c");
-            }
-        }
+        public string PriceString => this.Price.ToString("c");
     }
 }

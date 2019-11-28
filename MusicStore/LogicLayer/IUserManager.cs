@@ -1,9 +1,5 @@
 ﻿using DataObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogicLayer
 {
@@ -11,7 +7,7 @@ namespace LogicLayer
     {
         Employee AuthenticateUser(string email, string password);
 
-        bool UpdatePassword(int employeeId, string oldPassowrd, string newPassword);
+        bool UpdatePassword(int employeeId, string oldPassword, string newPassword);
 
         bool UpdatePassword(string email, string newPassword);
 

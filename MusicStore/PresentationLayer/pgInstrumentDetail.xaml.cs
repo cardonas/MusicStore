@@ -3,64 +3,56 @@ using LogicLayer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for pgUserProfile.xaml
     /// </summary>
-    public partial class pgInstrumentDetail : Page
+    public partial class PgInstrumentDetail : Page
     {
 
-        private IInstrumentManager _instrumentManager;
-        private InstrumentVM _instrument;
-        private bool _editMode = false;
-        private bool _addMode = false;
+        private readonly IInstrumentManager _instrumentManager;
+        private readonly InstrumentVm _instrument;
+        private bool _editMode;
+        private readonly bool _addMode;
 
-        public pgInstrumentDetail(IInstrumentManager instrumentManager, bool addMode = false)
+        public PgInstrumentDetail(IInstrumentManager instrumentManager, bool addMode = false)
         {
             InitializeComponent();
             _instrumentManager = instrumentManager;
             _addMode = addMode;
+            _editMode = false;
         }
 
-        public pgInstrumentDetail(InstrumentVM instrument, IInstrumentManager instrumentManager, bool editMode = false)
+        public PgInstrumentDetail(InstrumentVm instrument, IInstrumentManager instrumentManager, bool editMode = false)
         {
             InitializeComponent();
             _instrumentManager = instrumentManager;
             _instrument = instrument;
+            _editMode = false;
             _editMode = editMode;
         }
 
-        private void loadInstrument()
+        private void LoadInstrument()
         {
-            lblInstrumentID.Content = _instrument.InstrumentID;
-            lblPriceAmount.Content = _instrument.PriceString;
-            cmbType.Text = _instrument.InstrumentTypeID;
-            cmbBrand.Text = _instrument.InstrumentBrandID;
-            txtFamily.Text = _instrument.InstrumentFamily;
-            txtRentalTerm.Text = _instrument.RentalTermID;
-            txtRentalFee.Text = _instrument.RentalFeeString;
-            cmbStatus.Text = _instrument.InstrumentStatusID;
+            LblInstrument.Content = _instrument.InstrumentId;
+            LblPriceAmount.Content = _instrument.PriceString;
+            CmbType.Text = _instrument.InstrumentTypeId;
+            CmbBrand.Text = _instrument.InstrumentBrandId;
+            TxtFamily.Text = _instrument.InstrumentFamily;
+            TxtRentalTerm.Text = _instrument.RentalTermId;
+            TxtRentalFee.Text = _instrument.RentalFeeString;
+            CmbStatus.Text = _instrument.InstrumentStatusId;
         }
 
-        private void getAllInstrumentTypes()
+        private void GetAllInstrumentTypes()
         {
             try
             {
-                cmbType.ItemsSource = _instrumentManager.GetAllInstrumentTypes();
+                CmbType.ItemsSource = _instrumentManager.GetAllInstrumentTypes();
             }
             catch (Exception ex)
             {
@@ -69,11 +61,11 @@ namespace PresentationLayer
         }
 
 
-        private void getAllInstrumentBrands()
+        private void GetAllInstrumentBrands()
         {
             try
             {
-                cmbBrand.ItemsSource = _instrumentManager.GetAllInstrumentBrands();
+                CmbBrand.ItemsSource = _instrumentManager.GetAllInstrumentBrands();
             }
             catch (Exception ex)
             {
@@ -81,13 +73,13 @@ namespace PresentationLayer
             }
         }
 
-        private void getAllInstrumentStatuses()
+        private void GetAllInstrumentStatuses()
         {
             try
             {
                 List<string> status = _instrumentManager.GetAllInstrumentStatusIDs();
                 status.RemoveAt(0);
-                cmbStatus.ItemsSource = status;
+                CmbStatus.ItemsSource = status;
             }
             catch (Exception ex)
             {
@@ -101,10 +93,10 @@ namespace PresentationLayer
             {
                 Instrument instrument = new Instrument
                 {
-                    InstrumentID = txtInstrumentID.Text,
-                    InstrumentTypeID = cmbType.SelectedItem.ToString(),
-                    InstrumentBrandID = cmbBrand.SelectedItem.ToString(),
-                    Price = decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency)
+                    InstrumentId = TxtInstrumentId.Text,
+                    InstrumentTypeId = CmbType.SelectedItem.ToString(),
+                    InstrumentBrandId = CmbBrand.SelectedItem.ToString(),
+                    Price = decimal.Parse(TxtPriceAmount.Text, NumberStyles.Currency)
                 };
 
                 if (_instrumentManager.AddInstrument(instrument))
@@ -115,19 +107,19 @@ namespace PresentationLayer
                 if (MessageBox.Show("Would you like add another instrument?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     instrument = new Instrument();
-                    txtFamily.Text = "";
-                    txtRentalTerm.Text = "";
-                    txtRentalFee.Text = "";
-                    txtPriceAmount.Text = "";
-                    txtInstrumentID.Text = "";
-                    cmbType.SelectedItem = "";
-                    cmbBrand.Text = "";
-                    cmbStatus.Text = "Available";
-                    txtInstrumentID.Focus();
+                    TxtFamily.Text = "";
+                    TxtRentalTerm.Text = "";
+                    TxtRentalFee.Text = "";
+                    TxtPriceAmount.Text = "";
+                    TxtInstrumentId.Text = "";
+                    CmbType.SelectedItem = "";
+                    CmbBrand.Text = "";
+                    CmbStatus.Text = "Available";
+                    TxtInstrumentId.Focus();
                 }
                 else
                 {
-                    this.NavigationService.Navigate(new pgInventory());
+                    this.NavigationService.Navigate(new PgInventory());
                 }
 
             }
@@ -145,11 +137,11 @@ namespace PresentationLayer
 
             Instrument updatedInstrument = new Instrument
             {
-                InstrumentID = lblInstrumentID.Content.ToString(),
-                InstrumentBrandID = cmbBrand.SelectedItem.ToString(),
-                InstrumentStatusID = cmbStatus.SelectedItem.ToString(),
-                InstrumentTypeID = cmbType.SelectedItem.ToString(),
-                Price = Decimal.Parse(txtPriceAmount.Text, NumberStyles.Currency)
+                InstrumentId = LblInstrumentId.Content.ToString(),
+                InstrumentBrandId = CmbBrand.SelectedItem.ToString(),
+                InstrumentStatusId = CmbStatus.SelectedItem.ToString(),
+                InstrumentTypeId = CmbType.SelectedItem.ToString(),
+                Price = Decimal.Parse(TxtPriceAmount.Text, NumberStyles.Currency)
             };
 
 
@@ -160,7 +152,7 @@ namespace PresentationLayer
                     MessageBox.Show("Instrument Status Updated", "Success", MessageBoxButton.OK);
                     if ((int)MessageBoxResult.OK == 1)
                     {
-                        this.NavigationService.Navigate(new pgInventory());
+                        this.NavigationService.Navigate(new PgInventory());
                     }
                 }
             }
@@ -168,7 +160,7 @@ namespace PresentationLayer
             {
 
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-                this.NavigationService.Navigate(new pgInventory());
+                this.NavigationService.Navigate(new PgInventory());
 
             }
 
@@ -177,78 +169,78 @@ namespace PresentationLayer
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new pgInventory());
+            this.NavigationService.Navigate(new PgInventory());
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            getAllInstrumentTypes();
-            getAllInstrumentBrands();
-            getAllInstrumentStatuses();
+            GetAllInstrumentTypes();
+            GetAllInstrumentBrands();
+            GetAllInstrumentStatuses();
             if (_editMode)
             {
-                setEditMode();
-                loadInstrument();
-                txtPriceAmount.Text = _instrument.Price.ToString("c");
+                SetEditMode();
+                LoadInstrument();
+                TxtPriceAmount.Text = _instrument.Price.ToString("c");
             }
             if (_instrument != null)
             {
-                loadInstrument();
+                LoadInstrument();
             }
             if (_addMode)
             {
-                addMode();
+                AddMode();
             }
         }
 
-        private void setEditMode()
+        private void SetEditMode()
         {
-            cmbStatus.IsEnabled = true;
-            lblPriceAmount.Visibility = Visibility.Hidden;
-            txtPriceAmount.Visibility = Visibility.Visible;
-            txtPriceAmount.IsEnabled = true;
-            btnSave.Visibility = Visibility.Visible;
-            btnEdit.Visibility = Visibility.Hidden;
+            CmbStatus.IsEnabled = true;
+            LblPriceAmount.Visibility = Visibility.Hidden;
+            TxtPriceAmount.Visibility = Visibility.Visible;
+            TxtPriceAmount.IsEnabled = true;
+            BtnSave.Visibility = Visibility.Visible;
+            BtnEdit.Visibility = Visibility.Hidden;
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             _editMode = true;
-            setEditMode();
+            SetEditMode();
             if (_instrument != null)
             {
-                txtPriceAmount.Text = _instrument.Price.ToString("c");
+                TxtPriceAmount.Text = _instrument.Price.ToString("c");
             }
         }
 
-        private void addMode()
+        private void AddMode()
         {
-            cmbStatus.Text = "Available";
-            lblInstrumentID.Visibility = Visibility.Hidden;
-            txtInstrumentID.Visibility = Visibility.Visible;
-            txtInstrumentID.IsEnabled = true;
-            cmbType.IsEnabled = true;
-            cmbBrand.IsEnabled = true;
-            btnSave.Visibility = Visibility.Visible;
-            setEditMode();
-            cmbStatus.IsEnabled = false;
+            CmbStatus.Text = "Available";
+            LblInstrumentId.Visibility = Visibility.Hidden;
+            TxtInstrumentId.Visibility = Visibility.Visible;
+            TxtInstrumentId.IsEnabled = true;
+            CmbType.IsEnabled = true;
+            CmbBrand.IsEnabled = true;
+            BtnSave.Visibility = Visibility.Visible;
+            SetEditMode();
+            CmbStatus.IsEnabled = false;
         }
 
         private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string instrumentType = cmbType.SelectedItem.ToString();
-            InstrumentTypeVM instrumentTypeVM = null;
+            string instrumentType = CmbType.SelectedItem.ToString();
+            InstrumentTypeVm instrumentTypeVm = null;
             try
             {
-                instrumentTypeVM = _instrumentManager.GetInstrumentTypeByInstrumentTypeID(instrumentType);
+                instrumentTypeVm = _instrumentManager.GetInstrumentTypeByInstrumentTypeId(instrumentType);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
             }
-            txtFamily.Text = instrumentTypeVM.InstrumentFamilyID;
-            txtRentalTerm.Text = instrumentTypeVM.RentalTermID;
-            txtRentalFee.Text = instrumentTypeVM.RentalFee.ToString("c");
+            TxtFamily.Text = instrumentTypeVm.InstrumentFamilyId;
+            TxtRentalTerm.Text = instrumentTypeVm.RentalTermId;
+            TxtRentalFee.Text = instrumentTypeVm.RentalFee.ToString("c");
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

@@ -1,19 +1,8 @@
 ﻿using DataObjects;
 using LogicLayer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
@@ -33,15 +22,15 @@ namespace PresentationLayer
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var email = txtEmail.Text;
-            var password = pwdPassword.Password;
+            var email = TxtEmail.Text;
+            var password = PwdPassword.Password;
 
             if (email.Length < 7 || password.Length < 7)
             {
                 MessageBox.Show("Bad username and password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtEmail.Text = "";
-                pwdPassword.Password = "";
-                txtEmail.Focus();
+                TxtEmail.Text = "";
+                PwdPassword.Password = "";
+                TxtEmail.Focus();
                 return;
             }
 
@@ -62,16 +51,16 @@ namespace PresentationLayer
             catch (Exception)
             {
                 MessageBox.Show("Bad username and password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtEmail.Text = "";
-                pwdPassword.Password = "";
-                txtEmail.Focus();
+                TxtEmail.Text = "";
+                PwdPassword.Password = "";
+                TxtEmail.Focus();
                 return;
             }
             if (_user != null)
             {
                 if (password == "newuser")
                 {
-                    var updatePassword = new frmFirstTimeUpdatePassword(_user, _userManager);
+                    var updatePassword = new FrmFirstTimeUpdatePassword(_user, _userManager);
                     if (updatePassword.ShowDialog() == false)
                     {
                         return;
@@ -84,8 +73,8 @@ namespace PresentationLayer
 
         private void btnForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            if(txtEmail.Text != ""){
-                var updatePassword = new frmFirstTimeUpdatePassword(txtEmail.Text, _userManager, true);
+            if(TxtEmail.Text != ""){
+                var updatePassword = new FrmFirstTimeUpdatePassword(TxtEmail.Text, _userManager, true);
                 if (updatePassword.ShowDialog() == false)
                 {
                     return;

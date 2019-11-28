@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DataObjects;
 
 namespace DataAccessLayer
 {
     public interface IUserAccessor
     {
-        Employee AuthenticateUser(string email, string Password);
+        Employee AuthenticateUser(string email, string password);
 
-        bool UpdatePasswordHash(int employeeID, string oldPassowrdHash, string newPasswordHash);
+        bool UpdatePasswordHash(int employeeId, string oldPasswordHash, string newPasswordHash);
 
         List<Employee> GetEmployeesByActive(bool active = true);
 
@@ -21,11 +17,11 @@ namespace DataAccessLayer
 
         bool UpdateEmployeeInfo(Employee oldEmployee, Employee updatedEmployee);
 
-        bool DeactivateEmployee(int employeeID, string firstName, string lastName);
+        bool DeactivateEmployee(int employeeId, string firstName, string lastName);
 
-        bool ReActivateEmployee(int employeeID, string firstName, string lastName);
+        bool ReActivateEmployee(int employeeId, string firstName, string lastName);
 
-        bool DeleteEmployee(int employeeID, string firstName, string lastName);
+        bool DeleteEmployee(int employeeId, string firstName, string lastName);
 
         bool UpdatePasswordHash(string email, string newPasswordHash);
 

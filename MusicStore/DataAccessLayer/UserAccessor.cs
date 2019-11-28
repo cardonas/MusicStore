@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataObjects;
 
 namespace DataAccessLayer
@@ -13,9 +10,9 @@ namespace DataAccessLayer
     {
         public bool AddNewEmployee(Employee employee)
         {
-            bool addSuccess = false;
+            bool addSuccess;
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_create_employee", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -41,9 +38,9 @@ namespace DataAccessLayer
 
         public Employee AuthenticateUser(string username, string passwordHash)
         {
-            Employee result = null;
+            Employee result;
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
 
 
             var cmd = new SqlCommand("sp_authenticate_employee", conn)
@@ -60,7 +57,7 @@ namespace DataAccessLayer
 
                 if (1 == Convert.ToInt32(cmd.ExecuteScalar()))
                 {
-                    result = getUserByEmail(username);
+                    result = GetUserByEmail(username);
                 }
                 else
                 {
@@ -79,15 +76,15 @@ namespace DataAccessLayer
             return result;
         }
 
-        public bool DeactivateEmployee(int employeeID, string firstName, string lastName)
+        public bool DeactivateEmployee(int employeeId, string firstName, string lastName)
         {
-            bool deactivateSuccess = false;
-            var conn = DBConnection.GetConnection();
+            bool deactivateSuccess;
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_deactivate_employee", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
             cmd.Parameters.AddWithValue("@FirstName", firstName);
             cmd.Parameters.AddWithValue("@LastName", lastName);
 
@@ -107,15 +104,15 @@ namespace DataAccessLayer
             return deactivateSuccess;
         }
 
-        public bool DeleteEmployee(int employeeID, string firstName, string lastName)
+        public bool DeleteEmployee(int employeeId, string firstName, string lastName)
         {
-            bool deactivateSuccess = false;
-            var conn = DBConnection.GetConnection();
+            bool deactivateSuccess;
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_delete_employee", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
             cmd.Parameters.AddWithValue("@FirstName", firstName);
             cmd.Parameters.AddWithValue("@LastName", lastName);
 
@@ -138,7 +135,7 @@ namespace DataAccessLayer
         public List<Customer> GetCustomerByActive(bool active = true)
         {
             List<Customer> users = new List<Customer>();
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_customers", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -155,7 +152,7 @@ namespace DataAccessLayer
                     {
                         var user = new Customer
                         {
-                            CustomerID = reader.GetInt32(0),
+                            CustomerId = reader.GetInt32(0),
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
                             PhoneNumber = reader.GetString(3),
@@ -177,7 +174,7 @@ namespace DataAccessLayer
         public List<Employee> GetEmployeesByActive(bool active = true)
         {
             List<Employee> users = new List<Employee>();
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_employees", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -194,7 +191,7 @@ namespace DataAccessLayer
                     {
                         var user = new Employee
                         {
-                            EmployeeID = reader.GetInt32(0),
+                            EmployeeId = reader.GetInt32(0),
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
                             PhoneNumber = reader.GetString(3),
@@ -213,15 +210,15 @@ namespace DataAccessLayer
             return users;
         }
 
-        public bool ReActivateEmployee(int employeeID, string firstName, string lastName)
+        public bool ReActivateEmployee(int employeeId, string firstName, string lastName)
         {
-            bool reactivateSuccess = false;
-            var conn = DBConnection.GetConnection();
+            bool reactivateSuccess;
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_reactivate_employee", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
+            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
             cmd.Parameters.AddWithValue("@FirstName", firstName);
             cmd.Parameters.AddWithValue("@LastName", lastName);
 
@@ -243,15 +240,15 @@ namespace DataAccessLayer
 
         public bool UpdateEmployeeInfo(Employee oldEmployee, Employee updatedEmployee)
         {
-            bool updateSuccess = false;
+            bool updateSuccess;
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_update_employee_profile", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@EmployeeID", oldEmployee.EmployeeID);
+            cmd.Parameters.AddWithValue("@EmployeeID", oldEmployee.EmployeeId);
 
             cmd.Parameters.AddWithValue("@OldFirstName", oldEmployee.FirstName);
             cmd.Parameters.AddWithValue("@OldLastName", oldEmployee.LastName);
@@ -278,25 +275,25 @@ namespace DataAccessLayer
             return updateSuccess;
         }
 
-        public bool UpdatePasswordHash(int employeeID, string oldPasswordHash, string newPasswordHash)
+        public bool UpdatePasswordHash(int employeeId, string oldPasswordHash, string newPasswordHash)
         {
-            bool updateSuccess = false;
-            var conn = DBConnection.GetConnection();
+            bool updateSuccess;
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_update_employee_password", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            //cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
-            //cmd.Parameters.AddWithValue("@OldPasswordHash", oldPasswordHash);
-            //cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
+            cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+            cmd.Parameters.AddWithValue("@OldPasswordHash", oldPasswordHash);
+            cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
 
-            cmd.Parameters.Add("@EmployeeID", SqlDbType.Int);
-            cmd.Parameters.Add("@OldPasswordHash", SqlDbType.NVarChar, 100);
-            cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
+            //cmd.Parameters.Add("@EmployeeID", SqlDbType.Int);
+            //cmd.Parameters.Add("@OldPasswordHash", SqlDbType.NVarChar, 100);
+            //cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
 
-            cmd.Parameters["@EmployeeID"].Value = employeeID;
-            cmd.Parameters["@OldPasswordHash"].Value = oldPasswordHash;
-            cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
+            //cmd.Parameters["@EmployeeID"].Value = employeeId;
+            //cmd.Parameters["@OldPasswordHash"].Value = oldPasswordHash;
+            //cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
 
             try
             {
@@ -318,21 +315,20 @@ namespace DataAccessLayer
 
         public bool UpdatePasswordHash(string email, string newPasswordHash)
         {
-            bool updateSuccess = false;
-            var conn = DBConnection.GetConnection();
+            bool updateSuccess;
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_update_employee_password_by_email", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            //cmd.Parameters.AddWithValue("@EmployeeID", employeeID);
-            //cmd.Parameters.AddWithValue("@OldPasswordHash", oldPasswordHash);
-            //cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
 
-            cmd.Parameters.Add("@Email", SqlDbType.Int);
-            cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
+            //cmd.Parameters.Add("@Email", SqlDbType.Int);
+            //cmd.Parameters.Add("@NewPasswordHash", SqlDbType.NVarChar, 100);
 
-            cmd.Parameters["@Email"].Value = email;
-            cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
+            //cmd.Parameters["@Email"].Value = email;
+            //cmd.Parameters["@NewPasswordHash"].Value = newPasswordHash;
 
             try
             {
@@ -352,10 +348,10 @@ namespace DataAccessLayer
             return updateSuccess;
         }
 
-        private Employee getUserByEmail(string email)
+        private Employee GetUserByEmail(string email)
         {
-            Employee user = null;
-            var conn = DBConnection.GetConnection();
+            Employee user;
+            var conn = DbConnection.GetConnection();
             var cmd1 = new SqlCommand("sp_retrieve_employee_by_email", conn);
             var cmd2 = new SqlCommand("sp_get_all_roles_for_employeeID", conn);
             cmd1.CommandType = CommandType.StoredProcedure;
@@ -373,7 +369,7 @@ namespace DataAccessLayer
                 {
                     user = new Employee
                     {
-                        EmployeeID = reader1.GetInt32(0),
+                        EmployeeId = reader1.GetInt32(0),
                         FirstName = reader1.GetString(1),
                         LastName = reader1.GetString(2),
                         PhoneNumber = reader1.GetString(3),
@@ -385,7 +381,7 @@ namespace DataAccessLayer
                     throw new ApplicationException("User not found");
                 }
                 reader1.Close();
-                cmd2.Parameters["@EmployeeID"].Value = user.EmployeeID;
+                cmd2.Parameters["@EmployeeID"].Value = user.EmployeeId;
                 var reader2 = cmd2.ExecuteReader();
                 List<string> roles = new List<string>();
                 while (reader2.Read())

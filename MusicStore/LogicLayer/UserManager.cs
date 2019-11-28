@@ -2,16 +2,14 @@
 using DataObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LogicLayer
 {
     public class UserManager : IUserManager
     {
-        private IUserAccessor _userAccessor;
+        private readonly IUserAccessor _userAccessor;
 
         public UserManager()
         {
@@ -26,7 +24,7 @@ namespace LogicLayer
         public bool AddNewEmployee(Employee employee)
         {
            
-                bool isAdded = false;
+                bool isAdded;
 
                 try
                 {
@@ -36,15 +34,14 @@ namespace LogicLayer
                 {
                     throw new ApplicationException("Failed to Add Employee", ex);
                 }
-            return isAdded;
+                return isAdded;
             
         }
 
         public Employee AuthenticateUser(string email, string password)
         {
-            Employee result = null;
-            var passwordHash = hashPassword(password);
-            password = null;
+            Employee result;
+            var passwordHash = HashPassword(password);
             try
             {
                 result = _userAccessor.AuthenticateUser(email, passwordHash);
@@ -58,30 +55,30 @@ namespace LogicLayer
 
         public bool DeactivateEmployee(Employee employee)
         {
-            bool isDeactivated = false;
+            bool isDeactivated;
             try
             {
-                isDeactivated = _userAccessor.DeactivateEmployee(employee.EmployeeID, employee.FirstName, employee.LastName);
+                isDeactivated = _userAccessor.DeactivateEmployee(employee.EmployeeId, employee.FirstName, employee.LastName);
             }
             catch (Exception ex )
             {
 
-                throw new ApplicationException("Unable to deactivate Employee: " + employee.EmployeeID, ex);
+                throw new ApplicationException("Unable to deactivate Employee: " + employee.EmployeeId, ex);
             }
             return isDeactivated;
         }
 
         public bool DeleteEmployee(Employee employee)
         {
-            bool isDeleted = false;
+            bool isDeleted;
             try
             {
-                isDeleted = _userAccessor.DeleteEmployee(employee.EmployeeID, employee.FirstName, employee.LastName);
+                isDeleted = _userAccessor.DeleteEmployee(employee.EmployeeId, employee.FirstName, employee.LastName);
             }
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Unable to delete Employee: " + employee.EmployeeID, ex);
+                throw new ApplicationException("Unable to delete Employee: " + employee.EmployeeId, ex);
             }
             return isDeleted;
         }
@@ -112,22 +109,22 @@ namespace LogicLayer
 
         public bool ReActivateEmployee(Employee employee)
         {
-            bool isReactivated = false;
+            bool isReactivated;
             try
             {
-                isReactivated = _userAccessor.ReActivateEmployee(employee.EmployeeID, employee.FirstName, employee.LastName);
+                isReactivated = _userAccessor.ReActivateEmployee(employee.EmployeeId, employee.FirstName, employee.LastName);
             }
             catch (Exception ex)
             {
 
-                throw new ApplicationException("Unable to Re-activate Employee: " + employee.EmployeeID, ex);
+                throw new ApplicationException("Unable to Re-activate Employee: " + employee.EmployeeId, ex);
             }
             return isReactivated;
         }
 
         public bool UpdateEmployeeInfo(Employee oldEmployee, Employee updatedEmployee)
         {
-            bool isUpdated = false;
+            bool isUpdated;
             try
             {
                 isUpdated = _userAccessor.UpdateEmployeeInfo(oldEmployee, updatedEmployee);
@@ -142,10 +139,10 @@ namespace LogicLayer
 
         public bool UpdatePassword(int employeeId, string oldPassword, string newPassword)
         {
-            bool isUpdated = false;
+            bool isUpdated;
 
-            string newPasswordHash = hashPassword(newPassword);
-            string oldPasswordHash = hashPassword(oldPassword);
+            string newPasswordHash = HashPassword(newPassword);
+            string oldPasswordHash = HashPassword(oldPassword);
 
             try
             {
@@ -160,9 +157,9 @@ namespace LogicLayer
 
         public bool UpdatePassword(string email, string newPassword)
         {
-            bool isUpdated = false;
+            bool isUpdated;
 
-            string newPasswordHash = hashPassword(newPassword);
+            string newPasswordHash = HashPassword(newPassword);
 
             try
             {
@@ -175,13 +172,13 @@ namespace LogicLayer
             return isUpdated;
         }
 
-        private string hashPassword(string source)
+        private string HashPassword(string source)
         {
             string result;
             byte[] data;
-            using (SHA256 sha256hash = SHA256.Create())
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                data = sha256hash.ComputeHash(Encoding.UTF8.GetBytes(source));
+                data = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(source));
             }
 
             var s = new StringBuilder();

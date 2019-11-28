@@ -1,17 +1,13 @@
 ﻿using DataObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogicLayer
 {
     public interface IInstrumentManager
     {
-        List<InstrumentVM> GetAllInstrument();
+        List<InstrumentVm> GetAllInstrument();
 
-        List<InstrumentVM> GetInstrumentsByStatus(string status);
+        List<InstrumentVm> GetInstrumentsByStatus(string status);
 
         List<string> GetAllInstrumentTypes();
 
@@ -21,7 +17,7 @@ namespace LogicLayer
 
         List<string> GetAllInstrumentStatusIDs();
 
-        InstrumentTypeVM GetInstrumentTypeByInstrumentTypeID(string instrumentTypeID);
+        InstrumentTypeVm GetInstrumentTypeByInstrumentTypeId(string instrumentTypeId);
 
         bool UpdateInstrumentStatus(Instrument oldInstrument, Instrument newInstrument);
 

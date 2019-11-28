@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 using DataObjects;
 
 namespace DataAccessLayer
 {
+    [SuppressMessage("ReSharper", "PossibleIntendedRethrow")]
     public class InstrumentAccessor : IInstrumentAccessor
     {
-        public List<InstrumentVM> GetAllInstruments()
+        public List<InstrumentVm> GetAllInstruments()
         {
-            List<InstrumentVM> instruments = new List<InstrumentVM>();
-            var conn = DBConnection.GetConnection();
+            List<InstrumentVm> instruments = new List<InstrumentVm>();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_Instruments", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -28,15 +27,15 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        InstrumentVM newInstrument = new InstrumentVM
+                        InstrumentVm newInstrument = new InstrumentVm
                         {
-                            InstrumentID = reader.GetString(0),
-                            InstrumentTypeID = reader.GetString(1),
+                            InstrumentId = reader.GetString(0),
+                            InstrumentTypeId = reader.GetString(1),
                             InstrumentFamily = reader.GetString(2),
-                            InstrumentStatusID = reader.GetString(3),
-                            InstrumentBrandID = reader.GetString(4),
+                            InstrumentStatusId = reader.GetString(3),
+                            InstrumentBrandId = reader.GetString(4),
                             Price = reader.GetDecimal(5),
-                            RentalTermID = reader.GetString(6),
+                            RentalTermId = reader.GetString(6),
                             RentalFee = reader.GetDecimal(7),
                             PrepListDescription = reader.GetString(8)
                         };
@@ -52,19 +51,19 @@ namespace DataAccessLayer
             return instruments;
         }
 
-        public bool InsertInstrumnet(Instrument instrument)
+        public bool InsertInstrument(Instrument instrument)
         {
             bool isAdded;
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_insert_instrument", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@InstrumentID", instrument.InstrumentID);
-            cmd.Parameters.AddWithValue("@InstrumentTypeID", instrument.InstrumentTypeID);
-            cmd.Parameters.AddWithValue("@instrumentBrandID", instrument.InstrumentBrandID);
+            cmd.Parameters.AddWithValue("@InstrumentID", instrument.InstrumentId);
+            cmd.Parameters.AddWithValue("@InstrumentTypeID", instrument.InstrumentTypeId);
+            cmd.Parameters.AddWithValue("@instrumentBrandID", instrument.InstrumentBrandId);
             cmd.Parameters.AddWithValue("@Price", instrument.Price);
 
             try
@@ -84,9 +83,9 @@ namespace DataAccessLayer
 
         public List<string> SelectAllInstrumentBrands()
         {
-            List<string> InstrumentBrands = new List<string>();
+            List<string> instrumentBrands = new List<string>();
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_instrument_brands", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -99,8 +98,8 @@ namespace DataAccessLayer
 
                 while (reader.Read())
                 {
-                    var InstrumentBrand = reader.GetString(0);
-                    InstrumentBrands.Add(InstrumentBrand);
+                    var instrumentBrand = reader.GetString(0);
+                    instrumentBrands.Add(instrumentBrand);
                 }
             }
             catch (Exception ex)
@@ -108,14 +107,14 @@ namespace DataAccessLayer
                 throw ex;
             }
 
-            return InstrumentBrands;
+            return instrumentBrands;
         }
 
         public List<string> SelectAllInstrumentFamily()
         {
-            List<string> InstrumentFamilies = new List<string>();
+            List<string> instrumentFamilies = new List<string>();
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_Instrument_family", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -128,8 +127,8 @@ namespace DataAccessLayer
 
                 while (reader.Read())
                 {
-                    var InstrumentFamily = reader.GetString(0);
-                    InstrumentFamilies.Add(InstrumentFamily);
+                    var instrumentFamily = reader.GetString(0);
+                    instrumentFamilies.Add(instrumentFamily);
                 }
             }
             catch (Exception ex)
@@ -137,15 +136,15 @@ namespace DataAccessLayer
                 throw ex;
             }
 
-            return InstrumentFamilies;
+            return instrumentFamilies;
         }
 
 
         public List<string> SelectAllInstrumentStatusIDs()
         {
-            List<string> InstrumentStatuses = new List<string>();
+            List<string> instrumentStatuses = new List<string>();
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_select_all_instrument_Status_IDs", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -159,7 +158,7 @@ namespace DataAccessLayer
                 while (reader.Read())
                 {
                     var instrumentStatus = reader.GetString(0);
-                    InstrumentStatuses.Add(instrumentStatus);
+                    instrumentStatuses.Add(instrumentStatus);
                 }
             }
             catch (Exception ex)
@@ -167,14 +166,14 @@ namespace DataAccessLayer
                 throw ex;
             }
 
-            return InstrumentStatuses;
+            return instrumentStatuses;
         }
 
         public List<string> SelectAllInstrumentType()
         {
             List<string> instrumentTypes = new List<string>();
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_all_InstrumentType", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -199,10 +198,10 @@ namespace DataAccessLayer
             return instrumentTypes;
         }
 
-        public List<InstrumentVM> SelectInstrumentsByStatus(string status)
+        public List<InstrumentVm> SelectInstrumentsByStatus(string status)
         {
-            List<InstrumentVM> instruments = new List<InstrumentVM>();
-            var conn = DBConnection.GetConnection();
+            List<InstrumentVm> instruments = new List<InstrumentVm>();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_get_instruments_by_status", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -218,15 +217,15 @@ namespace DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        InstrumentVM newInstrument = new InstrumentVM
+                        InstrumentVm newInstrument = new InstrumentVm
                         {
-                            InstrumentID = reader.GetString(0),
-                            InstrumentTypeID = reader.GetString(1),
+                            InstrumentId = reader.GetString(0),
+                            InstrumentTypeId = reader.GetString(1),
                             InstrumentFamily = reader.GetString(2),
-                            InstrumentStatusID = reader.GetString(3),
-                            InstrumentBrandID = reader.GetString(4),
+                            InstrumentStatusId = reader.GetString(3),
+                            InstrumentBrandId = reader.GetString(4),
                             Price = reader.GetDecimal(5),
-                            RentalTermID = reader.GetString(6),
+                            RentalTermId = reader.GetString(6),
                             RentalFee = reader.GetDecimal(7),
                             PrepListDescription = reader.GetString(8)
                         };
@@ -243,15 +242,15 @@ namespace DataAccessLayer
         }
 
 
-        public InstrumentTypeVM SelectInstrumentTypeByInstrumentTypeID(string instrumentTypeID)
+        public InstrumentTypeVm SelectInstrumentTypeByInstrumentTypeId(string instrumentTypeId)
         {
-            InstrumentTypeVM instrumentType = new InstrumentTypeVM();
-            var conn = DBConnection.GetConnection();
+            InstrumentTypeVm instrumentType = new InstrumentTypeVm();
+            var conn = DbConnection.GetConnection();
             var cmd = new SqlCommand("sp_select_instrument_type_by_InstrumentTypeID", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
-            cmd.Parameters.AddWithValue("@InstrumentTypeID", instrumentTypeID);
+            cmd.Parameters.AddWithValue("@InstrumentTypeID", instrumentTypeId);
 
             try
             {
@@ -259,10 +258,10 @@ namespace DataAccessLayer
                 var reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    instrumentType.InstrumentTypeID = instrumentTypeID;
-                    instrumentType.RentalTermID = reader.GetString(0);
+                    instrumentType.InstrumentTypeId = instrumentTypeId;
+                    instrumentType.RentalTermId = reader.GetString(0);
                     instrumentType.RentalFee = reader.GetDecimal(1);
-                    instrumentType.InstrumentFamilyID = reader.GetString(2);
+                    instrumentType.InstrumentFamilyId = reader.GetString(2);
                 }
             }
             catch (Exception ex)
@@ -276,16 +275,16 @@ namespace DataAccessLayer
         {
             bool isUpdate;
 
-            var conn = DBConnection.GetConnection();
+            var conn = DbConnection.GetConnection();
             SqlCommand cmd = new SqlCommand("sp_update_instrumentStatus", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
-            cmd.Parameters.AddWithValue("@InstrumentID", oldInstrument.InstrumentID);
-            cmd.Parameters.AddWithValue("@OldStatus", oldInstrument.InstrumentStatusID);
+            cmd.Parameters.AddWithValue("@InstrumentID", oldInstrument.InstrumentId);
+            cmd.Parameters.AddWithValue("@OldStatus", oldInstrument.InstrumentStatusId);
             cmd.Parameters.AddWithValue("@OldPrice", oldInstrument.Price);
-            cmd.Parameters.AddWithValue("@NewStatus", newInstrument.InstrumentStatusID);
+            cmd.Parameters.AddWithValue("@NewStatus", newInstrument.InstrumentStatusId);
             cmd.Parameters.AddWithValue("@NewPrice", newInstrument.Price);
 
 

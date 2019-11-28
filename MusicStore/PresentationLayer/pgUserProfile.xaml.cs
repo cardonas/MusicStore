@@ -1,26 +1,15 @@
 ﻿using DataObjects;
 using LogicLayer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for pgUserProfile.xaml
     /// </summary>
-    public partial class pgUserProfile : Page
+    public partial class PgUserProfile : Page
     {
 
         private IUserManager _userManager;
@@ -28,14 +17,14 @@ namespace PresentationLayer
         private bool _editMode = false;
         private bool _addMode = false;
 
-        public pgUserProfile(IUserManager userManager, bool addMode = false)
+        public PgUserProfile(IUserManager userManager, bool addMode = false)
         {
             InitializeComponent();
             _userManager = userManager;
             _addMode = addMode;
         }
 
-        public pgUserProfile(IUserManager userManager, Employee employee, bool editMode = false)
+        public PgUserProfile(IUserManager userManager, Employee employee, bool editMode = false)
         {
             InitializeComponent();
             _userManager = userManager;
@@ -47,7 +36,7 @@ namespace PresentationLayer
         {
             if (_editMode)
             {
-                setEditMode();
+                SetEditMode();
                 LoadEmployee();
             }
             if (!_editMode && null != _employee)
@@ -56,7 +45,7 @@ namespace PresentationLayer
             }
             if (_addMode)
             {
-                addMode();
+                AddMode();
             }
         }
 
@@ -66,9 +55,9 @@ namespace PresentationLayer
             {
                 Employee employee = new Employee();
 
-                employee.FirstName = txtFirstName.Text;
-                employee.LastName = txtLastName.Text;
-                employee.PhoneNumber = txtPhoneNumber.Text;
+                employee.FirstName = TxtFirstName.Text;
+                employee.LastName = TxtLastName.Text;
+                employee.PhoneNumber = TxtPhoneNumber.Text;
 
                 if (_userManager.AddNewEmployee(employee))
                 {
@@ -77,17 +66,17 @@ namespace PresentationLayer
 
                 if (MessageBox.Show("Would you like add another employee?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    txtFirstName.Text = "";
-                    txtLastName.Text = "";
-                    txtAddress.Text = "";
-                    txtState.Text = "";
-                    txtZipcode.Text = "";
-                    txtPhoneNumber.Text = "";
-                    txtFirstName.Focus();
+                    TxtFirstName.Text = "";
+                    TxtLastName.Text = "";
+                    TxtAddress.Text = "";
+                    TxtState.Text = "";
+                    TxtZipcode.Text = "";
+                    TxtPhoneNumber.Text = "";
+                    TxtFirstName.Focus();
                 }
                 else
                 {
-                    this.NavigationService.Navigate(new pgAdministration());
+                    this.NavigationService.Navigate(new PgAdministration());
                 }
 
             }
@@ -112,9 +101,9 @@ namespace PresentationLayer
 
             Employee updatedEmployee = new Employee
             {
-                FirstName = txtFirstName.Text,
-                LastName = txtLastName.Text,
-                PhoneNumber = txtPhoneNumber.Text,
+                FirstName = TxtFirstName.Text,
+                LastName = TxtLastName.Text,
+                PhoneNumber = TxtPhoneNumber.Text,
                 Email = oldEmployee.Email
             };
 
@@ -124,13 +113,13 @@ namespace PresentationLayer
                 if (_userManager.UpdateEmployeeInfo(oldEmployee, updatedEmployee))
                 {
                     MessageBox.Show("Employee Profile Updated", "Success", MessageBoxButton.OK);
-                    NavigationService.Navigate(new pgAdministration());
+                    NavigationService.Navigate(new PgAdministration());
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
-                this.NavigationService.Navigate(new pgAdministration());
+                this.NavigationService.Navigate(new PgAdministration());
             }
 
 
@@ -138,48 +127,48 @@ namespace PresentationLayer
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            setEditMode();
+            SetEditMode();
             _editMode = true;
         }
 
-        private void setEditMode()
+        private void SetEditMode()
         {
-            txtFirstName.IsEnabled = true;
-            txtLastName.IsEnabled = true;
-            txtAddress.IsEnabled = true;
-            txtState.IsEnabled = true;
-            txtZipcode.IsEnabled = true;
-            txtPhoneNumber.IsEnabled = true;
-            lstAssignedRoles.IsEnabled = true;
-            lstUnassignedRoles.IsEnabled = true;
-            btnAssign.IsEnabled = true;
-            btnUnassign.IsEnabled = true;
-            btnSave.Visibility = Visibility.Visible;
-            btnEdit.Visibility = Visibility.Hidden;
+            TxtFirstName.IsEnabled = true;
+            TxtLastName.IsEnabled = true;
+            TxtAddress.IsEnabled = true;
+            TxtState.IsEnabled = true;
+            TxtZipcode.IsEnabled = true;
+            TxtPhoneNumber.IsEnabled = true;
+            LstAssignedRoles.IsEnabled = true;
+            LstUnassignedRoles.IsEnabled = true;
+            BtnAssign.IsEnabled = true;
+            BtnUnassign.IsEnabled = true;
+            BtnSave.Visibility = Visibility.Visible;
+            BtnEdit.Visibility = Visibility.Hidden;
         }
 
-        private void addMode()
+        private void AddMode()
         {
-            lblUserTypeID.Content = "Add New Employee";
-            lblUserTypeID.HorizontalAlignment = HorizontalAlignment.Center;
-            lblUserTypeID.SetValue(Grid.ColumnSpanProperty, 3);
-            lblUserID.Visibility = Visibility.Hidden;
-            setEditMode();
+            LblUserTypeId.Content = "Add New Employee";
+            LblUserTypeId.HorizontalAlignment = HorizontalAlignment.Center;
+            LblUserTypeId.SetValue(Grid.ColumnSpanProperty, 3);
+            LblUserId.Visibility = Visibility.Hidden;
+            SetEditMode();
         }
 
         private void LoadEmployee()
         {
-            txtFirstName.Text = _employee.FirstName;
-            txtLastName.Text = _employee.LastName;
-            txtAddress.Text = "";
-            txtState.Text = "";
-            txtZipcode.Text = "";
-            txtPhoneNumber.Text = _employee.PhoneNumber;
+            TxtFirstName.Text = _employee.FirstName;
+            TxtLastName.Text = _employee.LastName;
+            TxtAddress.Text = "";
+            TxtState.Text = "";
+            TxtZipcode.Text = "";
+            TxtPhoneNumber.Text = _employee.PhoneNumber;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new pgAdministration());
+            this.NavigationService.Navigate(new PgAdministration());
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

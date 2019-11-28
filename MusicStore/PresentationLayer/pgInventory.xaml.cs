@@ -2,32 +2,22 @@
 using LogicLayer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PresentationLayer
 {
     /// <summary>
     /// Interaction logic for pgInventory.xaml
     /// </summary>
-    public partial class pgInventory : Page
+    public partial class PgInventory
     {
         //private bool _addMode = false;
         //private bool _updateMode = false;
-        private IInstrumentManager _instrumentManager;
-        private Invoice _cart = new Invoice();
+        private readonly IInstrumentManager _instrumentManager;
 
-        public pgInventory()
+        public PgInventory()
         {
             InitializeComponent();
             _instrumentManager = new InstrumentManager();
@@ -35,12 +25,12 @@ namespace PresentationLayer
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-           cmbStatus.ItemsSource = getGetAllInsrumentStatuses();
+           CmbStatus.ItemsSource = GetGetAllInsrumentStatuses();
         }
 
-        private InstrumentVM getSelectedInstrument()
+        private InstrumentVm GetSelectedInstrument()
         {
-            return (InstrumentVM)dgInventoryList.SelectedItem;
+            return (InstrumentVm)DgInventoryList.SelectedItem;
         }
 
 
@@ -48,63 +38,37 @@ namespace PresentationLayer
         {
             try
             {
-                if (dgInventoryList.ItemsSource == null)
+                if (DgInventoryList.ItemsSource == null)
                 {
-                    dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
-                    dgInventoryList.Columns.RemoveAt(9);
-                    dgInventoryList.Columns.RemoveAt(1);
-                    dgInventoryList.Columns[0].Header = "Rental Term";
-                    dgInventoryList.Columns[1].Header = "Rental Fee";
-                    dgInventoryList.Columns[2].Header = "Prep LIst";
-                    dgInventoryList.Columns[3].Header = "InstrumentID";
-                    dgInventoryList.Columns[4].Header = "Type";
-                    dgInventoryList.Columns[5].Header = "Section";
-                    dgInventoryList.Columns[6].Header = "Status";
-                    dgInventoryList.Columns[7].Header = "Brand";
-                    dgInventoryList.Columns[8].Header = "Price";
-                    dgInventoryList.Columns[2].Width = 175;
-                    dgInventoryList.Columns[9].Width = 100;
+                    DgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
                 }
             }
             catch (Exception ex)
             {
                 if (ex is ApplicationException)
                 {
-                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
                 }
             }
         }
 
         private void dgInventoryList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            pgInstrumentDetail details = new pgInstrumentDetail(getSelectedInstrument(), _instrumentManager);
-            this.NavigationService.Navigate(details);
+            PgInstrumentDetail details = new PgInstrumentDetail(GetSelectedInstrument(), _instrumentManager);
+            NavigationService?.Navigate(details);
         }
 
-        private void refreshListByStatus(string status)
+        private void RefreshListByStatus(string status)
         {
-            dgInventoryList.ItemsSource = _instrumentManager.GetInstrumentsByStatus(status);
-            dgInventoryList.Columns.RemoveAt(9);
-            dgInventoryList.Columns.RemoveAt(1);
-            dgInventoryList.Columns[0].Header = "Rental Term";
-            dgInventoryList.Columns[1].Header = "Rental Fee";
-            dgInventoryList.Columns[2].Header = "Prep LIst";
-            dgInventoryList.Columns[3].Header = "InstrumentID";
-            dgInventoryList.Columns[4].Header = "Type";
-            dgInventoryList.Columns[5].Header = "Section";
-            dgInventoryList.Columns[6].Header = "Status";
-            dgInventoryList.Columns[7].Header = "Brand";
-            dgInventoryList.Columns[8].Header = "Price";
-            dgInventoryList.Columns[1].Width = 100;
-            dgInventoryList.Columns[8].Width = 100;
+            DgInventoryList.ItemsSource = _instrumentManager.GetInstrumentsByStatus(status);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if (getSelectedInstrument() != null)
+            if (GetSelectedInstrument() != null)
             {
-                pgInstrumentDetail details = new pgInstrumentDetail(getSelectedInstrument(), _instrumentManager, editMode: true);
-                this.NavigationService.Navigate(details);
+                PgInstrumentDetail details = new PgInstrumentDetail(GetSelectedInstrument(), _instrumentManager, editMode: true);
+                NavigationService?.Navigate(details);
             }
             else
             {
@@ -114,20 +78,16 @@ namespace PresentationLayer
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            pgInstrumentDetail details = new pgInstrumentDetail(_instrumentManager, addMode: true);
-            this.NavigationService.Navigate(details);
+            PgInstrumentDetail details = new PgInstrumentDetail(_instrumentManager, addMode: true);
+            NavigationService?.Navigate(details);
         }
 
         private void btnAddToCart_Click(object sender, RoutedEventArgs e)
         {
-            Instrument instrument = (Instrument)dgInventoryList.SelectedItem;
-            //Getting null TODO: Fix
-            _cart.Instruments.Add(instrument);
-
         }
 
 
-        private List<string> getGetAllInsrumentStatuses()
+        private List<string> GetGetAllInsrumentStatuses()
         {
             List<string> statuses = new List<string>();
             try
@@ -137,43 +97,48 @@ namespace PresentationLayer
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
             }
             return statuses;
         }
 
-        private void refreshList()
+        private void RefreshList()
         {
-            dgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
-            dgInventoryList.Columns.RemoveAt(9);
-            dgInventoryList.Columns.RemoveAt(1);
-            dgInventoryList.Columns[0].Header = "Rental Term";
-            dgInventoryList.Columns[1].Header = "Rental Fee";
-            dgInventoryList.Columns[2].Header = "Prep LIst";
-            dgInventoryList.Columns[3].Header = "InstrumentID";
-            dgInventoryList.Columns[4].Header = "Type";
-            dgInventoryList.Columns[5].Header = "Section";
-            dgInventoryList.Columns[6].Header = "Status";
-            dgInventoryList.Columns[7].Header = "Brand";
-            dgInventoryList.Columns[8].Header = "Price";
-            dgInventoryList.Columns[1].Width = 100;
-            dgInventoryList.Columns[8].Width = 100;
+            DgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
+
         }
 
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbStatus.SelectedItem.ToString() != "All") {
-                refreshListByStatus(cmbStatus.SelectedItem.ToString());
+            if (CmbStatus.SelectedItem.ToString() != "All") {
+                RefreshListByStatus(CmbStatus.SelectedItem.ToString());
             }
-            if(cmbStatus.SelectedItem.ToString() == "All")
+            if(CmbStatus.SelectedItem.ToString() == "All")
             {
-                refreshList();
+                RefreshList();
             }
         }
 
-        public Invoice GetInvoice()
+        //public Invoice GetInvoice()
+        //{
+        //    return _cart;
+        //}
+
+        private void DgInventoryList_OnAutoGeneratedColumns(object sender, EventArgs e)
         {
-            return _cart;
+            DgInventoryList.Columns.RemoveAt(9);
+            DgInventoryList.Columns.RemoveAt(1);
+            DgInventoryList.Columns[0].Header = "Rental Term";
+            DgInventoryList.Columns[1].Header = "Rental Fee";
+            DgInventoryList.Columns[2].Header = "Prep LIst";
+            DgInventoryList.Columns[3].Header = "InstrumentID";
+            DgInventoryList.Columns[4].Header = "Type";
+            DgInventoryList.Columns[5].Header = "Section";
+            DgInventoryList.Columns[6].Header = "Status";
+            DgInventoryList.Columns[7].Header = "Brand";
+            DgInventoryList.Columns[8].Header = "Price";
+            DgInventoryList.Columns[1].Width = 100;
+            DgInventoryList.Columns[8].Width = 100;
         }
     }
 }
