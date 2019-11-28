@@ -30,7 +30,7 @@ namespace LogicLayer
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Instrument Not Added");
+                throw new ApplicationException("Instrument Not Added", ex);
             }
             return isAdded;
         }

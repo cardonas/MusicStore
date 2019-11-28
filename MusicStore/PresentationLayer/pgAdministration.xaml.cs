@@ -23,11 +23,9 @@ namespace PresentationLayer
     /// </summary>
     public partial class pgAdministration : Page
     {
-        public bool _updateMode = false;
         public Employee _employee;
         private pgUserProfile _profile;
         private IUserManager _userManager;
-        private bool _inactiveUser = false;
 
         public pgAdministration()
         {
@@ -149,7 +147,7 @@ namespace PresentationLayer
                         {
                             MessageBox.Show("You Successfully Re-activated " + employee.FirstName, "Success", MessageBoxButton.OK);
                             refreshEmployeeList(false);
-                         } 
+                        } 
 
                 }
                 catch (Exception ex)
