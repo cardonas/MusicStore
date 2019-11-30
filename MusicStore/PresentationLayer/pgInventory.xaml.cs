@@ -105,17 +105,17 @@ namespace PresentationLayer
                     if (updateStatus.ShowDialog() == true)
                     {
                         string status = null;
-                        if ((bool) updateStatus.RbRent.IsChecked)
+                        if (updateStatus.RbRent.IsChecked != null && (bool) updateStatus.RbRent.IsChecked)
                         {
                             status = "For Rent";
                         }
 
-                        if ((bool) updateStatus.RbRentToOwn.IsChecked)
+                        if (updateStatus.RbRentToOwn.IsChecked != null && (bool) updateStatus.RbRentToOwn.IsChecked)
                         {
                             status = "For Rent To Own";
                         }
 
-                        if ((bool) updateStatus.RbSale.IsChecked)
+                        if (updateStatus.RbSale.IsChecked != null && (bool) updateStatus.RbSale.IsChecked)
                         {
                             status = "For Sale";
                         }
