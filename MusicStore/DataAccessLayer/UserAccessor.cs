@@ -32,6 +32,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return addSuccess;
         }
@@ -98,7 +102,11 @@ namespace DataAccessLayer
 
                 throw ex;
             }
-            
+            finally
+            {
+                conn.Close();
+            }
+
 
 
             return deactivateSuccess;
@@ -125,6 +133,10 @@ namespace DataAccessLayer
             {
 
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
 
@@ -168,6 +180,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
             return users;
         }
 
@@ -207,6 +223,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
             return users;
         }
 
@@ -231,6 +251,10 @@ namespace DataAccessLayer
             {
 
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
 
@@ -271,7 +295,11 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
-            
+            finally
+            {
+                conn.Close();
+            }
+
             return updateSuccess;
         }
 
@@ -348,7 +376,7 @@ namespace DataAccessLayer
             return updateSuccess;
         }
 
-        private Employee GetUserByEmail(string email)
+        private static Employee GetUserByEmail(string email)
         {
             Employee user;
             var conn = DbConnection.GetConnection();

@@ -16,16 +16,19 @@ namespace PresentationLayer
         //private bool _addMode = false;
         //private bool _updateMode = false;
         private readonly IInstrumentManager _instrumentManager;
+        private readonly ICartManager _cartManager;
 
         public PgInventory()
         {
             InitializeComponent();
             _instrumentManager = new InstrumentManager();
+            _cartManager = new CartManager();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-           CmbStatus.ItemsSource = GetGetAllInsrumentStatuses();
+            CmbStatus.ItemsSource = GetGetAllInstrumentStatuses();
+            CmbStatus.SelectedIndex = 0;
         }
 
         private InstrumentVm GetSelectedInstrument()
@@ -84,10 +87,82 @@ namespace PresentationLayer
 
         private void btnAddToCart_Click(object sender, RoutedEventArgs e)
         {
+            Instrument instrument = (Instrument)DgInventoryList.SelectedItem;
+            if (instrument != null)
+            {
+                Instrument instrument2 = new Instrument()
+                {
+                    InstrumentId = instrument.InstrumentId,
+                    InstrumentStatusId = instrument.InstrumentStatusId,
+                    InstrumentTypeId = instrument.InstrumentTypeId,
+                    InstrumentBrandId = instrument.InstrumentBrandId,
+                    Price = instrument.Price
+                };
+
+                if (instrument.InstrumentStatusId == "Available")
+                {
+                    var updateStatus = new ChangeStatus(instrument, _instrumentManager);
+                    if (updateStatus.ShowDialog() == true)
+                    {
+                        string status = null;
+                        if ((bool) updateStatus.RbRent.IsChecked)
+                        {
+                            status = "For Rent";
+                        }
+
+                        if ((bool) updateStatus.RbRentToOwn.IsChecked)
+                        {
+                            status = "For Rent To Own";
+                        }
+
+                        if ((bool) updateStatus.RbSale.IsChecked)
+                        {
+                            status = "For Sale";
+                        }
+
+                        instrument2.InstrumentStatusId = status;
+
+                        try
+                        {
+                            _instrumentManager.UpdateInstrumentStatus(instrument, instrument2);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+                        }
+
+                        AddToCart(instrument2);
+                    }
+                }
+                else
+                {
+                    AddToCart(instrument);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an item", "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+
         }
 
+        private void AddToCart(Instrument instrument)
+        {
+            try
+            {
+                if (_cartManager.AddCartItem(instrument))
+                {
+                    MessageBox.Show("Item has been added to Cart");
+                    RefreshList();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+            }
+        }
 
-        private List<string> GetGetAllInsrumentStatuses()
+        private List<string> GetGetAllInstrumentStatuses()
         {
             List<string> statuses = new List<string>();
             try
@@ -105,15 +180,15 @@ namespace PresentationLayer
         private void RefreshList()
         {
             DgInventoryList.ItemsSource = _instrumentManager.GetAllInstrument();
-
         }
 
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CmbStatus.SelectedItem.ToString() != "All") {
+            if (CmbStatus.SelectedItem.ToString() != "All")
+            {
                 RefreshListByStatus(CmbStatus.SelectedItem.ToString());
             }
-            if(CmbStatus.SelectedItem.ToString() == "All")
+            if (CmbStatus.SelectedItem.ToString() == "All")
             {
                 RefreshList();
             }

@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartManager.cs" />
+    <Compile Include="ICartManager.cs" />
     <Compile Include="IInstrumentManager.cs" />
     <Compile Include="InstrumentManager.cs" />
     <Compile Include="IUserManager.cs" />

@@ -857,7 +857,8 @@ values
 	( 'Available', 'Available for any time of transaction' ),
 	( 'For Sale', 'For Sale ONLY' ),
 	( 'For Rent', 'For Rent ONLY' ),
-	( 'For Rent to Own', 'For Rent to Own ONLY' ),
+	( 'For Rent To Own', 'For Rent To Own ONLY' ),
+	('Rent To Own', 'Currenly under Rent to Own contract'),
 	( 'Rented', 'Is currently rented' ),
 	( 'Sold', 'Instrument has been sold' )
 go
@@ -1356,7 +1357,7 @@ begin
 		 InstrumentStatusID = 'Available'
 	  or InstrumentStatusID = 'For Sale'
 	  or InstrumentStatusID = 'For Rent'
-	  or InstrumentStatusID = 'For Rent to Own'
+	  or InstrumentStatusID = 'For Rent To Own'
 end
 go
 
@@ -1475,7 +1476,7 @@ as
 begin
 	select
 		InstrumentID,
-		instrument.InstrumentTypeID,
+		Cart.InstrumentTypeID,
 		InstrumentFamily.InstrumentFamilyID,
 		InstrumentStatusID,
 		InstrumentBrandID,
@@ -1484,9 +1485,9 @@ begin
 		RentalTerm.RentalCost,
 		PrepList.Description
 	from
-		dbo.Instrument
+		dbo.Cart
 			join InstrumentType
-			     on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
+			     on Cart.InstrumentTypeID = InstrumentType.InstrumentTypeID
 			join RentalTerm
 			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
 			join PrepList
@@ -1525,11 +1526,12 @@ begin
 	if @InstrumentStatusID = 'For Rent'
 			set @newStatus = 'Rented'
 	if @InstrumentStatusID = 'For Rent To Own'
-			set @newStatus = 'RentToOwn'
+			set @newStatus = 'Rent To Own'
 	if @InstrumentStatusID = 'For Sale' or @InstrumentStatusID = 'Available'
 			set @newStatus = 'Sold'
 	
-	execute sp_update_instrumentStatus @InstrumentID,
+	execute sp_update_instrumentStatus 
+			@InstrumentID,
 	        @InstrumentStatusID,
 	        @Price,
 	        @newStatus,

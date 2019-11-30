@@ -34,10 +34,9 @@
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task4</Button>
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task5</Button>
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task6</Button>
-            <Button x:Name="Cart" Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand" Click="Cart_Click">Cart</Button>
+            <Button x:Name="BtnCart" Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand" Click="BtnCart_Click">Cart</Button>
         </StackPanel>
         <Frame x:Name="TabFrame" Grid.Column="1" Grid.Row="2" BorderBrush="Black" BorderThickness="2 2 2 0"/>
-
         <StatusBar BorderBrush="Black" BorderThickness="2 2 2 2" x:Name="SbMessages" Grid.ColumnSpan="2" Grid.Column="0"
                    Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <StatusBarItem>

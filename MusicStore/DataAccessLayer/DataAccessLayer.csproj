@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartAccessor.cs" />
     <Compile Include="DBConnection.cs" />
+    <Compile Include="ICartAccessor.cs" />
     <Compile Include="IInstrumentAccessor.cs" />
     <Compile Include="InstrumentAccessor.cs" />
     <Compile Include="IUserAccessor.cs" />

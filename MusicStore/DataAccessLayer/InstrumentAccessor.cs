@@ -47,6 +47,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return instruments;
         }
@@ -75,6 +79,10 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
             return isAdded;
@@ -106,6 +114,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return instrumentBrands;
         }
@@ -134,6 +146,10 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
             return instrumentFamilies;
@@ -165,6 +181,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return instrumentStatuses;
         }
@@ -193,6 +213,10 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
             return instrumentTypes;
@@ -237,6 +261,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
 
             return instruments;
         }
@@ -268,6 +296,10 @@ namespace DataAccessLayer
             {
                 throw ex;
             }
+            finally
+            {
+                conn.Close();
+            }
             return instrumentType;
         }
 
@@ -296,6 +328,10 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                conn.Close();
             }
 
             return isUpdate;

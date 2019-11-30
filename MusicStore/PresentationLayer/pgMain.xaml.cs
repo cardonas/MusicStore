@@ -29,10 +29,12 @@ namespace PresentationLayer
             TabFrame.Content = new PgInventory();
         }
 
-        private void Cart_Click(object sender, RoutedEventArgs e)
+        private void BtnCart_Click(object sender, RoutedEventArgs e)
         {
-            TabFrame.Content = new PgCart();
+            TabFrame.Content = new PgCart(_user);
         }
+
+        
     }
 }
 
