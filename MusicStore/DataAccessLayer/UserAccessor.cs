@@ -144,11 +144,11 @@ namespace DataAccessLayer
             return deactivateSuccess;
         }
 
-        public List<Customer> GetCustomerByActive(bool active = true)
+        public List<Customer> SelectCustomerByActive(bool active = true)
         {
             List<Customer> users = new List<Customer>();
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_customers", conn)
+            var cmd = new SqlCommand("sp_selectall_customers", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -187,11 +187,11 @@ namespace DataAccessLayer
             return users;
         }
 
-        public List<Employee> GetEmployeesByActive(bool active = true)
+        public List<Employee> SelectEmployeesByActive(bool active = true)
         {
             List<Employee> users = new List<Employee>();
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_employees", conn)
+            var cmd = new SqlCommand("sp_selectall_employees", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -381,7 +381,7 @@ namespace DataAccessLayer
             Employee user;
             var conn = DbConnection.GetConnection();
             var cmd1 = new SqlCommand("sp_retrieve_employee_by_email", conn);
-            var cmd2 = new SqlCommand("sp_get_all_roles_for_employeeID", conn);
+            var cmd2 = new SqlCommand("sp_select_all_roles_for_employeeID", conn);
             cmd1.CommandType = CommandType.StoredProcedure;
             cmd2.CommandType = CommandType.StoredProcedure;
             cmd1.Parameters.AddWithValue("@Email", email);

@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CartManager.cs" />
+    <Compile Include="CustomerManager.cs" />
     <Compile Include="ICartManager.cs" />
+    <Compile Include="ICustomerManager.cs" />
     <Compile Include="IInstrumentManager.cs" />
     <Compile Include="InstrumentManager.cs" />
     <Compile Include="IUserManager.cs" />

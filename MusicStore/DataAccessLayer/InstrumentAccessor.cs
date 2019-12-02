@@ -10,11 +10,11 @@ namespace DataAccessLayer
     [SuppressMessage("ReSharper", "PossibleIntendedRethrow")]
     public class InstrumentAccessor : IInstrumentAccessor
     {
-        public List<InstrumentVm> GetAllInstruments()
+        public List<InstrumentVm> SelectAllInstruments()
         {
             List<InstrumentVm> instruments = new List<InstrumentVm>();
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_Instruments", conn)
+            var cmd = new SqlCommand("sp_select_all_Instruments", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -94,7 +94,7 @@ namespace DataAccessLayer
             List<string> instrumentBrands = new List<string>();
 
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_instrument_brands", conn)
+            var cmd = new SqlCommand("sp_select_all_instrument_brands", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -127,7 +127,7 @@ namespace DataAccessLayer
             List<string> instrumentFamilies = new List<string>();
 
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_Instrument_family", conn)
+            var cmd = new SqlCommand("sp_select_all_Instrument_family", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -194,7 +194,7 @@ namespace DataAccessLayer
             List<string> instrumentTypes = new List<string>();
 
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_all_InstrumentType", conn)
+            var cmd = new SqlCommand("sp_select_all_InstrumentType", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -226,7 +226,7 @@ namespace DataAccessLayer
         {
             List<InstrumentVm> instruments = new List<InstrumentVm>();
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_get_instruments_by_status", conn)
+            var cmd = new SqlCommand("sp_select_instruments_by_status", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };

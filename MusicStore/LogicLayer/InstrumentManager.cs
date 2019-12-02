@@ -37,7 +37,7 @@ namespace LogicLayer
         {
             try
             {
-                return _instrumentAccessor.GetAllInstruments();
+                return _instrumentAccessor.SelectAllInstruments();
             }
             catch (Exception ex)
             {

@@ -1,15 +1,15 @@
 /* Check whether the database already exists */
 if exists(select
-	          1
-          from
-	          master.dbo.sysdatabases
-          where
+	1
+from
+	master.dbo.sysdatabases
+where
 	          name = 'Music_Store')
 		begin
-			drop database Music_Store
-			print ''
-			print '*** Dropping Database Music_Store'
-		end
+	drop database Music_Store
+	print ''
+	print '*** Dropping Database Music_Store'
+end
 go
 
 print ''
@@ -27,14 +27,14 @@ go
 
 create table dbo.Employee
 (
-	EmployeeId   int identity (100000, 1) not null,
-	FirstName    nvarchar(50)             not null,
-	LastName     nvarchar(50)             not null,
-	PhoneNumber  nvarchar(11)             not null,
-	Email        nvarchar(250)            not null,
-	PasswordHash nvarchar(100)            not null
-		                                           default '9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E',
-	Active       bit                      not null default 1,
+	EmployeeId   int           identity (100000, 1) not null,
+	FirstName    nvarchar(50)  not null,
+	LastName     nvarchar(50)  not null,
+	PhoneNumber  nvarchar(11)  not null,
+	Email        nvarchar(250) not null,
+	PasswordHash nvarchar(100) not null
+		default '9C9064C59F1FFA2E174EE754D2979BE80DD30DB552EC03E7E327E9B1A4BD594E',
+	Active       bit           not null default 1,
 	constraint pk_EmployeeID
 		primary key (EmployeeID asc),
 	constraint ak_Email
@@ -61,7 +61,7 @@ print '*** Creating sp_create_employee'
 go
 
 create procedure sp_create_employee
-(
+	(
 	@FirstName   nvarchar(50),
 	@LastName    nvarchar(50),
 	@PhoneNumber nvarchar(11)
@@ -70,7 +70,7 @@ as
 begin
 	declare @Email nvarchar(50)
 	set @Email = Lower(@FirstName + '.' + @LastName + '@music.com')
-	
+
 	insert
 	into
 		dbo.Employee
@@ -87,7 +87,7 @@ print '*** Creating sp_authenticate_employee'
 go
 
 create procedure sp_authenticate_employee
-(
+	(
 	@Email        nvarchar(50),
 	@PasswordHash nvarchar(100)
 )
@@ -99,8 +99,8 @@ begin
 		dbo.Employee
 	where
 		  Email = @Email
-	  and PasswordHash = @PasswordHash
-	  and Active = 1
+		and PasswordHash = @PasswordHash
+		and Active = 1
 	return @@RowCount
 end
 go
@@ -111,7 +111,7 @@ print '*** Creating sp_retrieve_employee_by_email'
 go
 
 create procedure sp_retrieve_employee_by_email
-(
+	(
 	@Email nvarchar(50)
 )
 as
@@ -125,7 +125,7 @@ begin
 		dbo.Employee
 	where
 		  Email = @Email
-	  and Active = 1
+		and Active = 1
 end
 go
 
@@ -134,7 +134,7 @@ print '*** Creating sp_retrieve_employee_by_employeeID'
 go
 
 create procedure sp_retrieve_employee_by_employeeID
-(
+	(
 	@EmployeeID int
 )
 as
@@ -148,16 +148,16 @@ begin
 		dbo.Employee
 	where
 		  EmployeeID = @EmployeeID
-	  and Active = 1
+		and Active = 1
 end
 go
 
 print ''
-print '*** Creating sp_get_all_employees'
+print '*** Creating sp_select_all_employees'
 go
 
-create procedure sp_get_all_employees
-(
+create procedure sp_select_all_employees
+	(
 	@Active bit
 )
 as
@@ -176,11 +176,11 @@ end
 go
 
 print ''
-print '*** Creating sp_get_employee_by_last_name_like'
+print '*** Creating sp_select_employee_by_last_name_like'
 go
 
-create procedure sp_get_employee_by_last_name_like
-(
+create procedure sp_select_employee_by_last_name_like
+	(
 	@LastNameLike nvarchar(50)
 )
 as
@@ -195,7 +195,7 @@ begin
 		dbo.Employee
 	where
 		  LastName like '%' + @LastNameLike + '%'
-	  and Active = 1
+		and Active = 1
 end
 go
 
@@ -204,7 +204,7 @@ print '*** Creating sp_update_employee_profile'
 go
 
 create procedure sp_update_employee_profile
-(
+	(
 	@EmployeeID     int,
 	@OldFirstName   nvarchar(50),
 	@OldLastName    nvarchar(50),
@@ -225,11 +225,11 @@ begin
 		PhoneNumber = @NewPhoneNumber
 	where
 		  EmployeeID = @EmployeeID
-	  and Email = @OldEmail
-	  and FirstName = @OldFirstName
-	  and LastName = @OldLastName
-	  and PhoneNumber = @OldPhoneNumber
-	  and Active = 1
+		and Email = @OldEmail
+		and FirstName = @OldFirstName
+		and LastName = @OldLastName
+		and PhoneNumber = @OldPhoneNumber
+		and Active = 1
 end
 go
 
@@ -238,7 +238,7 @@ print '*** Creating sp_update_employee_password'
 go
 
 create procedure sp_update_employee_password
-(
+	(
 	@EmployeeID      int,
 	@OldPasswordHash nvarchar(100),
 	@NewPasswordHash nvarchar(100)
@@ -249,8 +249,8 @@ begin
 	set PasswordHash = @NewPasswordHash
 	where
 		  EmployeeId = @EmployeeID
-	  and PasswordHash = @OldPasswordHash
-	  and Active = 1
+		and PasswordHash = @OldPasswordHash
+		and Active = 1
 	return @@RowCount
 end
 go
@@ -260,7 +260,7 @@ print '*** Creating sp_update_employee_password_by_email'
 go
 
 create procedure sp_update_employee_password_by_email
-(
+	(
 	@Email           nvarchar(50),
 	@NewPasswordHash nvarchar(100)
 )
@@ -270,7 +270,7 @@ begin
 	set PasswordHash = @NewPasswordHash
 	where
 		  Email = @Email
-	  and Active = 1
+		and Active = 1
 	return @@RowCount
 end
 go
@@ -280,7 +280,7 @@ print '*** Creating sp_delete_employee'
 go
 
 create procedure sp_delete_employee
-(
+	(
 	@EmployeeID int,
 	@FirstName  nvarchar(50),
 	@LastName   nvarchar(50)
@@ -288,19 +288,19 @@ create procedure sp_delete_employee
 as
 begin
 	declare @employee_to_delete int
-	
+
 	select
-			@employee_to_delete = (
+		@employee_to_delete = (
 			select
-				count(*)
-			from
-				dbo.Employee
-			where
+			count(*)
+		from
+			dbo.Employee
+		where
 				  EmployeeID = @EmployeeID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+			and FirstName = @FirstName
+			and LastName = @LastName
 		)
-	
+
 	if @employee_to_delete <> 1
 			raiserror (15600, -1, -1, 'sp_delete_employee')
 		else
@@ -308,13 +308,13 @@ begin
 			delete
 			from dbo.EmployeeRole
 			where EmployeeID = @EmployeeID
-	
+
 	delete
 	from dbo.Employee
 	where
 		  EmployeeID = @EmployeeID
-	  and FirstName = @FirstName
-	  and LastName = @LastName
+		and FirstName = @FirstName
+		and LastName = @LastName
 	return @@RowCount
 end
 go
@@ -324,7 +324,7 @@ print '*** Creating sp_deactivate_employee'
 go
 
 create procedure sp_deactivate_employee
-(
+	(
 	@EmployeeID int,
 	@FirstName  nvarchar(50),
 	@LastName   nvarchar(50)
@@ -332,19 +332,19 @@ create procedure sp_deactivate_employee
 as
 begin
 	declare @user_to_deactivate int
-	
+
 	select
-			@user_to_deactivate = (
+		@user_to_deactivate = (
 			select
-				count(*)
-			from
-				dbo.Employee
-			where
+			count(*)
+		from
+			dbo.Employee
+		where
 				  EmployeeID = @EmployeeID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+			and FirstName = @FirstName
+			and LastName = @LastName
 		)
-	
+
 	if @user_to_deactivate <> 1
 			raiserror (15600, -1, -1, 'sp_delete_user')
 		else
@@ -352,9 +352,9 @@ begin
 			set Active = 0
 			where
 				  EmployeeID = @EmployeeID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
-			  and Active = 1
+		and FirstName = @FirstName
+		and LastName = @LastName
+		and Active = 1
 	return @@RowCount
 end
 go
@@ -364,7 +364,7 @@ print '*** Creating sp_reactivate_employee'
 go
 
 create procedure sp_reactivate_employee
-(
+	(
 	@EmployeeID int,
 	@FirstName  nvarchar(50),
 	@LastName   nvarchar(50)
@@ -372,19 +372,19 @@ create procedure sp_reactivate_employee
 as
 begin
 	declare @user_to_reactivate int
-	
+
 	select
-			@user_to_reactivate = (
+		@user_to_reactivate = (
 			select
-				count(*)
-			from
-				dbo.Employee
-			where
+			count(*)
+		from
+			dbo.Employee
+		where
 				  EmployeeID = @EmployeeID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+			and FirstName = @FirstName
+			and LastName = @LastName
 		)
-	
+
 	if @user_to_reactivate <> 1
 			raiserror (15600, -1, -1, 'sp_reactivate_user')
 		else
@@ -392,9 +392,9 @@ begin
 			set Active = 1
 			where
 				  EmployeeID = @EmployeeID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
-			  and Active = 0
+		and FirstName = @FirstName
+		and LastName = @LastName
+		and Active = 0
 	return @@RowCount
 end
 go
@@ -405,7 +405,9 @@ go
 
 create table dbo.Role
 (
-	RoleID nvarchar(50) not null, Description nvarchar(250) null, constraint pk_RoleID
+	RoleID      nvarchar(50)  not null,
+	Description nvarchar(250) null,
+	constraint pk_RoleID
 	primary key (RoleID asc)
 )
 go
@@ -417,9 +419,9 @@ go
 insert
 into
 	dbo.Role
-(
+	(
 	RoleID
-)
+	)
 values
 	( 'admin' ),
 	( 'supervisor' ),
@@ -432,7 +434,7 @@ print '*** Creating sp_create_role'
 go
 
 create procedure sp_create_role
-(
+	(
 	@RoleID      nvarchar(50),
 	@Description nvarchar(250)
 )
@@ -452,7 +454,7 @@ print '*** Creating sp_delete_role'
 go
 
 create procedure sp_delete_role
-(
+	(
 	@RoleID nvarchar(50)
 )
 as
@@ -469,10 +471,14 @@ go
 
 create table dbo.EmployeeRole
 (
-	EmployeeID int not null, RoleID nvarchar(50) not null, constraint pk_EmployeeID_RoleID
-	primary key (EmployeeID asc, RoleID asc), constraint fk_Employee_EmployeeID
+	EmployeeID int          not null,
+	RoleID     nvarchar(50) not null,
+	constraint pk_EmployeeID_RoleID
+	primary key (EmployeeID asc, RoleID asc),
+	constraint fk_Employee_EmployeeID
 		foreign key (EmployeeID)
-			references dbo.Employee (EmployeeID), constraint fk_Role_RoleID
+			references dbo.Employee (EmployeeID),
+	constraint fk_Role_RoleID
 		foreign key (RoleID)
 			references dbo.Role (RoleID)
 			on update cascade
@@ -499,7 +505,7 @@ print '*** Creating sp_add_roles_for_employeeID'
 go
 
 create procedure sp_add_roles_for_employeeID
-(
+	(
 	@EmployeeID int,
 	@RoleID     nvarchar(50)
 )
@@ -515,11 +521,11 @@ end
 go
 
 print ''
-print '*** Creating sp_get_all_roles_for_employeeID'
+print '*** Creating sp_select_all_roles_for_employeeID'
 go
 
-create procedure sp_get_all_roles_for_employeeID
-(
+create procedure sp_select_all_roles_for_employeeID
+	(
 	@EmployeeID int
 )
 as
@@ -538,7 +544,7 @@ print '*** Creating sp_update_role_for_employeeID'
 go
 
 create procedure sp_update_role_for_employeeID
-(
+	(
 	@EmployeeID int,
 	@OldRoleID  nvarchar(50),
 	@NewRoleID  nvarchar(50)
@@ -549,7 +555,7 @@ begin
 	set RoleID = @NewRoleID
 	where
 		  EmployeeID = @EmployeeID
-	  and RoleID = @OldRoleID
+		and RoleID = @OldRoleID
 end
 go
 
@@ -558,7 +564,7 @@ print '*** Creating sp_remove_role_for_employeeID'
 go
 
 create procedure sp_remove_role_for_employeeID
-(
+	(
 	@EmployeeID int,
 	@RoleID     nvarchar(50)
 )
@@ -568,7 +574,7 @@ begin
 	from dbo.EmployeeRole
 	where
 		  EmployeeId = @EmployeeID
-	  and RoleID = @RoleID
+		and RoleID = @RoleID
 end
 go
 
@@ -578,14 +584,14 @@ go
 
 create table dbo.Customer
 (
-	CustomerID  int identity (100000, 1) not null,
-	FirstName   nvarchar(50)             not null,
-	LastName    nvarchar(50)             not null,
-	PhoneNumber nvarchar(11)             not null,
-	Email       nvarchar(50)             not null,
+	CustomerID  int          identity (100000, 1) not null,
+	FirstName   nvarchar(50) not null,
+	LastName    nvarchar(50) not null,
+	PhoneNumber nvarchar(11) not null,
+	Email       nvarchar(50) not null,
 	-- (Will be used for Web only Not used for Desktop version)
 	-- PasswordHash nvarchar(100) not null,
-	Active      bit                      not null default 0,
+	Active      bit          not null default 1,
 	constraint pk_CustomerID
 		primary key (CustomerID asc)
 )
@@ -610,7 +616,7 @@ print '*** Creating sp_create_customer'
 go
 
 create procedure sp_create_customer
-(
+	(
 	@FirstName   nvarchar(50),
 	@LastName    nvarchar(50),
 	@PhoneNumber nvarchar(11),
@@ -629,11 +635,11 @@ end
 go
 
 print ''
-print '*** Creating sp_get_customer_by_customer_id'
+print '*** Creating sp_select_customer_by_customer_id'
 go
 
-create procedure sp_get_customer_by_customer_id
-(
+create procedure sp_select_customer_by_customer_id
+	(
 	@CustomerID int
 )
 as
@@ -647,16 +653,16 @@ begin
 		dbo.customer
 	where
 		  CustomerID = @CustomerID
-	  and Active = 1
+		and Active = 1
 end
 go
 
 print ''
-print '*** Creating sp_get_customer_by_first_or_Last_name'
+print '*** Creating sp_select_customer_by_first_or_Last_name'
 go
 
-create procedure sp_get_customer_by_first_or_Last_name
-(
+create procedure sp_select_customer_by_first_or_Last_name
+	(
 	@FirstName nvarchar(50),
 	@LastName  nvarchar(50)
 )
@@ -672,17 +678,17 @@ begin
 		dbo.Customer
 	where
 		 FirstName = @FirstName
-	  or LastName = @LastName
-			 and Active = 1
+		or LastName = @LastName
+		and Active = 1
 end
 go
 
 print ''
-print '*** Creating sp_get_customer_by_first_last_name_like'
+print '*** Creating sp_select_customer_by_first_last_name_like'
 go
 
-create procedure sp_get_customer_by_first_last_name_like
-(
+create procedure sp_select_customer_by_first_last_name_like
+	(
 	@FirstName nvarchar(50),
 	@LastName  nvarchar(50)
 )
@@ -698,17 +704,17 @@ begin
 		dbo.Customer
 	where
 		 FirstName like '%' + @FirstName + '%'
-	  or LastName like '%' + @LastName + '%'
-			 and Active = 1
+		or LastName like '%' + @LastName + '%'
+		and Active = 1
 end
 go
 
 print ''
-print '*** Creating sp_get_all_customers'
+print '*** Creating sp_select_all_customers'
 go
 
-create procedure sp_get_all_customers
-(
+create procedure sp_select_all_customers
+	(
 	@Active bit
 )
 as
@@ -726,11 +732,35 @@ end
 go
 
 print ''
+print '*** creating sp_select_customer_by_email_like'
+go
+
+create procedure sp_select_customer_by_email_like
+	(
+	@Email nvarchar(50)
+)
+as
+begin
+	select
+		CustomerID,
+		FirstName,
+		LastName,
+		PhoneNumber,
+		Email
+	from
+		dbo.Customer
+	where
+		 Email like @Email + '%'
+		and Active = 1
+end
+go
+
+print ''
 print '*** Creating sp_update_customer_profile'
 go
 
 create procedure sp_update_customer_profile
-(
+	(
 	@CustomerID     int,
 	@OldLastName    nvarchar(50),
 	@OldPhoneNumber nvarchar(11),
@@ -748,10 +778,10 @@ begin
 		Email       = @NewEmail
 	where
 		  CustomerId = @CustomerID
-	  and LastName = @OldLastName
-	  and PhoneNumber = @OldPhoneNumber
-	  and Email = @OldEmail
-	  and Active = 1
+		and LastName = @OldLastName
+		and PhoneNumber = @OldPhoneNumber
+		and Email = @OldEmail
+		and Active = 1
 end
 go
 
@@ -760,7 +790,7 @@ print '*** Creating sp_deactivate_customer'
 go
 
 create procedure sp_deactivate_customer
-(
+	(
 	@CustomerID int,
 	@FirstName  nvarchar(50),
 	@LastName   nvarchar(50)
@@ -768,19 +798,19 @@ create procedure sp_deactivate_customer
 as
 begin
 	declare @customer_to_deactivate int
-	
+
 	select
-			@customer_to_deactivate = (
+		@customer_to_deactivate = (
 			select
-				count(*)
-			from
-				dbo.Customer
-			where
+			count(*)
+		from
+			dbo.Customer
+		where
 				  CustomerID = @CustomerID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+			and FirstName = @FirstName
+			and LastName = @LastName
 		)
-	
+
 	if @customer_to_deactivate <> 1
 			raiserror (15600, -1, -1, 'sp_deactivate_customer')
 		else
@@ -788,9 +818,9 @@ begin
 			set Active = 0
 			where
 				  CustomerID = @CustomerID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
-			  and Active = 1
+		and FirstName = @FirstName
+		and LastName = @LastName
+		and Active = 1
 	return @@RowCount
 end
 go
@@ -800,7 +830,7 @@ print '*** Creating sp_delete_customer'
 go
 
 create procedure sp_delete_customer
-(
+	(
 	@CustomerID int,
 	@FirstName  nvarchar(50),
 	@LastName   nvarchar(50)
@@ -808,19 +838,19 @@ create procedure sp_delete_customer
 as
 begin
 	declare @customer_to_delete int
-	
+
 	select
-			@customer_to_delete = (
+		@customer_to_delete = (
 			select
-				count(*)
-			from
-				dbo.Customer
-			where
+			count(*)
+		from
+			dbo.Customer
+		where
 				  CustomerID = @CustomerID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+			and FirstName = @FirstName
+			and LastName = @LastName
 		)
-	
+
 	if @customer_to_delete <> 1
 			raiserror (15600, -1, -1, 'sp_delete_customer')
 		else
@@ -828,8 +858,8 @@ begin
 			from dbo.Customer
 			where
 				  CustomerID = @CustomerID
-			  and FirstName = @FirstName
-			  and LastName = @LastName
+		and FirstName = @FirstName
+		and LastName = @LastName
 	return @@RowCount
 end
 go
@@ -840,7 +870,9 @@ go
 
 create table dbo.InstrumentStatus
 (
-	InstrumentStatusID nvarchar(50) not null, Description nvarchar(250) null, constraint pk_InstrumentStatusID
+	InstrumentStatusID nvarchar(50)  not null,
+	Description        nvarchar(250) null,
+	constraint pk_InstrumentStatusID
 	primary key (InstrumentStatusID asc)
 )
 go
@@ -883,7 +915,7 @@ print '*** Creating sp_create_InstrumentStatusID'
 go
 
 create procedure sp_create_InstrumentStatusID
-(
+	(
 	@InstrumentStatusID nvarchar(50),
 	@Description        nvarchar(250)
 )
@@ -910,12 +942,12 @@ begin
 	from
 		InstrumentStatus
 end
-	print ''
-	print '*** Creating sp_delete_InstrumentStatusID'
+print ''
+print '*** Creating sp_delete_InstrumentStatusID'
 go
 
 create procedure sp_delete_InstrumentStatusID
-(
+	(
 	@InstrumentStatusID nvarchar(50)
 )
 as
@@ -927,10 +959,10 @@ end
 go
 
 print ''
-print '*** Creating sp_get_all_InstrumentStatusID'
+print '*** Creating sp_select_all_InstrumentStatusID'
 go
 
-create procedure sp_get_all_InstrumentStatusID
+create procedure sp_select_all_InstrumentStatusID
 as
 begin
 	select
@@ -946,7 +978,10 @@ go
 
 create table dbo.RentalTerm
 (
-	RentalTermID nvarchar(50) not null, TermLength int not null, RentalCost money not null, constraint pk_RentalTermID
+	RentalTermID nvarchar(50) not null,
+	TermLength   int          not null,
+	RentalCost   money        not null,
+	constraint pk_RentalTermID
 	primary key (RentalTermID asc)
 )
 go
@@ -971,7 +1006,7 @@ print '*** Creating sp_create_RentalTerm'
 go
 
 create procedure sp_create_RentalTerm
-(
+	(
 	@RentalTermID nvarchar(50),
 	@TermLength   int,
 	@RentalCost   money
@@ -992,7 +1027,7 @@ print '*** Creating sp_delete_RentalTerm'
 go
 
 create procedure sp_delete_RentalTerm
-(
+	(
 	@RentalTermID nvarchar(50),
 	@TermLength   int,
 	@RentalCost   money
@@ -1003,8 +1038,8 @@ begin
 	from dbo.RentalTerm
 	where
 		  RentalTermID = @RentalTermID
-	  and TermLength = @TermLength
-	  and RentalCost = @RentalCost
+		and TermLength = @TermLength
+		and RentalCost = @RentalCost
 end
 go
 
@@ -1014,7 +1049,9 @@ go
 
 create table dbo.PrepList
 (
-	PrepListID int identity (100000, 1) not null, Description nvarchar(250) null, constraint pk_PrepListID
+	PrepListID  int           identity (100000, 1) not null,
+	Description nvarchar(250) null,
+	constraint pk_PrepListID
 	primary key (PrepListID asc)
 )
 
@@ -1040,7 +1077,7 @@ print '*** Creating sp_create_PrepListID'
 go
 
 create procedure sp_create_PrepListID
-(
+	(
 	@Description nvarchar(250)
 )
 as
@@ -1060,7 +1097,7 @@ print '*** Creating sp_update_PrepListID'
 go
 
 create procedure sp_update_PrepListID
-(
+	(
 	@PrepListID     int,
 	@OldDescription nvarchar(250),
 	@NewDescription nvarchar(250)
@@ -1071,7 +1108,7 @@ begin
 	set Description = @OldDescription
 	where
 		  PrepListID = @PrepListID
-	  and Description = @NewDescription
+		and Description = @NewDescription
 	return @@RowCount
 end
 go
@@ -1081,7 +1118,7 @@ print '*** Creating sp_delete_PrepListID'
 go
 
 create procedure sp_delete_PreplistID
-(
+	(
 	@PrepListID  int,
 	@Description nvarchar(250)
 )
@@ -1091,16 +1128,16 @@ begin
 	from dbo.PrepList
 	where
 		  PrepListID = @PrepListID
-	  and Description = @Description
+		and Description = @Description
 	return @@RowCount
 end
 go
 
 print ''
-print '*** Creating sp_get_all_PrepList'
+print '*** Creating sp_select_all_PrepList'
 go
 
-create procedure sp_get_all_PrepList
+create procedure sp_select_all_PrepList
 as
 begin
 	select
@@ -1117,7 +1154,8 @@ go
 
 create table instrumentFamily
 (
-	InstrumentFamilyID nvarchar(50) not null, constraint pk_instrumentFamilyID
+	InstrumentFamilyID nvarchar(50) not null,
+	constraint pk_instrumentFamilyID
 	primary key (InstrumentFamilyID asc)
 )
 go
@@ -1138,10 +1176,10 @@ values
 go
 
 print ''
-print '*** Creating sp_get_all_Instrument_family'
+print '*** Creating sp_select_all_Instrument_family'
 go
 
-create procedure sp_get_all_instrument_family
+create procedure sp_select_all_instrument_family
 as
 begin
 	select
@@ -1204,10 +1242,10 @@ values
 go
 
 print ''
-print '*** Creating sp_get_all_InstrumentType'
+print '*** Creating sp_select_all_InstrumentType'
 go
 
-create procedure sp_get_all_InstrumentType
+create procedure sp_select_all_InstrumentType
 as
 begin
 	select
@@ -1222,7 +1260,7 @@ print '*** crating sp_select_instrument_type_by_InstrumentTypeID'
 go
 
 create procedure sp_select_instrument_type_by_InstrumentTypeID
-(
+	(
 	@InstrumentTypeID nvarchar(50)
 )
 as
@@ -1233,7 +1271,7 @@ begin
 		InstrumentFamilyID
 	from
 		InstrumentType
-			join RentalTerm on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+		join RentalTerm on InstrumentType.RentalTermID = RentalTerm.RentalTermID
 	where InstrumentTypeID = @InstrumentTypeID
 end
 go
@@ -1244,7 +1282,8 @@ go
 
 create table InstrumentBrand
 (
-	InstrumentBrandID nvarchar(50) not null, constraint pk_InstrumnetBrandID
+	InstrumentBrandID nvarchar(50) not null,
+	constraint pk_InstrumnetBrandID
 	primary key (InstrumentBrandID asc)
 )
 
@@ -1275,15 +1314,16 @@ values
 go
 
 print ''
-print '*** Creating sp_get_all_instrument_brands'
+print '*** Creating sp_select_all_instrument_brands'
 go
 
-create procedure sp_get_all_instrument_brands
+create procedure sp_select_all_instrument_brands
 as
 begin
 	select
 		InstrumentBrandID
-	from InstrumentBrand
+	from
+		InstrumentBrand
 end
 go
 
@@ -1327,10 +1367,10 @@ values
 go
 
 print ''
-print '*** Creating sp_get_all_Instruments'
+print '*** Creating sp_select_all_Instruments'
 go
 
-create procedure sp_get_all_Instruments
+create procedure sp_select_all_Instruments
 as
 begin
 	select
@@ -1345,19 +1385,19 @@ begin
 		PrepList.Description
 	from
 		dbo.Instrument
-			join InstrumentType
-			     on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
-			join RentalTerm
-			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
-			join PrepList
-			     on InstrumentType.PrepListID = PrepList.PrepListID
-			join InstrumentFamily
-			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
+		join InstrumentType
+		on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
+		join RentalTerm
+		on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+		join PrepList
+		on InstrumentType.PrepListID = PrepList.PrepListID
+		join InstrumentFamily
+		on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
 	where
 		 InstrumentStatusID = 'Available'
-	  or InstrumentStatusID = 'For Sale'
-	  or InstrumentStatusID = 'For Rent'
-	  or InstrumentStatusID = 'For Rent To Own'
+		or InstrumentStatusID = 'For Sale'
+		or InstrumentStatusID = 'For Rent'
+		or InstrumentStatusID = 'For Rent To Own'
 end
 go
 
@@ -1366,7 +1406,7 @@ print '*** Creating sp_update_instrument_status'
 go
 
 create procedure sp_update_instrumentStatus
-(
+	(
 	@InstrumentID nvarchar(50),
 	@OldStatus    nvarchar(50),
 	@OldPrice     money,
@@ -1381,8 +1421,8 @@ begin
 		Price              = @NewPrice
 	where
 		  InstrumentID = @InstrumentID
-	  and InstrumentStatusID = @OldStatus
-	  and Price = @OldPrice
+		and InstrumentStatusID = @OldStatus
+		and Price = @OldPrice
 end
 go
 
@@ -1391,7 +1431,7 @@ print '*** Creating sp_insert_instrument'
 go
 
 create procedure sp_insert_instrument
-(
+	(
 	@InstrumentID      nvarchar(50),
 	@InstrumentTypeID  nvarchar(50),
 	@InstrumentBrandID nvarchar(50),
@@ -1409,11 +1449,11 @@ end
 go
 
 print ''
-print '*** Creating sp_get_instruments_by_status'
+print '*** Creating sp_select_instruments_by_status'
 go
 
-create procedure sp_get_instruments_by_status
-(
+create procedure sp_select_instruments_by_status
+	(
 	@Status nvarchar(50)
 )
 as
@@ -1430,14 +1470,14 @@ begin
 		PrepList.Description
 	from
 		dbo.Instrument
-			join InstrumentType
-			     on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
-			join RentalTerm
-			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
-			join PrepList
-			     on InstrumentType.PrepListID = PrepList.PrepListID
-			join InstrumentFamily
-			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
+		join InstrumentType
+		on Instrument.InstrumentTypeID = InstrumentType.InstrumentTypeID
+		join RentalTerm
+		on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+		join PrepList
+		on InstrumentType.PrepListID = PrepList.PrepListID
+		join InstrumentFamily
+		on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
 	where InstrumentStatusID = @Status
 end
 go
@@ -1486,14 +1526,14 @@ begin
 		PrepList.Description
 	from
 		dbo.Cart
-			join InstrumentType
-			     on Cart.InstrumentTypeID = InstrumentType.InstrumentTypeID
-			join RentalTerm
-			     on InstrumentType.RentalTermID = RentalTerm.RentalTermID
-			join PrepList
-			     on InstrumentType.PrepListID = PrepList.PrepListID
-			join InstrumentFamily
-			     on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
+		join InstrumentType
+		on Cart.InstrumentTypeID = InstrumentType.InstrumentTypeID
+		join RentalTerm
+		on InstrumentType.RentalTermID = RentalTerm.RentalTermID
+		join PrepList
+		on InstrumentType.PrepListID = PrepList.PrepListID
+		join InstrumentFamily
+		on InstrumentType.InstrumentFamilyID = InstrumentFamily.InstrumentFamilyID
 end
 go
 
@@ -1503,7 +1543,7 @@ print '*** creating sp_insert_cart_item'
 go
 
 create procedure sp_insert_cart_item
-(
+	(
 	@InstrumentID       nvarchar(50),
 	@InstrumentTypeID   nvarchar(50),
 	@InstrumentStatusID nvarchar(50),
@@ -1515,21 +1555,21 @@ begin
 	declare @newStatus nvarchar(50)
 	declare @newPrice money
 	set @newPrice = @Price
-	
+
 	insert
 	into
 		Cart
-	( InstrumentID, InstrumentTypeID, InstrumentStatusID, InstrumentBrandID, Price )
+		( InstrumentID, InstrumentTypeID, InstrumentStatusID, InstrumentBrandID, Price )
 	values
-	( @InstrumentID, @InstrumentTypeID, @InstrumentStatusID, @InstrumentBrandID, @Price )
-	
+		( @InstrumentID, @InstrumentTypeID, @InstrumentStatusID, @InstrumentBrandID, @Price )
+
 	if @InstrumentStatusID = 'For Rent'
 			set @newStatus = 'Rented'
 	if @InstrumentStatusID = 'For Rent To Own'
 			set @newStatus = 'Rent To Own'
 	if @InstrumentStatusID = 'For Sale' or @InstrumentStatusID = 'Available'
 			set @newStatus = 'Sold'
-	
+
 	execute sp_update_instrumentStatus 
 			@InstrumentID,
 	        @InstrumentStatusID,

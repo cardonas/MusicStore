@@ -5,7 +5,7 @@ namespace DataAccessLayer
 {
     public interface IInstrumentAccessor
     {
-        List<InstrumentVm> GetAllInstruments();
+        List<InstrumentVm> SelectAllInstruments();
 
         List<string> SelectAllInstrumentType();
 

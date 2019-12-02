@@ -87,7 +87,7 @@ namespace LogicLayer
         {
             try
             {
-                return _userAccessor.GetCustomerByActive(active);
+                return _userAccessor.SelectCustomerByActive(active);
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace LogicLayer
         {
             try
             {
-                return _userAccessor.GetEmployeesByActive(active);
+                return _userAccessor.SelectEmployeesByActive(active);
             }
             catch(Exception ex)
             {

@@ -9,9 +9,9 @@ namespace DataAccessLayer
 
         bool UpdatePasswordHash(int employeeId, string oldPasswordHash, string newPasswordHash);
 
-        List<Employee> GetEmployeesByActive(bool active = true);
+        List<Employee> SelectEmployeesByActive(bool active = true);
 
-        List<Customer> GetCustomerByActive(bool active = true);
+        List<Customer> SelectCustomerByActive(bool active = true);
 
         bool AddNewEmployee(Employee employee);
 
