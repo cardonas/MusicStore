@@ -52,5 +52,10 @@ namespace PresentationLayer
             _customer = (Customer) DgCustomerList.SelectedItem;
             this.NavigationService?.Navigate(new pgCustomerDetails(_customerManager, _customer, editMode: true));
         }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService?.Navigate(new pgCustomerDetails(true));
+        }
     }
 }

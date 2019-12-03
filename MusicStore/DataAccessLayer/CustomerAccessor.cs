@@ -120,5 +120,36 @@ namespace DataAccessLayer
 
             return isUpdated;
         }
+
+        public bool InsertCustomer(Customer customer)
+        {
+            bool isAdded;
+            var conn = DbConnection.GetConnection();
+            var cmd = new SqlCommand("sp_insert_customer", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+            cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+            cmd.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
+            cmd.Parameters.AddWithValue("@Email", customer.Email);
+
+            try
+            {
+                conn.Open();
+                isAdded = 1 == cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isAdded;
+        }
     }
 }

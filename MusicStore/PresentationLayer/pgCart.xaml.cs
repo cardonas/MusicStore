@@ -76,6 +76,7 @@ namespace PresentationLayer
             }
             GetTaxAndTotal();
             TxtEmployee.Text = _user.FirstName;
+            TxtCustomer.Focus();
         }
 
         private void TxtCustomer_KeyUp(object sender, KeyEventArgs e)
@@ -120,6 +121,11 @@ namespace PresentationLayer
             _customer = (Customer)AutoComplete.SelectedItem;
             TxtCustomer.Text = _customer.LastName + ", " + _customer.FirstName;
             AutoComplete.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnAddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService?.Navigate(new pgCustomerDetails(true));
         }
     }
 }

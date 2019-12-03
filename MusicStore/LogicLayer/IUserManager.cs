@@ -13,8 +13,6 @@ namespace LogicLayer
 
         List<Employee> GetEmployeesByActive(bool active = true);
 
-        List<Customer> GetCustomersByActive(bool active = true);
-
         bool AddNewEmployee(Employee employee);
 
         bool UpdateEmployeeInfo(Employee oldEmployee, Employee updatedEmployee);

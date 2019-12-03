@@ -16,11 +16,13 @@ namespace PresentationLayer
         private bool _addMode;
         private bool _editMode;
 
-        public pgCustomerDetails()
+        public pgCustomerDetails(bool addMode = false)
         {
             InitializeComponent();
             _customerManager = new CustomerManager();
+            _addMode = addMode;
         }
+
 
         public pgCustomerDetails(ICustomerManager customerManager, Customer customer, bool editMode = false)
         {
@@ -40,6 +42,12 @@ namespace PresentationLayer
             if (_customer != null)
             {
                 AddCustomerInfo();
+            }
+
+            if (_customer == null && _addMode)
+            {
+                SetEditMode();
+                DgUserTransactions.IsEnabled = false;
             }
         }
 
@@ -65,6 +73,12 @@ namespace PresentationLayer
             TxtPhoneNumber.IsEnabled = true;
             BtnEdit.Visibility = Visibility.Collapsed;
             BtnSave.Visibility = Visibility.Visible;
+            if (_addMode)
+            {
+                LblCustomer.Content = "Add New Customer";
+                LbCustomerId.Visibility = Visibility.Hidden;
+                LblCustomer.SetValue(Grid.ColumnSpanProperty, 3);
+            }
         }
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
@@ -92,6 +106,40 @@ namespace PresentationLayer
                     if (_customerManager.EditCustomerDetails(oldCustomer, newCustomer))
                     {
                         MessageBox.Show("Update Successful", "Success", MessageBoxButton.OK);
+                        this.NavigationService?.Navigate(new pgCustomerList());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+                }
+            }
+
+            if (_addMode)
+            {
+                try
+                {
+                    if (_customerManager.AddCustomer(new Customer()
+                    {
+                        FirstName = TxtFirstName.Text,
+                        LastName = TxtLastName.Text,
+                        Email =  TxtEmail.Text,
+                        PhoneNumber = TxtPhoneNumber.Value.ToString()
+                    }))
+                    {
+                        MessageBox.Show("Customer Added", "Success", MessageBoxButton.OK);
+                    }
+
+                    if (MessageBox.Show("Would you like add another Customer?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        TxtFirstName.Text = "";
+                        TxtLastName.Text = "";
+                        TxtEmail.Text = "";
+                        TxtPhoneNumber.Text = "";
+                        TxtFirstName.Focus();
+                    }
+                    else
+                    {
                         this.NavigationService?.Navigate(new pgCustomerList());
                     }
                 }

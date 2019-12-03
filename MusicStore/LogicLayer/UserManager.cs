@@ -83,17 +83,6 @@ namespace LogicLayer
             return isDeleted;
         }
 
-        public List<Customer> GetCustomersByActive(bool active = true)
-        {
-            try
-            {
-                return _userAccessor.SelectCustomerByActive(active);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Data not found", ex);
-            }
-        }
 
         public List<Employee> GetEmployeesByActive(bool active = true)
         {

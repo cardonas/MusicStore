@@ -10,7 +10,11 @@ namespace DataAccessLayer
     public interface ICustomerAccessor
     {
         List<Customer> SelectCustomerByEmailLike(string query);
+
         List<Customer> SelectAllCustomers(bool active);
+
         bool UpdateCustomerProfile(Customer oldCustomer, Customer newCustomer);
+
+        bool InsertCustomer(Customer customer);
     }
 }

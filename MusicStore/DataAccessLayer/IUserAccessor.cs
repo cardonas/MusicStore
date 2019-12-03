@@ -11,8 +11,6 @@ namespace DataAccessLayer
 
         List<Employee> SelectEmployeesByActive(bool active = true);
 
-        List<Customer> SelectCustomerByActive(bool active = true);
-
         bool AddNewEmployee(Employee employee);
 
         bool UpdateEmployeeInfo(Employee oldEmployee, Employee updatedEmployee);

@@ -23,7 +23,7 @@
                     <ColumnDefinition Width="390"></ColumnDefinition>
                     <ColumnDefinition Width="90"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BtnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" >Add</Button>
+                <Button x:Name="BtnAdd" Width="90" FontSize="15" Grid.Column="0" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="BtnAdd_Click" >Add</Button>
                 <Button x:Name="BtnEdit" Width="60" FontSize="15" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Left" BorderThickness="0" Background="LightGray" Click="BtnEdit_Click" >Edit</Button>
                 <Button x:Name="BtnDelete" Height="30" Width="90" FontSize="15" Grid.Column="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left" >De-Activate</Button>
                 <Button x:Name="BtnReActivate" Height="30" Width="90" FontSize="15" Grid.Column="3" HorizontalContentAlignment="Center" VerticalAlignment="Center" BorderThickness="0" Background="LightGray" HorizontalAlignment="Left" Visibility="Hidden" >Re-Activate</Button>

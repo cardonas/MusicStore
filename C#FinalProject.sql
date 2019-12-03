@@ -612,10 +612,10 @@ values
 go
 
 print ''
-print '*** Creating sp_create_customer'
+print '*** Creating sp_insert_customer'
 go
 
-create procedure sp_create_customer
+create procedure sp_insert_customer
 	(
 	@FirstName   nvarchar(50),
 	@LastName    nvarchar(50),
@@ -630,7 +630,6 @@ begin
 		( FirstName, LastName, PhoneNumber, Email )
 	values
 		( @FirstName, @LastName, @PhoneNumber, @Email )
-	return scope_identity()
 end
 go
 
@@ -1584,5 +1583,80 @@ begin
 end
 go
 
+print ''
+print '*** Creating Invoice Table'
+go
 
+create table Invoice
+(
+	InvoiceID int identity(10000, 1) not null,
+	CustomerID int not null,
+	EmployeeID int not null,
+	TransactionDate datetime not null,
+	Total money not null,
+	constraint pk_InvoiceID primary key (InvoiceID asc),
+	constraint fk_Invoice_CustomerID foreign key (CustomerId) references Customer(CustomerID),
+	constraint fk_Invoice_EmployeeID foreign key (EmployeeID) references Employee(EmployeeID) 
+)
+go
+
+print ''
+print '*** Creating sp_insert_invoice'
+go
+
+create procedure sp_insert_invoice
+(
+	@CustomerID int,
+	@EmployeeID int,
+	@TransactionDate datetime,
+	@Total money
+)
+as
+begin
+	insert into dbo.Invoice
+		(CustomerID, EmployeeID, TransactionDate, Total)
+	values
+		(@CustomerID, @EmployeeID, @TransactionDate, @Total)
+	select scope_identity()
+end
+go
+
+print ''
+print '*** Creating InvoiceLine'
+go
+
+create table InvoiceLine
+(	
+	InvoiceLineID int identity(10000, 1) not null,
+	InvoiceID int not null,
+	InstrumentID  nvarchar(50) null default null,
+	RepairTicketID int null default null,
+	RentToOwnID int null default null,
+	LineTotal money not null,
+	constraint pk_InvoiceLineID primary key (InvoiceLineID asc),
+	constraint fk_InvoiceLine_InstrumentID foreign key (InstrumentID) references Instrument(InstrumentID),
+	constraint fk_InvoiceLine_InvoiceID foreign key (InvoiceID) references Invoice(InvoiceID)
+)
+go
+
+print ''
+print '*** creating sp_insert_invoice_line'
+go
+
+create procedure sp_insert_invoice_line
+(
+	@InvoiceId int,
+	@InstrumentID nvarchar(50),
+	@RepairTicketID int,
+	@RentToOwnID int,
+	@LineTotal money
+)
+as
+begin
+	insert into dbo.InvoiceLine
+		(InstrumentID, InvoiceID, RepairTicketID, RentToOwnID, LineTotal)
+	values
+		(@InstrumentID, @InvoiceID, @RepairTicketID, @RepairTicketID, @LineTotal)
+end
+go
 

@@ -57,5 +57,20 @@ namespace LogicLayer
 
             return updateSuccess;
         }
+
+        public bool AddCustomer(Customer customer)
+        {
+            bool addCustomer;
+            try
+            {
+                addCustomer = _customerAccessor.InsertCustomer(customer);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to update customer details", ex);
+            }
+
+            return addCustomer;
+        }
     }
 }

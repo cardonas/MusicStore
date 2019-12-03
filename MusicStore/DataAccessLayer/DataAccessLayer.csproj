@@ -47,7 +47,9 @@
     <Compile Include="ICartAccessor.cs" />
     <Compile Include="ICustomerAccessor.cs" />
     <Compile Include="IInstrumentAccessor.cs" />
+    <Compile Include="IInvoiceAccessor.cs" />
     <Compile Include="InstrumentAccessor.cs" />
+    <Compile Include="InvoiceAccessor.cs" />
     <Compile Include="IUserAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserAccessor.cs" />

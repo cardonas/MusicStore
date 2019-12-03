@@ -144,54 +144,12 @@ namespace DataAccessLayer
             return deactivateSuccess;
         }
 
-        public List<Customer> SelectCustomerByActive(bool active = true)
-        {
-            List<Customer> users = new List<Customer>();
-            var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_selectall_customers", conn)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@Active", active);
-
-            try
-            {
-                conn.Open();
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        var user = new Customer
-                        {
-                            CustomerId = reader.GetInt32(0),
-                            FirstName = reader.GetString(1),
-                            LastName = reader.GetString(2),
-                            PhoneNumber = reader.GetString(3),
-                            Email = reader.GetString(4)
-                        };
-
-                        users.Add(user);
-                    }
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return users;
-        }
 
         public List<Employee> SelectEmployeesByActive(bool active = true)
         {
             List<Employee> users = new List<Employee>();
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand("sp_selectall_employees", conn)
+            var cmd = new SqlCommand("sp_select_all_employees", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };

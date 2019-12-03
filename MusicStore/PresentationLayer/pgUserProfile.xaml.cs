@@ -91,12 +91,6 @@ namespace PresentationLayer
         public void SaveUpdatedEmployee()
         {
             Employee oldEmployee = _employee;
-            //txtFirstName.Text = _employee.FirstName;
-            //txtLastName.Text = _employee.LastName;
-            //txtAddress.Text = "";
-            //txtState.Text = "";
-            //txtZipcode.Text = "";
-            //txtPhoneNumber.Text = _employee.PhoneNumber;
 
 
             Employee updatedEmployee = new Employee

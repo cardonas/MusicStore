@@ -48,7 +48,7 @@
         <TextBox x:Name="TxtEmail" IsEnabled="False" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Height="25" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="185" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2" Margin="23,0,0,0"/>
         <Label Content="Email" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" Margin="23,25,0,0" Width="185"/>
 
-        <xctk:MaskedTextBox x:Name="TxtPhoneNumber" Mask="(000) 000-0000" ValueDataType="{x:Type s:String}" IncludeLiteralsInValue="False" IsEnabled="False" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="25" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="185" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2" Margin="23,0,0,0" />
+        <xctk:MaskedTextBox  x:Name="TxtPhoneNumber" Mask="(000) 000-0000" ValueDataType="{x:Type s:String}" IncludeLiteralsInValue="False" IsEnabled="False" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Height="25" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="185" Padding="0 0 0 0" BorderBrush="Black" BorderThickness="2 2 2 2" Margin="23,0,0,0" />
         <Label Content="Phone Number" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="0 0 0 0" Margin="23,25,0,0" Width="185"/>
 
         <Label Content="Transactions (Double click to view details)" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="3" Margin="20,0,0,84"/>
