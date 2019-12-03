@@ -762,9 +762,11 @@ go
 create procedure sp_update_customer_profile
 	(
 	@CustomerID     int,
+	@OldFirstName   nvarchar(50),
 	@OldLastName    nvarchar(50),
 	@OldPhoneNumber nvarchar(11),
 	@OldEmail       nvarchar(50),
+	@NewFirstName	nvarchar(50),
 	@NewLastName    nvarchar(50),
 	@NewPhoneNumber nvarchar(11),
 	@NewEmail       nvarchar(50)
@@ -773,11 +775,13 @@ as
 begin
 	update dbo.customer
 	set
+		FirstName 	= @NewFirstName,
 		LastName    = @NewLastName,
 		PhoneNumber = @NewPhoneNumber,
 		Email       = @NewEmail
 	where
 		  CustomerId = @CustomerID
+		and FirstName = @OldFirstName
 		and LastName = @OldLastName
 		and PhoneNumber = @OldPhoneNumber
 		and Email = @OldEmail

@@ -42,5 +42,20 @@ namespace LogicLayer
                 throw new ApplicationException("No customers found.", ex);
             }
         }
+
+        public bool EditCustomerDetails(Customer oldCustomer, Customer newCustomer)
+        {
+            bool updateSuccess;
+            try
+            {
+                updateSuccess = _customerAccessor.UpdateCustomerProfile(oldCustomer, newCustomer);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to update customer details", ex);
+            }
+
+            return updateSuccess;
+        }
     }
 }

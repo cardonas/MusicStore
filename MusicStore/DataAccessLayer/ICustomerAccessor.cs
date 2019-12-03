@@ -11,5 +11,6 @@ namespace DataAccessLayer
     {
         List<Customer> SelectCustomerByEmailLike(string query);
         List<Customer> SelectAllCustomers(bool active);
+        bool UpdateCustomerProfile(Customer oldCustomer, Customer newCustomer);
     }
 }

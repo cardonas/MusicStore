@@ -83,5 +83,42 @@ namespace DataAccessLayer
 
             return customers;
         }
+
+        public bool UpdateCustomerProfile(Customer oldCustomer, Customer newCustomer)
+        {
+            bool isUpdated;
+            var conn = DbConnection.GetConnection();
+            var cmd = new SqlCommand("sp_update_customer_profile", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@CustomerID", oldCustomer.CustomerId);
+            cmd.Parameters.AddWithValue("@OldFirstName", oldCustomer.FirstName);
+            cmd.Parameters.AddWithValue("@OldLastName", oldCustomer.LastName);
+            cmd.Parameters.AddWithValue("@OldPhoneNumber", oldCustomer.PhoneNumber);
+            cmd.Parameters.AddWithValue("@OldEmail", oldCustomer.Email);
+
+            cmd.Parameters.AddWithValue("@NewFirstName", newCustomer.FirstName);
+            cmd.Parameters.AddWithValue("@NewLastName", newCustomer.LastName);
+            cmd.Parameters.AddWithValue("@NewPhoneNumber", newCustomer.PhoneNumber);
+            cmd.Parameters.AddWithValue("@NewEmail", newCustomer.Email);
+
+            try
+            {
+                conn.Open();
+                isUpdated = 1 == cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return isUpdated;
+        }
     }
 }

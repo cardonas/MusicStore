@@ -11,5 +11,6 @@ namespace LogicLayer
     {
         List<Customer> GetCustomersByEmailLike(string query);
         List<Customer> GetAllCustomers(bool active);
+        bool EditCustomerDetails(Customer oldCustomer, Customer newCustomer);
     }
 }

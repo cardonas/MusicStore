@@ -12,7 +12,7 @@ namespace PresentationLayer
     public partial class pgCustomerList : Page
     {
         private readonly ICustomerManager _customerManager;
-
+        private Customer _customer;
 
         public pgCustomerList()
         {
@@ -44,7 +44,13 @@ namespace PresentationLayer
 
         private void DgCustomerList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this.NavigationService?.Navigate(new pgCustomerDetails((Customer) DgCustomerList.SelectedItem));
+            this.NavigationService?.Navigate(new pgCustomerDetails(_customerManager, (Customer) DgCustomerList.SelectedItem));
+        }
+
+        private void BtnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            _customer = (Customer) DgCustomerList.SelectedItem;
+            this.NavigationService?.Navigate(new pgCustomerDetails(_customerManager, _customer, editMode: true));
         }
     }
 }
