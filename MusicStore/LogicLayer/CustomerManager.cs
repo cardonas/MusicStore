@@ -29,5 +29,18 @@ namespace LogicLayer
                 throw new ApplicationException("No customers found.", ex);
             }
         }
+
+        public List<Customer> GetAllCustomers(bool active)
+        {
+            try
+            {
+                return _customerAccessor.SelectAllCustomers(active);
+            }
+            catch (Exception ex)
+            {
+                
+                throw new ApplicationException("No customers found.", ex);
+            }
+        }
     }
 }

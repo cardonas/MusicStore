@@ -10,5 +10,6 @@ namespace LogicLayer
     public interface ICustomerManager
     {
         List<Customer> GetCustomersByEmailLike(string query);
+        List<Customer> GetAllCustomers(bool active);
     }
 }

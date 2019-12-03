@@ -46,7 +46,6 @@ namespace PresentationLayer
             DgCart.Columns[4].Header = "Status";
             DgCart.Columns[5].Header = "Brand";
             DgCart.Columns[6].Header = "Price";
-
             DgCart.Columns[0].Width = 100;
             DgCart.Columns[1].Width = 95;
             DgCart.Columns[2].Width = 80;

@@ -45,5 +45,43 @@ namespace DataAccessLayer
 
             return customers;
         }
+
+        public List<Customer> SelectAllCustomers(bool active)
+        {
+            List<Customer> customers = new List<Customer>();
+
+            var conn = DbConnection.GetConnection();
+            var cmd = new SqlCommand("sp_select_all_customers", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Active", active);
+
+            try
+            {
+                conn.Open();
+
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    customers.Add(new Customer()
+                    {
+                        CustomerId = reader.GetInt32(0),
+                        FirstName = reader.GetString(1),
+                        LastName = reader.GetString(2),
+                        PhoneNumber = reader.GetString(3),
+                        Email = reader.GetString(4)
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return customers;
+        }
     }
 }

@@ -30,7 +30,7 @@
         <StackPanel x:Name="SpButtons" Grid.RowSpan="2" Grid.Row="2" Grid.Column="0">
             <Button x:Name="BtnAdministration" Height="50" BorderBrush="Black" BorderThickness="0 2 0 0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand" Click="btnAdministration_Click">Administration</Button>
             <Button x:Name="BtnInventory" Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand" Click="btnInventory_Click">Inventory</Button>
-            <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task3</Button>
+            <Button x:Name="BtnCustomers" Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand" Click="BtnCustomers_Click">Customers</Button>
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task4</Button>
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task5</Button>
             <Button Height="50" BorderThickness="1,0,1,0" Background="{x:Null}" FontWeight="DemiBold" FontSize="15" Cursor="Hand">Task6</Button>

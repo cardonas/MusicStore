@@ -34,7 +34,10 @@ namespace PresentationLayer
             TabFrame.Content = new PgCart(_user);
         }
 
-        
+        private void BtnCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            TabFrame.Content = new pgCustomerList();
+        }
     }
 }
 

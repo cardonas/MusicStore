@@ -608,7 +608,7 @@ into
 values
 	( 'Daniel', 'Taylor', '3334442222', 'daniel.taylor@gmail.com' ),
 	( 'Stephanie', 'Rodrigez', '1234567890', 'stephanie.Rodrigez@outlook.com' ),
-	( 'Jim', 'Glasgow', '0987654321', 'jim.glasgow@whatever.com' )
+	( 'Jim', 'Glasgow', '1987654321', 'jim.glasgow@whatever.com' )
 go
 
 print ''
