@@ -8,5 +8,7 @@ namespace DataAccessLayer
         List<InstrumentVm> SelectAllInCart();
 
         bool InsertCartItem(Instrument instrument);
+
+        bool DeleteCartItem(string instrumentId);
     }
 }

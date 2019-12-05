@@ -42,5 +42,20 @@ namespace LogicLayer
             }
             return isInserted;
         }
+
+        public bool DeleteCartItem(string instrumentId)
+        {
+            bool isDeleted;
+            try
+            {
+                isDeleted = _cartAccessor.DeleteCartItem(instrumentId);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to delete item", ex);
+            }
+
+            return isDeleted;
+        }
     }
 }

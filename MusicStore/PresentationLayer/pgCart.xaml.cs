@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +16,10 @@ namespace PresentationLayer
     {
         private decimal _subTotal;
         private readonly ICustomerManager _customerManager;
+        private readonly ICartManager _cartManager;
+        private readonly IInvoiceManager _invoiceManager;
         private readonly List<InstrumentVm> _cartItems;
+        private readonly IInvoiceLineManager _invoiceLIneManager;
         private readonly Employee _user;
         private Customer _customer;
 
@@ -22,9 +27,11 @@ namespace PresentationLayer
         public PgCart(Employee user)
         {
             InitializeComponent();
-            ICartManager cartManager = new CartManager();
+             _cartManager = new CartManager();
+            _invoiceManager = new InvoiceManager();
             _customerManager = new CustomerManager();
-            _cartItems = cartManager.GetAllInCart();
+            _invoiceLIneManager = new InvoiceLineManager();
+            _cartItems = _cartManager.GetAllInCart();
             _user = user;
         }
 
@@ -127,5 +134,91 @@ namespace PresentationLayer
         {
             this.NavigationService?.Navigate(new pgCustomerDetails(true));
         }
+
+        private void BtnCheckout_Click(object sender, RoutedEventArgs e)
+        {
+            int invoiceId = createInvoice();
+
+            createInvoiceLines(invoiceId);
+
+            if(emptyCart())
+            {
+                MessageBox.Show("Customer Checked out successfully.");
+            }
+            refreshList();
+            TxtCustomer.Text = "";
+            TxtTax.Text = 0.ToString("c");
+            TxtTotal.Text = 0.ToString("c");
+        }
+
+        private int createInvoice()
+        {
+            int invoiceID = 0;
+            try
+            {
+               invoiceID = _invoiceManager.CreateInvoice(_customer.CustomerId, _user.EmployeeId, DateTime.Now,
+                    decimal.Parse(TxtTotal.Text, NumberStyles.Currency));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+            }
+
+            return invoiceID;
+        }
+
+        private void createInvoiceLines(int invoiceId)
+        {
+            foreach (var cartItem in _cartItems)
+            {
+                try
+                {
+                    decimal lineTotal = 0;
+                    lineTotal += cartItem.Price;
+                    if (cartItem.InstrumentStatusId == "For Rent" || cartItem.InstrumentStatusId == "For Rent To Own")
+                    {
+                        lineTotal += cartItem.RentalFee;
+                    }
+
+                    _invoiceLIneManager.AddInvoiceLine(new InvoiceLine()
+                    {
+                        InstrumentID = cartItem.InstrumentId,
+                        InvoiceID = invoiceId,
+                        RepairTicketID = null,
+                        RentToOwnID = null,
+                        LineTotal = lineTotal
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+                }
+            }
+        }
+
+        private bool emptyCart()
+        {
+            bool isEmpty = false;
+
+            foreach (var cartItem in _cartItems)
+            {
+                try
+                {
+                    isEmpty = _cartManager.DeleteCartItem(cartItem.InstrumentId);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\n" + ex.InnerException?.Message);
+                }
+            }
+
+            return isEmpty;
+        }
+
+        private void refreshList()
+        {
+            DgCart.ItemsSource = _cartManager.GetAllInCart();
+        }
     }
 }
+

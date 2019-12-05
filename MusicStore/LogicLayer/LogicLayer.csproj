@@ -46,7 +46,11 @@
     <Compile Include="ICartManager.cs" />
     <Compile Include="ICustomerManager.cs" />
     <Compile Include="IInstrumentManager.cs" />
+    <Compile Include="IInvoiceLineManager.cs" />
+    <Compile Include="IInvoiceManager.cs" />
     <Compile Include="InstrumentManager.cs" />
+    <Compile Include="InvoiceLineManager.cs" />
+    <Compile Include="InvoiceManager.cs" />
     <Compile Include="IUserManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManager.cs" />

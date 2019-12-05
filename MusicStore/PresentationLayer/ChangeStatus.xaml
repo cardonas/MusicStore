@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
-        mc:Ignorable="d" Height="277.914" Width="233.129" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        mc:Ignorable="d" Height="277.914" Width="233.129" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>

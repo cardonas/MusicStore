@@ -82,5 +82,30 @@ namespace DataAccessLayer
             }
             return isInserted;
         }
+
+        public bool DeleteCartItem(string instrumentId)
+        {
+            bool isDeleted;
+
+            var conn = DbConnection.GetConnection();
+            var cmd = new SqlCommand("sp_delete_cart", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@InstrumentID", instrumentId);
+
+            try
+            {
+                conn.Open();
+                isDeleted = 1 == cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isDeleted;
+        }
     }
 }

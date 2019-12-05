@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlTypes;
 using DataObjects;
 
 namespace LogicLayer
@@ -8,5 +9,7 @@ namespace LogicLayer
         List<InstrumentVm> GetAllInCart();
 
         bool AddCartItem(Instrument instrument);
+
+        bool DeleteCartItem(string instrumentId);
     }
 }

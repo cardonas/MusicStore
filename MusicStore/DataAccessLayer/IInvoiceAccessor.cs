@@ -9,5 +9,6 @@ namespace DataAccessLayer
     public interface IInvoiceAccessor
     {
         int InsertInvoice(int customerId, int employeeId, DateTime transactionDate, decimal total);
+        
     }
 }

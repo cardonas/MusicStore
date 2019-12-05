@@ -11,14 +11,14 @@ namespace DataAccessLayer
             int invoiceId  = 0;
 
             var conn = DbConnection.GetConnection();
-            var cmd = new SqlCommand()
+            var cmd = new SqlCommand("sp_insert_invoice", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
 
             cmd.Parameters.AddWithValue("@CustomerID", customerId);
             cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
-            cmd.Parameters.AddWithValue("@TransactionID", transactionDate);
+            cmd.Parameters.AddWithValue("@TransactionDate", transactionDate);
             cmd.Parameters.AddWithValue("@Total", total);
 
             try
