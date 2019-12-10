@@ -725,6 +725,28 @@ end
 go
 
 print ''
+print '*** crating sp_select_customer_by_email'
+go
+
+create procedure sp_select_customer_by_email
+(
+	@Email nvarchar(50)
+)
+as
+begin
+		select
+		CustomerID,
+		FirstName,
+		LastName,
+		PhoneNumber,
+		Email
+	from
+		dbo.Customer
+	where Email = @Email
+end
+go
+
+print ''
 print '*** creating sp_select_customer_by_email_like'
 go
 
@@ -1604,6 +1626,49 @@ create table Invoice
 		foreign key (EmployeeID)
 			references Employee (EmployeeID)
 )
+go
+
+print ''
+print '*** Creating sp_select_all_invoices'
+go
+
+create procedure sp_select_all_invoices
+as
+begin
+	select
+		InvoiceID,
+		Customer.FirstName,
+		Customer.LastName,
+		Employee.FirstName,
+		Employee.LastName,
+		TransactionDate,
+		Total
+	from dbo.Invoice
+	join Customer on Invoice.CustomerID = Customer.CustomerID
+	join Employee on Invoice.EmployeeID = Employee.EmployeeID
+	order by InvoiceId
+end
+go
+
+print ''
+print '*** Creating sp_select_invoice_by_id'
+go
+
+create procedure sp_select_invoice_by_id
+(
+	@InvoiceID int
+)
+as
+begin
+	select
+		InvoiceID, 
+		CustomerID,
+		EmployeeID,
+		TransactionDate,
+		Total
+	from dbo.Invoice
+	where InvoiceID = @InvoiceID
+end
 go
 
 print ''

@@ -38,6 +38,11 @@ namespace PresentationLayer
         {
             TabFrame.Content = new pgCustomerList();
         }
+
+        private void BtnInvoices_Click(object sender, RoutedEventArgs e)
+        {
+            TabFrame.Content = new pgInvoiceList();
+        }
     }
 }
 

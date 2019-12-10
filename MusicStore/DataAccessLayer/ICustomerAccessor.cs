@@ -16,5 +16,7 @@ namespace DataAccessLayer
         bool UpdateCustomerProfile(Customer oldCustomer, Customer newCustomer);
 
         bool InsertCustomer(Customer customer);
+
+        Customer SelectCustomerByEmail(string email);
     }
 }

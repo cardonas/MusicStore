@@ -151,5 +151,44 @@ namespace DataAccessLayer
 
             return isAdded;
         }
+
+        public Customer SelectCustomerByEmail(string email)
+        {
+            Customer customer = null;
+            var conn = DbConnection.GetConnection();
+            var cmd = new SqlCommand("sp_select_customer_by_email", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.AddWithValue("@Email", email);
+
+            try
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    customer = new Customer()
+                    {
+                        CustomerId = reader.GetInt32(0),
+                        FirstName = reader.GetString(1),
+                        LastName = reader.GetString(2),
+                        PhoneNumber = reader.GetString(3),
+                        Email = email
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return customer;
+        }
     }
 }

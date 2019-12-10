@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using DataObjects;
@@ -12,15 +13,19 @@ namespace PresentationLayer
     public partial class pgCustomerDetails : Page
     {
         private readonly ICustomerManager _customerManager;
-        private readonly Customer _customer;
+        private Customer _customer;
         private bool _addMode;
         private bool _editMode;
+        private bool _fromCart;
+        private Employee _user;
 
-        public pgCustomerDetails(bool addMode = false)
+        public pgCustomerDetails(bool addMode = false, bool fromCart = false, Employee user = null)
         {
             InitializeComponent();
             _customerManager = new CustomerManager();
             _addMode = addMode;
+            _fromCart = fromCart;
+            _user = user;
         }
 
 
@@ -128,6 +133,17 @@ namespace PresentationLayer
                     }))
                     {
                         MessageBox.Show("Customer Added", "Success", MessageBoxButton.OK);
+                        if (_fromCart)
+                        {
+                            try
+                            {
+                                _customer = _customerManager.GetCustomerByEmail(TxtEmail.Text);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message + "\n\n" + ex.InnerException.Message);
+                            }
+                        }
                     }
 
                     if (MessageBox.Show("Would you like add another Customer?", "Add Another?", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -140,7 +156,14 @@ namespace PresentationLayer
                     }
                     else
                     {
-                        this.NavigationService?.Navigate(new pgCustomerList());
+                        if (_fromCart)
+                        {
+                            this.NavigationService?.Navigate(new PgCart(_user, _customer, true));
+                        }
+                        else
+                        {
+                            this.NavigationService?.Navigate(new pgCustomerList());
+                        }
                     }
                 }
                 catch (Exception ex)

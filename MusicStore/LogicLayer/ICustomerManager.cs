@@ -13,5 +13,6 @@ namespace LogicLayer
         List<Customer> GetAllCustomers(bool active);
         bool EditCustomerDetails(Customer oldCustomer, Customer newCustomer);
         bool AddCustomer(Customer customer);
+        Customer GetCustomerByEmail(string email);
     }
 }

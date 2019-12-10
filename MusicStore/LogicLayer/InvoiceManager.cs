@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataAccessLayer;
+using DataObjects;
 
 namespace LogicLayer
 {
@@ -21,6 +23,18 @@ namespace LogicLayer
             catch (Exception ex)
             {
                 throw new ApplicationException("Unable to create a new invoice", ex);
+            }
+        }
+
+        public List<Invoice> GetAllInvoices()
+        {
+            try
+            {
+                return _invoiceAccessor.SelectAllInvoices();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("There are no Invoices", ex);
             }
         }
     }

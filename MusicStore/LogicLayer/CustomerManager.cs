@@ -72,5 +72,18 @@ namespace LogicLayer
 
             return addCustomer;
         }
+
+        public Customer GetCustomerByEmail(string email)
+        {
+            
+            try
+            {
+              return  _customerAccessor.SelectCustomerByEmail(email);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("No Customer Found with that email", ex);
+            }
+        }
     }
 }

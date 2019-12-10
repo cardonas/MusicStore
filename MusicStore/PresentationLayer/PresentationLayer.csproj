@@ -86,6 +86,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pgInvoiceDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="pgInvoiceList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UpdatePassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +133,12 @@
     </Compile>
     <Compile Include="pgCustomerList.xaml.cs">
       <DependentUpon>pgCustomerList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pgInvoiceDetails.xaml.cs">
+      <DependentUpon>pgInvoiceDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pgInvoiceList.xaml.cs">
+      <DependentUpon>pgInvoiceList.xaml</DependentUpon>
     </Compile>
     <Compile Include="UpdatePassword.xaml.cs">
       <DependentUpon>UpdatePassword.xaml</DependentUpon>
