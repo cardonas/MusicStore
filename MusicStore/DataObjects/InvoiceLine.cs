@@ -8,5 +8,6 @@
         public int? RepairTicketID { get; set; }
         public int? RentToOwnID { get; set; }
         public decimal LineTotal { get; set; }
+        public string LineTotalString => this.LineTotal.ToString("c");
     }
 }

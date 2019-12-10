@@ -1742,3 +1742,27 @@ begin
 end
 go
 
+print ''
+print '*** Creating sp_select_invoice_line_by_invoiceID'
+go
+
+create procedure sp_select_invoice_lines_by_invoiceID
+(
+	@InvoiceID int
+)
+as
+begin
+	select
+		InvoiceLineID,  
+		InvoiceID, 
+		InvoiceLine.InstrumentID,
+		Instrument.InstrumentTypeID,
+		Instrument.InstrumentBrandID,   
+		RepairTicketID, 
+		RentToOwnID,    
+		LineTotal
+	from dbo.InvoiceLine
+	join Instrument on InvoiceLine.InstrumentID = Instrument.InstrumentID
+	where InvoiceID = @InvoiceID
+end
+go

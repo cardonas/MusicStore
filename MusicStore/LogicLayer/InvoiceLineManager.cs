@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DataAccessLayer;
 using DataObjects;
 
@@ -23,6 +24,18 @@ namespace LogicLayer
             }
 
             return isAdded;
+        }
+
+        public List<InvoiceLineVM> GetAllInvoiceLInesByInvoiceID(int invoiceID)
+        {
+            try
+            {
+                return _invoiceLineAccessor.SelectInvoiceLinesByInvoiceID(invoiceID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("No Items found for this invoice", ex);
+            }
         }
     }
 }

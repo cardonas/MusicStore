@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using DataObjects;
 using LogicLayer;
 
 namespace PresentationLayer
@@ -40,6 +41,11 @@ namespace PresentationLayer
             DgInvoiceList.Columns[0].Header = "Invoice ID";
             DgInvoiceList.Columns[3].Header = "Date";
             DgInvoiceList.Columns[4].Header = "Invoice Total";
+        }
+
+        private void DgInvoiceList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.NavigationService?.Navigate(new pgInvoiceDetails((Invoice) DgInvoiceList.SelectedItem));
         }
     }
 }
